@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @loyalty_program %>
+
+<div>
+  <%= link_to "Edit this loyalty program", edit_loyalty_program_path(@loyalty_program) %> |
+  <%= link_to "Back to loyalty programs", loyalty_programs_path %>
+
+  <%= button_to "Destroy this loyalty program", @loyalty_program, method: :delete %>
+</div>

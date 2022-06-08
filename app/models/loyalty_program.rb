@@ -1,0 +1,2 @@
+class LoyaltyProgram < ApplicationRecord
+end
