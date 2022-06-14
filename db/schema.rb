@@ -10,8 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_06_08_083944) do
+ActiveRecord::Schema[7.0].define(version: 2022_06_14_054030) do
 # Could not dump table "loyalty_programs" because of following StandardError
 #   Unknown type 'duration' for column 'processing_time'
+
+  create_table "transactions", force: :cascade do |t|
+    t.string "loyalty_program_id"
+    t.string "user_id"
+    t.datetime "transaction_date"
+    t.string "transactions_id"
+    t.decimal "amount"
+    t.string "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
 end
