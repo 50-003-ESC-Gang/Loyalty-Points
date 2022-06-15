@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Loyalty program data</h1>
+
+<div id="loyalty_program_data">
+  <% @loyalty_program_data.each do |loyalty_program_datum| %>
+    <%= render loyalty_program_datum %>
+    <p>
+      <%= link_to "Show this loyalty program datum", loyalty_program_datum %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New loyalty program datum", new_loyalty_program_datum_path %>
