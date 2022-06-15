@@ -30,6 +30,7 @@ rvm install 3.0.3
 bundle install
 rails db:create
 rails db:migrate
+rails tailwindcss:install
 ```
 
 To turn on the server : `rails s`
