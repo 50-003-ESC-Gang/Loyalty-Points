@@ -5,3 +5,15 @@
 #
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
+
+10.times do |i|
+    LoyaltyProgram.create(
+        loyalty_program_id: "id#{i}",
+        program_name: "Loyalty Program #{i}",
+        currency_name: "Currency $#{i}",
+        processing_time: "2000-01-01 02:00:00",
+        description: "Test Description",
+        enrollment_link: "www.google.com",
+        terms_and_conditions_link: "www.facebook.com" 
+    )
+  end
