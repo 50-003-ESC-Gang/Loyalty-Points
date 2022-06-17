@@ -33,9 +33,18 @@ rails db:migrate
 rails tailwindcss:install
 ```
 
+### Commands for running
+
 To turn on the server : `rails s`
 
 To use console for debugging : `rails c`
+
+### Testing commands
+
+To run the specs, type:
+```
+bundle exec rspec
+```
 
 ### Contribution Steps
 
