@@ -7,7 +7,7 @@
 #   Character.create(name: "Luke", movie: movies.first)
 
 10.times do |i|
-    LoyaltyProgram.create(
+    loyalty_program = LoyaltyProgram.create(
         loyalty_program_id: "id#{i}",
         program_name: "Loyalty Program #{i}",
         currency_name: "Currency $#{i}",
@@ -16,4 +16,8 @@
         enrollment_link: "www.google.com",
         terms_and_conditions_link: "www.facebook.com" 
     )
+    user = User.create(email: "#{i}@gmail.com", password: "123456", name: "User #{i}", lastname: "Lastname #{i}")
+    account = Account.create(user_id: i)
+    txn = Transaction.create(loyalty_program_data_id: i, amount: i, date: "2000-01-01 02:00:00", status: 0, account: account)
+
   end
