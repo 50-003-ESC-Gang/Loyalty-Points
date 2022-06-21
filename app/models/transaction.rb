@@ -3,9 +3,6 @@ class Transaction < ApplicationRecord
 
     validates :amount
 
-
-
-
     belongs_to: LoyaltyProgramDatum,
 
 
