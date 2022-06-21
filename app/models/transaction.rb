@@ -3,8 +3,10 @@ class Transaction < ApplicationRecord
 
     validate :amount
 
-    belongs_to :loyalty_program
-    # has_one :user, through: :account, source: :account_table_foreign_key_to_user_table
+    belongs_to :account
+    has_one :user, through: :account, source: :index_account_on_user_id
+
+    enum :status, [ :pending, :success, :failed, :cancelled ]
 
     after_create do
         LoyaltyProgramDatum.update_amount

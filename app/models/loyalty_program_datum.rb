@@ -1,7 +1,8 @@
 class LoyaltyProgramDatum < ApplicationRecord
     has_many: Transaction, foreign_key: "loyalty_program_id"
-    serialize :transaction_history, Array
+    # serialize :transaction_history, Array
 
+    has_one :loyalty_program, class_name: "loyalty_program", foreign_key: "loyalty_program_id"
 
     def update_amount
         # Add amount based on loyalty program id
