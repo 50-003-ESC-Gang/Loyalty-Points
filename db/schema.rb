@@ -10,11 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_06_21_093620) do
+ActiveRecord::Schema[7.0].define(version: 2022_06_21_102613) do
   create_table "loyalty_program_data", force: :cascade do |t|
-    t.string "loyalty_program_id"
     t.decimal "points"
-    t.text "transaction_history"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -23,14 +21,12 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_21_093620) do
 #   Unknown type 'duration' for column 'processing_time'
 
   create_table "transactions", force: :cascade do |t|
-    t.integer "loyalty_program_id_id"
     t.integer "amount_id"
-    t.integer "user_id_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "loyalty_program_data_id"
     t.index ["amount_id"], name: "index_transactions_on_amount_id"
-    t.index ["loyalty_program_id_id"], name: "index_transactions_on_loyalty_program_id_id"
-    t.index ["user_id_id"], name: "index_transactions_on_user_id_id"
+    t.index ["loyalty_program_data_id"], name: "index_transactions_on_loyalty_program_data_id"
   end
 
   create_table "users", force: :cascade do |t|
