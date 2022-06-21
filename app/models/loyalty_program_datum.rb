@@ -20,8 +20,6 @@ class LoyaltyProgramDatum < ApplicationRecord
         transaction_history
     end
 
-
-
     
 end
 
