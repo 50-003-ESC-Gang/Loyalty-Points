@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :accounts
   resources :loyalty_program_data
   resources :transactions
   root 'pages#home'
