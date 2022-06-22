@@ -18,6 +18,8 @@
     )
     user = User.create(email: "#{i}@gmail.com", password: "123456", name: "User #{i}", lastname: "Lastname #{i}")
     account = Account.create(user_id: i)
-    txn = Transaction.create(loyalty_program_data_id: i, amount: i, date: "2000-01-01 02:00:00", status: 0, account: account)
+
+    #Trans
+    txn = Transaction.create(loyalty_program_data_id: i, amount: i, date: "2000-01-01 02:00:00", status: 0)
 
   end
