@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_06_21_160426) do
+ActiveRecord::Schema[7.0].define(version: 2022_06_22_084001) do
   create_table "accounts", force: :cascade do |t|
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
@@ -36,6 +36,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_21_160426) do
     t.decimal "amount"
     t.datetime "date"
     t.integer "status", default: 0
+    t.integer "receiver"
     t.index ["loyalty_program_data_id"], name: "index_transactions_on_loyalty_program_data_id"
   end
 

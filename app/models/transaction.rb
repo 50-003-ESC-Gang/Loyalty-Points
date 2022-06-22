@@ -9,7 +9,9 @@ class Transaction < ApplicationRecord
 
   enum :status, %i[pending success failed cancelled]
 
-  # after_create do
-  #   LoyaltyProgramDatum.update_amount
-  # end
+  after_create do
+    
+    self.loyalty_program_data.points += self.amount
+    
+  end
 end
