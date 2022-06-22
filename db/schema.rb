@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_06_21_105805) do
+ActiveRecord::Schema[7.0].define(version: 2022_06_21_160426) do
   create_table "accounts", force: :cascade do |t|
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
@@ -23,9 +23,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_21_105805) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "account_id"
-    t.integer "accounts_id"
     t.index ["account_id"], name: "index_loyalty_program_data_on_account_id"
-    t.index ["accounts_id"], name: "index_loyalty_program_data_on_accounts_id"
   end
 
 # Could not dump table "loyalty_programs" because of following StandardError
@@ -56,6 +54,4 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_21_105805) do
   end
 
   add_foreign_key "accounts", "users"
-  add_foreign_key "loyalty_program_data", "account"
-  add_foreign_key "loyalty_program_data", "accounts"
 end
