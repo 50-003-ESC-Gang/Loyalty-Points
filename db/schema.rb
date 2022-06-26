@@ -10,9 +10,35 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_06_15_092521) do
+ActiveRecord::Schema[7.0].define(version: 2022_06_22_084001) do
+  create_table "accounts", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_accounts_on_user_id"
+  end
+
+  create_table "loyalty_program_data", force: :cascade do |t|
+    t.decimal "points"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "account_id"
+    t.index ["account_id"], name: "index_loyalty_program_data_on_account_id"
+  end
+
 # Could not dump table "loyalty_programs" because of following StandardError
 #   Unknown type 'duration' for column 'processing_time'
+
+  create_table "transactions", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "loyalty_program_data_id"
+    t.decimal "amount"
+    t.datetime "date"
+    t.integer "status", default: 0
+    t.integer "receiver"
+    t.index ["loyalty_program_data_id"], name: "index_transactions_on_loyalty_program_data_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -28,4 +54,5 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_15_092521) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "accounts", "users"
 end

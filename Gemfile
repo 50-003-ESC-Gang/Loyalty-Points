@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "<= 3.1.2"
+ruby "<= 3.1.2.20"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.0.3"
@@ -44,12 +44,13 @@ gem "rspec"
 
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
+# gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
+gem "tzinfo-data"
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
 
-gem "tailwindcss-rails"
+# gem "tailwindcss-rails"
 
 # Use Sass to process CSS
 # gem "sassc-rails"
@@ -59,7 +60,8 @@ gem "tailwindcss-rails"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
-  gem "debug", platforms: %i[ mri mingw x64_mingw ]
+  # gem "debug", platforms: %i[ mri mingw x64_mingw ]
+  gem "debug"
 end
 
 group :development do
@@ -79,3 +81,5 @@ group :test do
   gem "selenium-webdriver"
   gem "webdrivers"
 end
+
+gem "tailwindcss-rails", "~> 2.0"

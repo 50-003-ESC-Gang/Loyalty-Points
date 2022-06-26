@@ -33,6 +33,16 @@ rails db:migrate
 rails tailwindcss:install
 ```
 
+Database setup
+
+```
+rake db:drop
+rake db:migrate
+rake db:seed
+```
+
+View all DB tables : `ActiveRecord::Base.connection.tables`
+
 ### Commands for running
 
 To turn on the server : `rails s`

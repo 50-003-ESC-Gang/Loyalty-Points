@@ -21,5 +21,6 @@
         "titleBar.inactiveBackground": "#5a279e99",
         "titleBar.inactiveForeground": "#e7e7e799"
     },
+    "workbench.editor.wrapTabs": true,
     "peacock.color": "#5a279e"
 }
