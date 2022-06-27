@@ -25,13 +25,10 @@ jobs:
           sudo apt-get -yqq install libpq-dev build-essential libcurl4-openssl-dev
           gem install bundler
           bundle install --jobs 4 --retry 3
+
       - name: Setup Database
         working-directory: ${{env.api-dir}}
-        env:
-          RAILS_ENV: test
-          PGHOST: localhost
-          PGUSER: postgres
-        run: bin/rails db:create db:schema:load
+        run: bin/rails db:schema:load # how do you setup one for sqlite3?
 
       - name: Build and test with rspec
         working-directory: ${{env.api-dir}}
