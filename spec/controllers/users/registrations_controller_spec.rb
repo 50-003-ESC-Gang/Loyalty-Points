@@ -1,6 +1,7 @@
 require 'rails_helper'
 
-RSpec.describe User, type: :model do
+RSpec.describe Users::RegistrationsController, type: :controller do
+  
   let(:user) do
     User.create(
       email: 'foo@bar.net',
@@ -11,6 +12,7 @@ RSpec.describe User, type: :model do
     )
   end
 
+
   describe 'creation' do
     it 'can be created' do
       expect(user).to be_valid
@@ -19,11 +21,6 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe 'update' do
-    xit 'can change the password' do
-    end
-
-    xit 'can change the name' do
-    end
-  end
+  # TODO : still not too sure how to write test to test account creation
+  
 end
