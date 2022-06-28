@@ -17,9 +17,14 @@
         terms_and_conditions_link: "www.facebook.com" 
     )
     user = User.create(email: "#{i}@gmail.com", password: "123456", name: "User #{i}", lastname: "Lastname #{i}")
-    account = Account.create(user_id: i)
+
+    # Loyalty Program Data
+
 
     #Trans
-    txn = Transaction.create(loyalty_program_data_id: i, amount: i, date: "2000-01-01 02:00:00", status: 0)
+    txn = Transaction.create(loyalty_program_data_id: i, amount: i, date: "2000-01-01 02:00:00", status: 0, receiver: i - 1)
+
+    
+
 
   end

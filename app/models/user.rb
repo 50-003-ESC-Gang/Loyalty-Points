@@ -9,8 +9,6 @@ class User < ApplicationRecord
   private
 
   def create_account
-    byebug
-    build_account.save # when `has_one`
-    # Account.create!(user_id : id)
+    @account = build_account.save # when `has_one`
   end
 end
