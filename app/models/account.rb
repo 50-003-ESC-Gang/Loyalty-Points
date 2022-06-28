@@ -4,8 +4,7 @@ class Account < ApplicationRecord
   after_create :create_loyalty_program_data
 
   def create_loyalty_program_data
-    # Account.
-    byebug
+    # creating loyalty program data for account for each loyalty program in callback
     @loyalty_program_data = user.account.build_loyalty_program_datum(points: 0).save
   end
 end
