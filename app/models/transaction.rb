@@ -12,8 +12,11 @@ class Transaction < ApplicationRecord
 
   # after_create do
     
-  #   self.loyalty_program_data.points += self.amount
-  #   self.receiver_data.points -= self.amount
+    self.loyalty_program_data.points += self.amount
+    self.receiver_data.points -= self.amount
+    #to generate accrual
+    # TODO: check if it's correct
+    AccrualProcessor.convert_to_accrual(self)
     
   # end
 end
