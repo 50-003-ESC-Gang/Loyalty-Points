@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_06_30_042350) do
+ActiveRecord::Schema[7.0].define(version: 2022_06_30_151822) do
   create_table "accounts", force: :cascade do |t|
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
@@ -27,8 +27,19 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_30_042350) do
     t.index ["account_id"], name: "index_loyalty_program_data_on_account_id"
   end
 
-# Could not dump table "loyalty_programs" because of following StandardError
-#   Unknown type 'duration' for column 'processing_time'
+  create_table "loyalty_programs", force: :cascade do |t|
+    t.string "loyalty_program_id"
+    t.string "program_name"
+    t.string "currency_name"
+    t.text "description"
+    t.string "enrollment_link"
+    t.string "terms_and_conditions_link"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "loyalty_program_data_id"
+    t.integer "processing_time_seconds"
+    t.index ["loyalty_program_data_id"], name: "index_loyalty_programs_on_loyalty_program_data_id"
+  end
 
   create_table "transactions", force: :cascade do |t|
     t.datetime "created_at", null: false
