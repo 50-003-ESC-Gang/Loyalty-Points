@@ -58,6 +58,12 @@ To run the specs, type:
 bundle exec rspec
 ```
 
+Libraries used for testing
+
+* rspec
+* faker
+* factory_bot
+
 ### Issues with Setting up
 
 1. problem :
