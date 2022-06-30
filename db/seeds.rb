@@ -22,7 +22,7 @@
 
 
     #Trans
-    txn = Transaction.create(loyalty_program_data_id: i, amount: i, date: "2000-01-01 02:00:00", status: 0, receiver: i)
+    # txn = Transaction.create(loyalty_program_data_id: i, amount: i, date: "2000-01-01 02:00:00", status: 0, receiver: i)
 
     
 
