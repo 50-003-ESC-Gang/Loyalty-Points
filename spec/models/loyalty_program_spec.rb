@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe LoyaltyProgram, type: :model do
-  let(:user) do
+  let(:lp) do
     LoyaltyProgram.create(
         loyalty_program_id: "id1",
         program_name: "Loyalty Program 1",
@@ -15,9 +15,15 @@ RSpec.describe LoyaltyProgram, type: :model do
 
   describe 'creation' do
     it 'can be created' do
-      expect(user).to be_valid
-      expect(User.count).to eq(1)
-      expect(User.first.name).to eq(user.name)
+      expect(lp).to be_valid
+      expect(LoyaltyProgram.count).to eq(1)
+      expect(LoyaltyProgram.first.loyalty_program_id).to eq(lp.loyalty_program_id)
+      expect(LoyaltyProgram.first.program_name).to eq(lp.program_name)
+      expect(LoyaltyProgram.first.currency_name).to eq(lp.currency_name)
+      expect(LoyaltyProgram.first.processing_time).to eq(lp.processing_time)
+      expect(LoyaltyProgram.first.description).to eq(lp.description)
+      expect(LoyaltyProgram.first.enrollment_link).to eq(lp.enrollment_link)
+      expect(LoyaltyProgram.first.terms_and_conditions_link).to eq(lp.terms_and_conditions_link)
     end
   end
 
