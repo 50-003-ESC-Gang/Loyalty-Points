@@ -3,7 +3,7 @@
 class Account < ApplicationRecord
   belongs_to :user
   # has_many :loyalty_program_datum
-  has_many :loyalty_program_data, class_name: 'LoyaltyProgramDatum', foreign_key: 'account_id'
+  has_many :loyalty_program_data, class_name: 'LoyaltyProgramDatum'
   after_create :create_loyalty_program_data
 
   def create_loyalty_program_data
