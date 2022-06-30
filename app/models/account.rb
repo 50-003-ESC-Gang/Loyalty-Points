@@ -13,7 +13,6 @@ class Account < ApplicationRecord
     # build loyalty program data for each loyalty program
 
     loyalty_program_id.each do |i|
-      byebug
       user.account.loyalty_program_data.build(loyalty_program_id: i).save
     end
   end
