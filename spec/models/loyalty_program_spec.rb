@@ -2,15 +2,7 @@ require 'rails_helper'
 
 RSpec.describe LoyaltyProgram, type: :model do
   let(:lp) do
-    LoyaltyProgram.create(
-        loyalty_program_id: "id1",
-        program_name: "Loyalty Program 1",
-        currency_name: "Currency $1",
-        processing_time: "2000-01-01 02:00:00",
-        description: "Test Description",
-        enrollment_link: "www.google.com",
-        terms_and_conditions_link: "www.facebook.com" 
-    )
+    FactoryBot.create(:loyalty_program)
   end
 
   describe 'creation' do
