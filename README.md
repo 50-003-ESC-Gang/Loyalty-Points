@@ -62,7 +62,7 @@ Libraries used for testing
 
 * rspec
 * faker
-* factory_bot
+* factory_bot <https://github.com/thoughtbot/factory_bot/blob/master/GETTING_STARTED.md#associations>
 
 ### Issues with Setting up
 
