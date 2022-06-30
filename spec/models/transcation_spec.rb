@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Transcation, type: :model do
+RSpec.describe Transaction, type: :model do
   describe '#create' do
     let(:lp) do
       FactoryBot.create(:loyalty_program)
