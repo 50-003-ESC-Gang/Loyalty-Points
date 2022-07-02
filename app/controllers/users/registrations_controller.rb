@@ -4,15 +4,29 @@ class Users::RegistrationsController < Devise::RegistrationsController
   before_action :configure_sign_up_params, only: [:create]
   before_action :configure_account_update_params, only: [:update]
 
+
   # GET /resource/sign_up
   # def new
   #   super
   # end
 
   # POST /resource
-  # def create
-  #   super
-  # end
+  def create
+    super do
+      if duplicate_email?
+        flash[:notice] = 'You seem to already have an account, do you want to login instead?'
+        redirect_to root_path and return
+      end
+    end
+  end
+
+  def duplicate_email?
+    return false unless resource.errors.key?(:email)
+
+    resource.errors.details[:email].any? do |hash|
+      hash[:error] == :taken
+    end
+  end
 
   # GET /resource/edit
   # def edit
@@ -42,12 +56,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # If you have extra params to permit, append them to the sanitizer.
   def configure_sign_up_params
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:email, :name, :password, :lastname])
+    devise_parameter_sanitizer.permit(:sign_up, keys: %i[email name password lastname])
   end
 
   # If you have extra params to permit, append them to the sanitizer.
   def configure_account_update_params
-    devise_parameter_sanitizer.permit(:account_update, keys: [:email, :name, :password, :lastname])
+    devise_parameter_sanitizer.permit(:account_update, keys: %i[email name password lastname])
   end
 
   # The path used after sign up.
@@ -59,4 +73,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # def after_inactive_sign_up_path_for(resource)
   #   super(resource)
   # end
+
+
 end

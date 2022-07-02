@@ -23,8 +23,9 @@ Things you may want to cover:
 
 * ...
 
-### Setup 
-```
+### Setup
+
+```bash
 git clone https://github.com/50-003-ESC-Gang/Loyalty-Points.git
 rvm install 3.0.3
 bundle install
@@ -35,7 +36,7 @@ rails tailwindcss:install
 
 Database setup
 
-```
+```bash
 rake db:drop
 rake db:migrate
 rake db:seed
@@ -52,9 +53,19 @@ To use console for debugging : `rails c`
 ### Testing commands
 
 To run the specs, type:
+
 ```
 bundle exec rspec
 ```
+
+### Issues with Setting up
+
+1. problem :
+Error when trying to run rspec: `require': cannot load such file -- rails_helper (LoadError)
+solution :`rails generate rspec:install`
+
+source :
+<https://stackoverflow.com/questions/25800122/error-when-trying-to-run-rspec-require-cannot-load-such-file-rails-helper>
 
 ### Contribution Steps
 
