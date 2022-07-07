@@ -37,7 +37,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_30_151822) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "loyalty_program_data_id"
-    t.integer "processing_time_seconds"
+    t.integer "processing_time_seconds", default: 10000
     t.index ["loyalty_program_data_id"], name: "index_loyalty_programs_on_loyalty_program_data_id"
   end
 

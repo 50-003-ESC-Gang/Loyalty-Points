@@ -9,6 +9,8 @@ Rails.application.routes.draw do
 
   resources :transactions
 
+  
+
 
   
   resources :loyalty_programs
