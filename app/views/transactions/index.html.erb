@@ -2,9 +2,49 @@
 
 <h1>Transactions (Only for Developer)</h1>
 
+
+
+
+
+
+
+
 <div id="transactions">
 	<% @transactions.each do |transaction| %> <%= render transaction %>
-	<p><%= link_to "Show this transaction", transaction %></p>
+		<div class="container">
+			<div class="row">
+				<div class="col-4">
+					<div class="card">
+						<div class="card-body">
+							<h5 class="card-title">Transaction</h5>
+							<p class="card-text">
+								From:
+								<%= transaction.loyalty_program_data_id%>
+							</p>
+							
+							<p class="card-text">
+								To:
+								<%= transaction.receiver%>
+							</p>
+							
+							<p class="card-text">
+								Amount Transferred:
+								<%= transaction.amount%>
+							</p>
+							
+							<p class="card-text">
+								Transaction Date: 
+								<%= transaction.created_at%>
+							</p>
+							
+						</div>
+					</div>
+				</div>
+			</div>
+
+			
+		</div>
+	<%# <p><%= link_to "Show this transaction", transaction %></p> 
 	<% end %>
 </div>
 

@@ -4,6 +4,8 @@ class LoyaltyProgramDataController < ApplicationController
   # GET /loyalty_program_data or /loyalty_program_data.json
   def index
     @loyalty_program_data = LoyaltyProgramDatum.all
+    @transaction = Transaction.all
+    
   end
 
   # GET /loyalty_program_data/1 or /loyalty_program_data/1.json
