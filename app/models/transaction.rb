@@ -9,11 +9,12 @@ class Transaction < ApplicationRecord
   has_one :user, through: :account, source: :index_account_on_user_id
 
   enum :status, %i[pending success failed cancelled]
-
+# TODO : transcation.rb should not handle the points logic. Rather it should be the controller that processes these transcations right
   after_create do
-    
-    self.loyalty_program_data.points += self.amount
-    self.receiver_data.points -= self.amount
+    if self.status == "success"
+      self.loyalty_program_data.points += self.amount
+      self.receiver_data.points -= self.amount
+    end
     
   end
 end
