@@ -1,37 +1,39 @@
-<div id="<%= dom_id loyalty_program %>">
-  <p>
-    <strong>Loyalty program:</strong>
-    <%= loyalty_program.loyalty_program_id %>
-  </p>
+<div id="<%= dom_id loyalty_program %>" class="col-4 p-0">
+  <div class="card bg-dark text-light m-1">
+    <div class="card-body">
+      <h5 class="card-title"><%= loyalty_program.program_name %></h5>
 
-  <p>
-    <strong>Program name:</strong>
-    <%= loyalty_program.program_name %>
-  </p>
+      <p>
+        <strong>Loyalty program:</strong>
+        <%= loyalty_program.loyalty_program_id %>
+      </p>
 
-  <p>
-    <strong>Currency name:</strong>
-    <%= loyalty_program.currency_name %>
-  </p>
+      <p>
+        <strong>Program name:</strong>
+        <%= loyalty_program.program_name %>
+      </p>
 
-  <p>
-    <strong>Processing time:</strong>
-    <%= loyalty_program.processing_time %>
-  </p>
+      <p>
+        <strong>Currency name:</strong>
+        <%= loyalty_program.currency_name %>
+      </p>
 
-  <p>
-    <strong>Description:</strong>
-    <%= loyalty_program.description %>
-  </p>
+      <p>
+        <strong>Processing time:</strong>
+        <%= loyalty_program.processing_time %>
+      </p>
 
-  <p>
-    <strong>Enrollment link:</strong>
-    <%= loyalty_program.enrollment_link %>
-  </p>
+      <p>
+        <strong>Description:</strong>
+        <%= loyalty_program.description %>
+      </p>
 
-  <p>
-    <strong>Terms and conditions link:</strong>
-    <%= loyalty_program.terms_and_conditions_link %>
-  </p>
+      <p>
+        <a href="https://<%=loyalty_program.enrollment_link%>" class="btn btn-sm btn-info">Enrollment Link</a>
+        <a href="https://<%=loyalty_program.terms_and_conditions_link%>" class="btn btn-sm btn-info">Terms and Conditions</a>
+      </p>
 
+      <a href="<%= loyalty_program_path(loyalty_program) %>" class="btn btn-light">Link Account</a>
+    </div>
+  </div>
 </div>
