@@ -5,8 +5,22 @@ class LoyaltyProgramDataController < ApplicationController
   def index
     @loyalty_program_data = LoyaltyProgramDatum.all
     @transaction = Transaction.all
-    
+
+    form_complete = true
+
+    required = [:amount, :id]
+    required.each do |f|
+      if params.has_key? f and not params[f].blank?
+        
+      else
+        form_complete = false
+      
+      if form_complete
+        Transaction.create(amount: params[:amount], receiver: params[:id])
+      
   end
+
+
 
   # GET /loyalty_program_data/1 or /loyalty_program_data/1.json
   def show
