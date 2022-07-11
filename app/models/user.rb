@@ -11,4 +11,10 @@ class User < ApplicationRecord
   def create_account
     @account = build_account.save # when `has_one`
   end
+
+  def get_points
+    # get points from loyalty program data
+    # loyalty_program_data.points
+    User.find(@user_id).account.loyalty_program_data.where(loyalty_program_id: 1).first.points
+  end
 end
