@@ -1,22 +1,20 @@
 <% if current_user %> 
 <%# Nav Bar  %>
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-  <div class="container-fluid">
-    <ul class="navbar-nav">
-      <li class="nav-item active">
-        <a class="nav-link" href="#">Home</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="<%= loyalty_programs_path %>">Loyalty Programs</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="<%#= transactions_path %>">Transactions</a>
-      </li>
-    </ul>
-    <div class="d-flex">
-      <%= link_to "Sign Out", destroy_user_session_path, method: :delete, class: "text-decoration-none text-light" %>
-    </div>
-  </div>
+  <ul class="navbar-nav">
+    <li class="nav-item active">
+      <a class="nav-link" href="#">Home</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Exchange Points</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">My Transcations</a>
+    </li>
+    <%# <li class="nav-item">
+      <a class="nav-link disabled" href="#">Disabled</a>
+    </li> %>
+  </ul>
 </nav>
 
 <%= render "accounts/landing" %>

@@ -2,12 +2,32 @@
 
 <h1>Loyalty program data</h1>
 
+
+
+
+
+
+
+
+
 <div id="loyalty_program_data">
   <% @loyalty_program_data.each do |loyalty_program_datum| %>
     <%= render loyalty_program_datum %>
-    <p>
-      <%= link_to "Show this loyalty program datum", loyalty_program_datum %>
-    </p>
+  
+    
+  <%= form_with(model: transaction) do |f| %>
+    <div>
+      <%= form.label :amount, style: "display: block" %>
+      <%= form.text_field :amount %>
+    </div>
+
+    <%= f.select :id, @loyalty_program_data.map { |l| [l.loyalty_program_id, l.loyalty_program_id] } %>
+    <%= f.submit %>
+  <% end %> 
+
+    <%# <p>
+      <%# <%= link_to "Show this loyalty program datum", loyalty_program_datum %> 
+    <%# </p> %>
   <% end %>
 </div>
 
