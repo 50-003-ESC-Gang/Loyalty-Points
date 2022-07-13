@@ -1,10 +1,61 @@
 <p style="color: green"><%= notice %></p>
 
-<%= render @loyalty_program %>
+<div id="<%= dom_id @loyalty_program %>" class="p-0">
+  <div class="container bg-dark text-light m-1">
+    <div class="card-body">
+      <h5 class="card-title"><%= @loyalty_program.program_name %></h5>
+
+      <p>
+        <strong>Loyalty program:</strong>
+        <%= @loyalty_program.loyalty_program_id %>
+      </p>
+
+      <p>
+        <strong>Program name:</strong>
+        <%= @loyalty_program.program_name %>
+      </p>
+
+      <p>
+        <strong>Currency name:</strong>
+        <%= @loyalty_program.currency_name %>
+      </p>
+
+      <p>
+        <strong>Processing time:</strong>
+        <%= @loyalty_program.processing_time %>
+      </p>
+
+      <p>
+        <strong>Description:</strong>
+        <%= @loyalty_program.description %>
+      </p>
+
+      <p>
+        <a href="https://<%=@loyalty_program.enrollment_link%>" class="btn btn-sm btn-info">Enrollment Link</a>
+        <a href="https://<%=@loyalty_program.terms_and_conditions_link%>" class="btn btn-sm btn-info">Terms and Conditions</a>
+      </p>
+
+    </div>
+  </div>
+</div>
 
 <div>
-  <%= link_to "Edit this loyalty program", edit_loyalty_program_path(@loyalty_program) %> |
+    <h5 class="card-title">Link Membership ID</h5>
+    <input/>
+    <%= button_to "Submit Membership" %>
+    <%#= button_to "Submit Membership", @loyalty_program, method: :link %>
+</div>
+
+<div>
+  
+  <% if current_user.id == 1 %> 
+    <%= link_to "Edit this loyalty program", edit_loyalty_program_path(@loyalty_program) %> | 
+    <%= button_to "Destroy this loyalty program", @loyalty_program, method: :delete %>
+  <% end %>
+  
   <%= link_to "Back to loyalty programs", loyalty_programs_path %>
 
-  <%= button_to "Destroy this loyalty program", @loyalty_program, method: :delete %>
+
+
+  <%= button_to "Link to this Loyalty program", @loyalty_program, method: :link %>
 </div>
