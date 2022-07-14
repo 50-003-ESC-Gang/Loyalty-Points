@@ -1,13 +1,11 @@
 <p style="color: green"><%= notice %></p>
 
-<h1>Transactions (Only for Developer)</h1>
+<h1>All Transactions</h1>
 
 
 
 
-
-
-
+ <%# current_user.id %>
 
 <div id="transactions">
 	<% @transactions.each do |transaction| %> <%= render transaction %>
