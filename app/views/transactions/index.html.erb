@@ -4,9 +4,6 @@
 
 
 
-
- <%# current_user.id %>
-
 <div id="transactions">
 	<% @transactions.each do |transaction| %> <%= render transaction %>
 		<div class="container">
@@ -16,14 +13,10 @@
 						<div class="card-body">
 							<h5 class="card-title">Transaction</h5>
 							<p class="card-text">
-								From:
+								LoyaltyProgramDataID:
 								<%= transaction.loyalty_program_data_id%>
 							</p>
 							
-							<p class="card-text">
-								To:
-								<%= transaction.receiver%>
-							</p>
 							
 							<p class="card-text">
 								Amount Transferred:
@@ -34,6 +27,12 @@
 								Transaction Date: 
 								<%= transaction.created_at%>
 							</p>
+
+							<p class="card-text">
+								Status: 
+								<%= transaction.status%>
+							</p>
+						
 							
 						</div>
 					</div>
