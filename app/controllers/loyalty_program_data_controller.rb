@@ -3,20 +3,8 @@ class LoyaltyProgramDataController < ApplicationController
 
   # GET /loyalty_program_data or /loyalty_program_data.json
   def index
-    @loyalty_program_data = LoyaltyProgramDatum.all
-    @transaction = Transaction.all
-
-    form_complete = true
-
-    required = [:amount, :id]
-    required.each do |f|
-      if params.has_key? f and not params[f].blank?
-        
-      else
-        form_complete = false
-      
-      if form_complete
-        Transaction.create(amount: params[:amount], receiver: params[:id])
+    @loyalty_program_data = LoyaltyProgramDatum.where(account_id: current_user)
+    
       
   end
 
@@ -35,6 +23,26 @@ class LoyaltyProgramDataController < ApplicationController
 
   # GET /loyalty_program_data/1/edit
   def edit
+    form_complete = true
+
+    required = [:points]
+    required.each do |f|
+      if params.has_key? f and not params[f].blank?
+        
+      else
+        form_complete = false
+      end
+      
+      
+      if form_complete
+        Transaction.create(amount: params[:points], loyalty_program_data_id: 100, status: 0)
+      end
+    end
+
+
+
+
+
   end
 
   # POST /loyalty_program_data or /loyalty_program_data.json
@@ -85,4 +93,5 @@ class LoyaltyProgramDataController < ApplicationController
     def loyalty_program_datum_params
       params.require(:loyalty_program_datum).permit(:loyalty_program_id, :points, :transaction_history)
     end
-end
+  end
+
