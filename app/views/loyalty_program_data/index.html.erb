@@ -48,6 +48,12 @@
 								Latest Update: 
 								<%= loyalty_program_datum.updated_at%>
 							</p>	
+<%# 
+							The field below is only for debugging purpose %>
+							<p class="card-text">
+								Account id:
+								<%= loyalty_program_datum.account_id%>
+							</p>
 
               <%= link_to "Transfer Points", edit_loyalty_program_datum_path(loyalty_program_datum.loyalty_program_id) %>					
 						</div>
