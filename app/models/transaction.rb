@@ -10,13 +10,8 @@ class Transaction < ApplicationRecord
 
   enum :status, %i[pending success failed cancelled]
 
-  # after_create do
-    
-    self.loyalty_program_data.points += self.amount
-    self.receiver_data.points -= self.amount
-    #to generate accrual
-    # TODO: check if it's correct
+  #to generate accrual, for testing purpose only
+  after_create do
     AccrualProcessor.convert_to_accrual(self)
-    
-  # end
+  end
 end
