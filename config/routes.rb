@@ -9,7 +9,7 @@ Rails.application.routes.draw do
 
   resources :transactions
 
-  
+  resources :csv_processing
 
 
   
