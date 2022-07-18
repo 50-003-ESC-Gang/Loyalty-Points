@@ -16,6 +16,9 @@ Rails.application.routes.draw do
   resources :loyalty_programs do
     post :link
   end
+  resources :csv_processing
+
+  
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   # Defines the root path route ("/")
   # root "articles#index"
