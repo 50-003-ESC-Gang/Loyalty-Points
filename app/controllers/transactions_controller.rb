@@ -28,7 +28,7 @@ class TransactionsController < ApplicationController
         format.html { redirect_to transaction_url(@transaction), notice: "Transaction was successfully created." }
         format.json { render :show, status: :created, location: @transaction }
         #generate accrual file
-        AccrualProcessor.convert_to_accrual(@transaction)
+        Thread.new(AccrualProcessor.convert_to_accrual(@transaction))
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @transaction.errors, status: :unprocessable_entity }

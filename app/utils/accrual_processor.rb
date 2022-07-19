@@ -20,4 +20,7 @@ class AccrualProcessor
         @@current_index+=1
         
     end 
+
+    def AccrualProcessor.retrieve_handback()
+    end 
 end
