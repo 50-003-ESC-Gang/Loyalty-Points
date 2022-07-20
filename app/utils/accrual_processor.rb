@@ -6,11 +6,12 @@ class AccrualProcessor < Rails::Application
     @@FOLDER_HANDBACK = "./tmp/handbacks"
 
     def AccrualProcessor.convert_to_accrual(transaction)
+        @@FOLDER_ACCRUAL='./'
         time = Time.new()
-        date_str1 = AccrualProcessor.get_date  #YYYYMMDD format, used for file name
+        date_str1 = "#{time.year}#{time.month}#{time.day}"  #YYYYMMDD format, used for file name
         date_str2 = "#{time.year}-#{time.month}-#{time.day}"  #YYYY-MM-DD format, used for csv field
         company_code = transaction.loyalty_program_datum.loyalty_program.id
-        filepath = "#{@@FOLDER}#{company_code}_#{date_str1}.txt"
+        filepath = "#{@@FOLDER_ACCRUAL}#{company_code}_#{date_str1}.txt"
         handback_name = "#{company_code}_#{date_str1}.HANDBACK.txt"
 
         if (!File::exists?(filepath) or File.zero?(filepath))
@@ -18,8 +19,8 @@ class AccrualProcessor < Rails::Application
             new_file.syswrite("index,Member ID,Member first name,Member last name,Transfer date,Amount,Reference number,Partner code\n")
             @@current_index=1
             new_file.close()
-            SendAccrualJob.set(wait_until: Date.tomorrow.noon).perform_later(filepath)
-            DownloadHandbackJob.set(wait_until: Date.tomorrow.midnight).perform_later(handback_name,@@FOLDER_HANDBACK)
+            SendAccrualJob.perform_later(filepath)
+            DownloadHandbackJob.perform_later(handback_name,"./")
         end
         accrual_file = File.open(filepath,"a")
         # using transaction's id as ref number
