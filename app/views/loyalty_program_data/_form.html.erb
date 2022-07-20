@@ -10,19 +10,18 @@
       </ul>
     </div>
   <% end %>
-
-  <div>
+  <%# <div>
     <%= form.label :loyalty_program_id, style: "display: block" %>
-    <%= form.text_field :loyalty_program_id %>
-  </div>
-
+    <%# <%= form.text_field :loyalty_program_id %>
+  <%# </div> %> 
   <div>
     <%= form.label :points, style: "display: block" %>
     <%= form.text_field :points %>
   </div>
 
+  <br>
 
   <div>
-    <%= form.submit %>
+    <%= form.submit "Transfer"%>
   </div>
 <% end %>

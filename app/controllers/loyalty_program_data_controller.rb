@@ -3,10 +3,12 @@ class LoyaltyProgramDataController < ApplicationController
 
   # GET /loyalty_program_data or /loyalty_program_data.json
   def index
-    @loyalty_program_data = LoyaltyProgramDatum.all
-    @transaction = Transaction.all
+    @loyalty_program_data = LoyaltyProgramDatum.where(account_id: current_user)
     
+      
   end
+
+
 
   # GET /loyalty_program_data/1 or /loyalty_program_data/1.json
   def show
@@ -21,6 +23,21 @@ class LoyaltyProgramDataController < ApplicationController
 
   # GET /loyalty_program_data/1/edit
   def edit
+    # form_complete = true
+
+    # required = [:points]
+    # required.each do |f|
+    #   if params.has_key? f and not params[f].blank?
+        
+    #   else
+    #     form_complete = false
+    #   end
+      
+      
+    #   if form_complete
+    #     Transaction.create(amount: params[:points], loyalty_program_data_id: 100, status: 0)
+    #   end
+    # end
   end
 
   # POST /loyalty_program_data or /loyalty_program_data.json
@@ -42,6 +59,13 @@ class LoyaltyProgramDataController < ApplicationController
   def update
     respond_to do |format|
       if @loyalty_program_datum.update(loyalty_program_datum_params)
+
+
+        # I want to add points to a particular loyalty program data with loyalty program id = params[:id], but dont know how to do
+        # @loyalty_program_datum.where(loyalty_program_id: params[:id]).points += loyalty_program_datum_params[:points].to_d
+
+ 
+        Transaction.create(amount: loyalty_program_datum_params[:points].to_d, loyalty_program_data_id: params[:id], status: 0, account_id: current_user.id)
         format.html { redirect_to loyalty_program_datum_url(@loyalty_program_datum), notice: "Loyalty program datum was successfully updated." }
         format.json { render :show, status: :ok, location: @loyalty_program_datum }
       else
@@ -69,6 +93,7 @@ class LoyaltyProgramDataController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def loyalty_program_datum_params
-      params.require(:loyalty_program_datum).permit(:loyalty_program_id, :points, :transaction_history)
+      params.require(:loyalty_program_datum).permit(:loyalty_program_id, :points, :in_points)
     end
-end
+  end
+

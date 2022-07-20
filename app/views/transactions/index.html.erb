@@ -1,11 +1,6 @@
 <p style="color: green"><%= notice %></p>
 
-<h1>Transactions (Only for Developer)</h1>
-
-
-
-
-
+<h1>All Transactions</h1>
 
 
 
@@ -18,14 +13,10 @@
 						<div class="card-body">
 							<h5 class="card-title">Transaction</h5>
 							<p class="card-text">
-								From:
+								LoyaltyProgramDataID:
 								<%= transaction.loyalty_program_data_id%>
 							</p>
 							
-							<p class="card-text">
-								To:
-								<%= transaction.receiver%>
-							</p>
 							
 							<p class="card-text">
 								Amount Transferred:
@@ -36,6 +27,19 @@
 								Transaction Date: 
 								<%= transaction.created_at%>
 							</p>
+
+							<p class="card-text">
+								Status: 
+								<%= transaction.status%>
+							</p>
+							
+
+							<%# The field below is only for debugging purpose %>
+							<p class="card-text">
+								ID: 
+								<%= transaction.account_id%>
+							</p>
+						
 							
 						</div>
 					</div>
