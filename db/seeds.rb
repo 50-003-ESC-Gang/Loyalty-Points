@@ -8,7 +8,7 @@
 
 10.times do |i|
   loyalty_program = LoyaltyProgram.create(
-    loyalty_program_id: "id#{i}",
+    loyalty_program_id: "#{i}",
     program_name: "Loyalty Program #{i}",
     currency_name: "Currency $#{i}",
     processing_time: '2000-01-01 02:00:00',

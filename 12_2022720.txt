@@ -1,0 +1,7 @@
+index,Member ID,Member first name,Member last name,Transfer date,Amount,Reference number,Partner code
+1,2,User 0,Lastname 0,,579.0,20227201,12
+2,2,User 0,Lastname 0,,579.0,20227202,12
+3,2,User 0,Lastname 0,,579.0,20227203,12
+4,2,User 0,Lastname 0,,579.0,20227204,12
+5,2,User 0,Lastname 0,,579.0,20227205,12
+6,2,User 0,Lastname 0,,579.0,20227206,12
