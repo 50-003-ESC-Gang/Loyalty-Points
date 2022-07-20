@@ -8,10 +8,10 @@ class LoyaltyProgram < ApplicationRecord
             else
                 puts "FAILEDDDD"
                 return false
-						end
-				else
-					puts "No Valid Regex"
-					return true
+            end
+        else
+          puts "No Valid Regex"
+          return true
         end
     end
 end
