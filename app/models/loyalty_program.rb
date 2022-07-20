@@ -14,4 +14,12 @@ class LoyaltyProgram < ApplicationRecord
           return true
         end
     end
+  after_create :create_loyalty_program_data
+
+  # create loyalty program data for all users
+  def create_loyalty_program_data
+    User.all.each do |user|
+      LoyaltyProgramDatum.create(account_id: user.account.id, loyalty_program_id: self.id)
+    end
+  end
 end
