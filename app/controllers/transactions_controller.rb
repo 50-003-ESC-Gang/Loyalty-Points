@@ -70,7 +70,3 @@ class TransactionsController < ApplicationController
       params.require(:transaction).permit(:loyalty_program, :user, :date, :amount, :status)
     end
 end
-
-
-
-
