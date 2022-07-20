@@ -58,6 +58,12 @@ To run the specs, type:
 bundle exec rspec
 ```
 
+Selenium
+
+1. Download driver at <https://chromedriver.chromium.org/downloads>
+2. Copy the driver to the root of the project
+3. Change path of the driver 
+
 Libraries used for testing
 
 * rspec
