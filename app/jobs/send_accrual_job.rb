@@ -1,5 +1,5 @@
 class SendAccrualJob < ApplicationJob
-  config.active_job.queue_adapter = :sidekiq
+  # config.active_job.queue_adapter = :sidekiq
 
   queue_as :default
 
