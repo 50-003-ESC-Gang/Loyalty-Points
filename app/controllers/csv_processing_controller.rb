@@ -56,8 +56,8 @@ class CsvProcessingController < ApplicationController
 
       # create a new transcation in db
       txn = Transaction.new(
-        date: row['Transfer Date'],
-        loyalty_program_data_id: loyalty_program_data_id,
+        # date: row['Transfer Date'],
+        loyalty_program_datum_id: loyalty_program_data_id,
         amount: row['Amount'],
         status: 'success',
         account_id: account_id # if row['Account Id'] is not present, use default value of 1
@@ -71,7 +71,7 @@ class CsvProcessingController < ApplicationController
   def generate_accrual_csv
     # generate accrual csv file
 
-    txn_grp = Transaction.where(date: Date.today).group(:loyalty_program_id) # group by loyalty program id
+    txn_grp = Transaction.where(created_at: Date.today).group(:loyalty_program_id) # group by loyalty program id
     loyalty_program_id = txn_grp.pluck(:loyalty_program_id)
 
     # generate csv file for each loyalty program
