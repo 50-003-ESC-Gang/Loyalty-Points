@@ -2,7 +2,8 @@ class AccrualProcessor < Rails::Application
 
 
     @@current_index=1
-    @@FOLDER = "./"
+    @@FOLDER_ACCRUAL = "./tmp/accruals/"
+    @@FOLDER_HANDBACK = "./tmp/handbacks"
 
     def AccrualProcessor.convert_to_accrual(transaction)
         time = Time.new()
@@ -18,7 +19,7 @@ class AccrualProcessor < Rails::Application
             @@current_index=1
             new_file.close()
             SendAccrualJob.set(wait_until: Date.tomorrow.noon).perform_later(filepath)
-            DownloadHandbackJob.set(wait_until: Date.tomorrow.midnight).perform_later(handback_name)
+            DownloadHandbackJob.set(wait_until: Date.tomorrow.midnight).perform_later(handback_name,@@FOLDER_HANDBACK)
         end
         accrual_file = File.open(filepath,"a")
         # using transaction's id as ref number
@@ -98,7 +99,7 @@ class AccrualProcessor < Rails::Application
     end
 
     def is_valid_transcation?(outcome_code)
-    get_status(outcome_code) == 'success'
+        get_status(outcome_code) == 'success'
     end
 
 end
