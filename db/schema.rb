@@ -42,8 +42,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_19_071118) do
     t.index ["loyalty_program_data_id"], name: "index_loyalty_programs_on_loyalty_program_data_id"
   end
 
-# Could not dump table "transactions" because of following StandardError
-#   Unknown type 'user' for column 'receiver'
+  create_table "transactions", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "loyalty_program_data_id"
+    t.decimal "amount"
+    t.datetime "date"
+    t.integer "status", default: 0
+    t.integer "account_id"
+    t.index ["loyalty_program_data_id"], name: "index_transactions_on_loyalty_program_data_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
