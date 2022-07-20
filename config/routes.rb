@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :csv_processings
   root 'pages#home'
   resources :accounts
 
@@ -10,7 +11,9 @@ Rails.application.routes.draw do
   resources :transactions
 
   resources :csv_processing
-  
+
+  # view_accrual
+  get 'view_accrual' => 'csv_processing#view_accrual'
 
 
   

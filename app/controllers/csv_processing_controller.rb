@@ -6,7 +6,7 @@ class CsvProcessingController < ApplicationController
   # end
 
   def index
-    
+    render 'view_accrual'
   end
 
   def upload_handback_csv
@@ -16,9 +16,16 @@ class CsvProcessingController < ApplicationController
   def download_handback_csv
     # Downloads Handback CSV File from SFTP server
   end
-  
+
   def upload_accrual_csv
     # Uploads accrual csv file to SFTP server
+
+    # generate accrual csv files
+    generate_accrual_csv
+
+    # upload accrual csv files to SFTP server
+
+    # delete accrual csv files from local machine
   end
 
   def process_handback(csv_file_path)
@@ -38,14 +45,13 @@ class CsvProcessingController < ApplicationController
     columns = CSV.read(csv_file_path, headers: true).headers
     # check if 'Account Id' column is present
 
-
     # end
     CSV.foreach(csv_file_path, headers: true) do |row|
-      
       # continue to next row if outcome code is not success
-      if !is_valid_transcation?(row['outcome_code'])
+      unless is_valid_transcation?(row['outcome_code'])
         next # TODO : Add error handling
       end
+
       account_id = row['Account Id'] || 1
 
       # create a new transcation in db
@@ -53,8 +59,8 @@ class CsvProcessingController < ApplicationController
         date: row['Transfer Date'],
         loyalty_program_data_id: loyalty_program_data_id,
         amount: row['Amount'],
-        status: "success",
-        account_id: account_id,      # if row['Account Id'] is not present, use default value of 1
+        status: 'success',
+        account_id: account_id # if row['Account Id'] is not present, use default value of 1
       ).save
 
       # update loyalty program data points
@@ -64,35 +70,51 @@ class CsvProcessingController < ApplicationController
 
   def generate_accrual_csv
     # generate accrual csv file
-    # allow user to download the file
+
+    txn_grp = Transaction.where(date: Date.today).group(:loyalty_program_id) # group by loyalty program id
+    loyalty_program_id = txn_grp.pluck(:loyalty_program_id)
+
+    # generate csv file for each loyalty program
+    loyalty_program_id.each do |i|
+      CSV.open("#{i}_#{Date.today}.csv", 'w') do |csv|
+        csv << ['Account Id', 'Amount']
+        txn_grp.where(loyalty_program_id: i).each do |txn|
+          csv << [txn.account_id, txn.amount]
+        end
+      end
+    end
   end
 
-  def get_status_from_outcome_code(outcome_code)
+  def view_accrual
+    # allow users to view all transcations for the day that will be used for accrual file
+    txn_list = Transaction.where(date: Date.today)
+    @text = txn_list.length == 0 ? 'No transactions found for the day' : txn_list
+    render json: @text
+  end
+
+  def get_status(outcome_code)
     # get status from outcome code
     case outcome_code
-    when 0000, "0000"
+    when 0o000, '0000'
       'success'
-    when 0001, "0001"
+    when 0o001, '0001'
       'member not found'
-    when 0002, "0002"
+    when 0o002, '0002'
       'member name mismatch'
-    when 0003, "0003"
+    when 0o003, '0003'
       'member account closed'
-    when 0004, "0004"
+    when 0o004, '0004'
       'member account suspended'
-    when 0005, "0005"
+    when 0o005, '0005'
       'member ineligible for accrual'
-    when 0099, "0099"
+    when '0099'
       'unable to process, please contact support for more information'
     else
       'unknown outcome code'
     end
-
-
-    end
   end
 
   def is_valid_transcation?(outcome_code)
-    get_status_from_outcome_code(outcome_code) == 'success'
+    get_status(outcome_code) == 'success'
   end
 end
