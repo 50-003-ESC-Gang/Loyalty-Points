@@ -1,0 +1,5 @@
+open ftp.drivehq.com
+yongkang_chia@mymail.sutd.edu.sg
+w6GL3Syey7w@ggL
+put %filepath
+quit
