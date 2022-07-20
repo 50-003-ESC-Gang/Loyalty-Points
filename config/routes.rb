@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   end
 
 
-  # resources :transactions
+  resources :transactions
 
   resources :loyalty_programs
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
