@@ -4,9 +4,7 @@ class LoyaltyProgramDataController < ApplicationController
   # GET /loyalty_program_data or /loyalty_program_data.json
   def index
     # @loyalty_program_data = LoyaltyProgramDatum.all
-    @loyalty_program_data = LoyaltyProgramDatum.where(account_id: current_user)
-    
-      
+    @loyalty_program_data = LoyaltyProgramDatum.where(account_id: current_user)  
   end
 
 
@@ -24,21 +22,6 @@ class LoyaltyProgramDataController < ApplicationController
 
   # GET /loyalty_program_data/1/edit
   def edit
-    # form_complete = true
-
-    # required = [:points]
-    # required.each do |f|
-    #   if params.has_key? f and not params[f].blank?
-        
-    #   else
-    #     form_complete = false
-    #   end
-      
-      
-    #   if form_complete
-    #     Transaction.create(amount: params[:points], loyalty_program_data_id: 100, status: 0)
-    #   end
-    # end
   end
 
   # POST /loyalty_program_data or /loyalty_program_data.json
@@ -65,20 +48,19 @@ class LoyaltyProgramDataController < ApplicationController
 
         # I want to add points to a particular loyalty program data with loyalty program id = params[:id], but dont know how to do
         # @loyalty_program_datum.where(loyalty_program_id: params[:id]).points += loyalty_program_datum_params[:points].to_d
-        puts @loyalty_program_datum.points
-        puts @loyalty_program_datum.account_id
-        puts @loyalty_program_datum.loyalty_program_id
-        puts @loyalty_program_datum.id
-        puts "Above is the object info"
+        # puts @loyalty_program_datum.points
+        # puts @loyalty_program_datum.account_id
+        # puts @loyalty_program_datum.loyalty_program_id
+        # puts @loyalty_program_datum.id
+        # puts "Above is the object info"
         @loyalty_program_datum.points += loyalty_program_datum_params[:in_points].to_d
-
         @loyalty_program_datum.save
 
 
  
         Transaction.create(amount: loyalty_program_datum_params[:in_points].to_d, loyalty_program_data_id: params[:id], status: 0, account_id: current_user.id)
-        format.html { redirect_to loyalty_program_datum_url(@loyalty_program_datum), notice: "Loyalty program datum was successfully updated." }
-        format.json { render :show, status: :ok, location: @loyalty_program_datum }
+        format.html { redirect_to loyalty_program_datum_url(@loyalty_program_datum), notice: "Point Transfer is now being processed." }
+        # format.json { render :show, status: :ok, location: @loyalty_program_datum }
       # else
       #   format.html { render :edit, status: :unprocessable_entity }
       #   format.json { render json: @loyalty_program_datum.errors, status: :unprocessable_entity }
