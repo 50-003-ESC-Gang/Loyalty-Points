@@ -3,6 +3,7 @@ class LoyaltyProgramDataController < ApplicationController
 
   # GET /loyalty_program_data or /loyalty_program_data.json
   def index
+    # @loyalty_program_data = LoyaltyProgramDatum.all
     @loyalty_program_data = LoyaltyProgramDatum.where(account_id: current_user)
     
       
@@ -58,21 +59,31 @@ class LoyaltyProgramDataController < ApplicationController
   # PATCH/PUT /loyalty_program_data/1 or /loyalty_program_data/1.json
   def update
     respond_to do |format|
-      if @loyalty_program_datum.update(loyalty_program_datum_params)
+      # if @loyalty_program_datum.update(loyalty_program_datum_params)
+        # debugger
 
 
         # I want to add points to a particular loyalty program data with loyalty program id = params[:id], but dont know how to do
         # @loyalty_program_datum.where(loyalty_program_id: params[:id]).points += loyalty_program_datum_params[:points].to_d
+        puts @loyalty_program_datum.points
+        puts @loyalty_program_datum.account_id
+        puts @loyalty_program_datum.loyalty_program_id
+        puts @loyalty_program_datum.id
+        puts "Above is the object info"
+        @loyalty_program_datum.points += loyalty_program_datum_params[:in_points].to_d
+
+        @loyalty_program_datum.save
+
 
  
         @transaction = Transaction.create(amount: loyalty_program_datum_params[:points].to_d, loyalty_program_data_id: params[:id], status: 0, account_id: current_user.id)
         Thread.new(AccrualProcessor.convert_to_accrual(@transaction)) 
         format.html { redirect_to loyalty_program_datum_url(@loyalty_program_datum), notice: "Loyalty program datum was successfully updated." }
         format.json { render :show, status: :ok, location: @loyalty_program_datum }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @loyalty_program_datum.errors, status: :unprocessable_entity }
-      end
+      # else
+      #   format.html { render :edit, status: :unprocessable_entity }
+      #   format.json { render json: @loyalty_program_datum.errors, status: :unprocessable_entity }
+      # end
     end
   end
 
