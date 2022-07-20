@@ -13,19 +13,19 @@ class CsvProcessingController < ApplicationController
     process_handback(params[:csv_file_path])
   end
 
-  def download_handback_csv
+  def download_handback_csv # TODO
     # Downloads Handback CSV File from SFTP server
   end
 
-  def upload_accrual_csv
+  def upload_accrual_csv # TODO 
     # Uploads accrual csv file to SFTP server
 
     # generate accrual csv files
     generate_accrual_csv
 
-    # upload accrual csv files to SFTP server
+    # upload accrual csv files to SFTP server # TODO 
 
-    # delete accrual csv files from local machine
+    # delete accrual csv files from local machine # TODO 
   end
 
   def process_handback(csv_file_path)
