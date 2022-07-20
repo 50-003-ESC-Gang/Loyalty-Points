@@ -69,6 +69,27 @@ class LoyaltyProgramsController < ApplicationController
     end
   end
 
+  def link
+    @loyalty_program = LoyaltyProgram.find(params[:loyalty_program_id])
+    # byebug
+
+    validity = @loyalty_program.valid_membership(params[:membership_id])
+
+    respond_to do |format|
+      if validity
+        format.html { redirect_to loyalty_program_url(@loyalty_program), notice: "Loyalty Program Membership was successfully linked." }
+        # format.json { head :no_content }
+      else
+        # format.html { redirect_to loyalty_program_url(@loyalty_program), notice: "Loyalty Program Membership was not found!" }
+        # format.json { head :no_content }
+        format.html { redirect_to loyalty_program_url(@loyalty_program), notice: "Loyalty Program Membership could not be linked!" , status: :unprocessable_entity }
+        # @loyalty_program.new :error
+        @loyalty_program.errors[:validity] << ["Loyalty Program Membership could not be linked!"] 
+        format.json { render json: @loyalty_program.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_loyalty_program
@@ -77,6 +98,6 @@ class LoyaltyProgramsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def loyalty_program_params
-      params.require(:loyalty_program).permit(:loyalty_program_id, :program_name, :currency_name, :processing_time, :description, :enrollment_link, :terms_and_conditions_link)
+      params.require(:loyalty_program).permit(:loyalty_program_id, :program_name, :currency_name, :processing_time, :description, :enrollment_link, :terms_and_conditions_link, :membership_regex)
     end
 end

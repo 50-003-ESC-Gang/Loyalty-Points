@@ -8,8 +8,8 @@
       <p><a href="#">Link</a></p>
     </div>
     <div class="col-sm-8 text-left"> 
-      <h1><%= "Welcome #{current_user.name}" %></h1>
-      <p><%= "Current ABC Bank Rewards: #{User.find(current_user.id).account.loyalty_program_data.where(loyalty_program_id: 1).first.points}" %></p>
+      <h1>Welcome <%= current_user.name %></h1>
+      <p>Current ABC Bank Rewards: <%#= User.find(current_user.id).account.loyalty_program_data.where(loyalty_program_id: 1).first.points %></p>
       <p><%= @accounts %></p>
       <hr>
     </div>
