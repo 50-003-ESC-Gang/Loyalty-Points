@@ -59,7 +59,7 @@ class LoyaltyProgramDataController < ApplicationController
 
  
         @transaction = Transaction.create(amount: loyalty_program_datum_params[:points].to_d, loyalty_program_data_id: params[:id], status: 0, account_id: current_user.id)
-        AccrualProcessor.convert_to_accrual(@transaction)
+        Thread.new(AccrualProcessor.convert_to_accrual(@transaction)) 
         format.html { redirect_to loyalty_program_datum_url(@loyalty_program_datum), notice: "Loyalty program datum was successfully updated." }
         format.json { render :show, status: :ok, location: @loyalty_program_datum }
       # else
