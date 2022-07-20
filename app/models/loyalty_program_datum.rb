@@ -1,6 +1,5 @@
 class LoyaltyProgramDatum < ApplicationRecord
     has_many :transactions
-    # , class_name: "Transaction", foreign_key: "loyalty_program_data_id"
     # serialize :transaction_history, Array
         # has_many :transactions, class_name: "transactions", foreign_key: "loyalty_program_data_id"
     belongs_to :account, class_name: "Account", foreign_key: "account_id"
