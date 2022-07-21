@@ -1,0 +1,4 @@
+index,Member ID,Member first name,Member last name,Transfer date,Amount,Reference number,Partner code
+1,1,rr,tt,2022-7-21,0.0,20227211,1
+1,1,rr,tt,2022-7-21,0.0,20227212,1
+1,1,rr,tt,2022-7-21,0.0,20227213,1
