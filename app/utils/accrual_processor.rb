@@ -3,33 +3,33 @@ class AccrualProcessor < Rails::Application
 
     @@current_index=1
     @@FOLDER_ACCRUAL = "./tmp/accruals/"
-    @@FOLDER_HANDBACK = "./tmp/handbacks"
+    @@FOLDER_HANDBACK = "./tmp/handbacks/"
 
     def AccrualProcessor.convert_to_accrual(transaction)
         time = Time.new()
-        date_str1 = AccrualProcessor.get_date  #YYYYMMDD format, used for file name
+        date_str1 =  "#{time.year}#{time.month}#{time.day}" #YYYYMMDD format, used for file name
         date_str2 = "#{time.year}-#{time.month}-#{time.day}"  #YYYY-MM-DD format, used for csv field
         company_code = transaction.loyalty_program_datum.loyalty_program.id
-        filepath = "#{@@FOLDER}#{company_code}_#{date_str1}.txt"
-        handback_name = "#{company_code}_#{date_str1}.HANDBACK.txt"
+        filepath = "#{@@FOLDER_ACCRUAL}#{company_code}_#{date_str1}.txt"
+        puts "accrual file path: #{filepath}"
+        # handback_name = "#{company_code}_#{date_str1}.HANDBACK.txt"
+        handback_name="id0_20200801.HANDBACK.txt"
 
         if (!File::exists?(filepath) or File.zero?(filepath))
             new_file = File.new(filepath,"w")
             new_file.syswrite("index,Member ID,Member first name,Member last name,Transfer date,Amount,Reference number,Partner code\n")
             @@current_index=1
             new_file.close()
-            SendAccrualJob.set(wait_until: Date.tomorrow.noon).perform_later(filepath)
+            SendAccrualJob.perform_later(filepath)
             DownloadHandbackJob.set(wait_until: Date.tomorrow.midnight).perform_later(handback_name,@@FOLDER_HANDBACK)
         end
         accrual_file = File.open(filepath,"a")
         # using transaction's id as ref number
         accrual_file.syswrite("#{@@current_index},#{transaction.loyalty_program_datum.account.id},#{transaction.loyalty_program_datum.account.user.name},#{transaction.loyalty_program_datum.account.user.lastname},#{date_str2},#{transaction.amount},#{date_str1}#{transaction.id},#{company_code}\n")
 
-        # to test scheduled job
-        if (@@current_index>=5)
-            puts "uploading"
-            SendAccrualJob.perform_later filepath
-        end
+        accrual_file.close()
+        DownloadHandbackJob.perform_later(handback_name,@@FOLDER_HANDBACK)
+
         
     end 
 
@@ -43,8 +43,9 @@ class AccrualProcessor < Rails::Application
         # split file name by undescore
         loyalty_program_id, handback_date = csv_file_name.split('_')
         handback_date = handback_date.split('.')[0]
+        puts loyalty_program_id
         loyalty_program = LoyaltyProgram.where(loyalty_program_id: loyalty_program_id).first.id
-        loyalty_program_data_id = LoyaltyProgramDatum.where(loyalty_program_id: loyalty_program).id
+        # loyalty_program_data_id = LoyaltyProgramDatum.where(loyalty_program_id: loyalty_program).id
     
         # check csv if 'Account Id' column is present
         columns = CSV.read(csv_file_path, headers: true).headers

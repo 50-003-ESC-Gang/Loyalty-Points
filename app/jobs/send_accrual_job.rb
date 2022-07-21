@@ -4,9 +4,11 @@ class SendAccrualJob < ApplicationJob
 
   def perform(*args)
     # Do something later
-    puts "task performing"
+    path = args[0][2..args[0].length]
+    path = path.gsub("/","\\")
+    puts "uploading #{path}"
 
-    system "cmdftp -s:drivehq_send.txt -%filepath:#{args[0]}" 
+    system "cmdftp -s:drivehq_send.txt -%filepath:#{path}" 
     
   end
 end
