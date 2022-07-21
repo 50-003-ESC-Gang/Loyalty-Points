@@ -26,7 +26,7 @@ class User < ApplicationRecord
 
     # for each loyalty program, create loyalty program data
     loyalty_programs.each do |loyalty_program|
-      LoyaltyProgramDatum.create(account_id: user.account.id, loyalty_program_id: loyalty_program.id)
+      LoyaltyProgramDatum.create(account_id: account.id, loyalty_program_id: loyalty_program.id)
     end
   end
 end
