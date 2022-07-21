@@ -14,13 +14,22 @@
 <% end %>
 
 <div>
-  <%#= form.label :loyalty_program_id, style: "display: block" %> 
-  <%#= form.select :loyalty_program_id, LoyaltyProgram.all.pluck(:program_name).to_a %>
+  <%#= form.label :loyalty_program_data, style: "display: block" %> 
+  <%#= byebug %> 
+  <%#= form.hidden_field :loyalty_program_data, value: LoyaltyProgramData.first %> 
+  
+  <%# <%= form.label :loyalty_program_data, style: "display: block" %>  %>
+  <%#= form.label :loyalty_program_data.account.user, style: "display: block" %> 
+</div>
+
+<div>
+  <%= form.label :loyalty_program_id, style: "display: block" %> 
+  <%= form.select :loyalty_program_id, LoyaltyProgram.all.pluck(:program_name).to_a %>
 </div>
 
 <div>
 	<%= form.label :transaction_date, style: "display: block" %> 
-  <%= form.datetime_select :transaction_date %>
+	<%= form.datetime_select :transaction_date %>
 </div>
 
 <div>

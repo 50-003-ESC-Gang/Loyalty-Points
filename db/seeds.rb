@@ -22,7 +22,7 @@
 
   user = User.create(email: "#{i}@gmail.com", password: '123456', name: "User #{i}", lastname: "Lastname #{i}")
 
-  txn = Transaction.create(loyalty_program_data_id: i, amount: 100, date: '2000-01-01 02:00:00', status: 'pending',
+  txn = Transaction.create(loyalty_program_datum_id: i, amount: 100, created_at: '2000-01-01 02:00:00', status: 'pending',
                            account_id: i)
 
   loyalty_program_data = LoyaltyProgramDatum.create(account_id: i, loyalty_program_id: i)

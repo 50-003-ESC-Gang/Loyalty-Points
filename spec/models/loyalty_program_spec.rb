@@ -5,6 +5,9 @@ RSpec.describe LoyaltyProgram, type: :model do
     FactoryBot.create(:loyalty_program)
   end
 
+  let(:lp_membership) {FactoryBot.create(:loyalty_program, membership_regex: "^[0-9]*$")}
+  # let(:lp_membership) {FactoryBot.create(:loyalty_program, membership_regex: "^[0-9]*$")}
+
   describe 'creation' do
     it 'can be created' do
       expect(lp).to be_valid
@@ -24,6 +27,16 @@ RSpec.describe LoyaltyProgram, type: :model do
     end
 
     xit 'can change the name' do
+    end
+  end
+
+  describe 'Validate Membership' do
+    it "Can have a valid membership" do
+      expect(lp_membership.valid_membership("12341231")).to be true
+    end
+
+    it "Can have an invalid membership" do
+      expect(lp_membership.valid_membership("abc")).to be false
     end
   end
 end

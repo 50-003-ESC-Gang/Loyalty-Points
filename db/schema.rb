@@ -43,6 +43,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_20_042934) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "loyalty_program_data_id"
+    t.string "membership_regex"
     t.index ["loyalty_program_data_id"], name: "index_loyalty_programs_on_loyalty_program_data_id"
   end
 
@@ -50,7 +51,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_20_042934) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.decimal "amount"
-    t.datetime "date"
     t.integer "status", default: 0
     t.integer "account_id"
     t.integer "loyalty_program_datum_id"
