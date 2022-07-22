@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :csv_processings
   root 'pages#home'
   resources :accounts
 
@@ -10,12 +11,16 @@ Rails.application.routes.draw do
   resources :transactions
 
   
-
-
-  
   resources :loyalty_programs do
     post :link
   end
+  resources :csv_processing
+
+  # view_accrual
+  get 'view_accrual' => 'csv_processing#view_accrual'
+
+
+  
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   # Defines the root path route ("/")
   # root "articles#index"

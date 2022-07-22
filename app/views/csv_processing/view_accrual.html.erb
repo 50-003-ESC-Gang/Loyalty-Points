@@ -1,0 +1,10 @@
+<h1> View All Accruals for the day </h1>
+<div id="accruals">
+  <% view_accrual_url do |accrual| %>
+    <%= @text %>
+    <p>
+      <%# <%= link_to "Show this accrual", accrual %> %>
+          <%= accrual %>
+
+    </p>
+  <% end %>
