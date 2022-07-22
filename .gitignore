@@ -13,10 +13,14 @@
 
 # Ignore all logfiles and tempfiles.
 /log/*
-# /tmp/*
-/tmp/cache
+/tmp/*
 !/log/.keep
 !/tmp/.keep
+# don't ignore accruals and handbacks folders
+!/tmp/accruals
+/tmp/accruals/:
+!/tmp/handbacks
+/tmp/handbacks/:
 
 # Ignore pidfiles, but keep the directory.
 /tmp/pids/*
