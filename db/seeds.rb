@@ -16,16 +16,12 @@
     enrollment_link: 'www.google.com',
     terms_and_conditions_link: 'www.facebook.com'
   )
-  # When user create an account, we should create all loyalty program data for the user.
-
-  # When we create loyalty program data, we should create loyalty program data for all users.
 
   user = User.create(email: "#{i}@gmail.com", password: '123456', name: "User #{i}", lastname: "Lastname #{i}")
 
   txn = Transaction.create(loyalty_program_datum_id: i, amount: 100, created_at: '2000-01-01 02:00:00', status: 'pending',
                            account_id: i)
 
-  # loyalty_program_data = LoyaltyProgramDatum.create(account_id: 1, loyalty_program_id: 1)
 end
 
 puts 'Seeding done!'
