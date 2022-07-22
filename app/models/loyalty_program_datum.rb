@@ -8,7 +8,7 @@ class LoyaltyProgramDatum < ApplicationRecord
   # def update_amount
   #     # Add amount based on loyalty program id
 
-  #     new_amount = Transactions.where(loyalty_program_id: loyalty_program_id).sum(:amount)
+  #     new_amount = Transactions.where(loya"#{time.year}#{"%02d" % time.month}#{"%02d" % time.day}"lty_program_id: loyalty_program_id).sum(:amount)
 
   #     #Assign this new ammount to LoyaltyProgramDatum that has the same loyalty_program_id
   #     self.points = new_amount

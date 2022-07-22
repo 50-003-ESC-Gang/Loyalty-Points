@@ -57,7 +57,7 @@ class LoyaltyProgramDataController < ApplicationController
         @loyalty_program_datum.save
 
  
-        @transaction = Transaction.create(amount: loyalty_program_datum_params[:points].to_d, loyalty_program_datum_id: params[:id], status: 0, account_id: current_user.id)
+        @transaction = Transaction.create(amount: loyalty_program_datum_params[:in_points].to_d, loyalty_program_datum_id: params[:id], status: 0, account_id: current_user.id)
         if (@transaction)
           AccrualProcessor.convert_to_accrual(@transaction)
         end 
