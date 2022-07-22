@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  loyalty_program_id: MyString
+  program_name: MyString
+  currency_name: MyString
+  processing_time: 2022-06-08 16:30:27
+  description: MyText
+  enrollment_link: MyString
+  terms_and_conditions_link: MyString
+
+two:
+  loyalty_program_id: MyString
+  program_name: MyString
+  currency_name: MyString
+  processing_time: 2022-06-08 16:30:27
+  description: MyText
+  enrollment_link: MyString
+  terms_and_conditions_link: MyString
