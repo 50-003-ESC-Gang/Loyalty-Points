@@ -53,7 +53,6 @@ RSpec.describe LoyaltyProgramDataController, type: :controller do
 
         expect(LoyaltyProgramDatum.where(loyalty_program_id: lp.id,
                                          account_id: user.account.id).first.points).to eq(1000)
-        debugger
         expect(flash[:notice]).to eq('Loyalty program datum was successfully updated.')
       end
     end
