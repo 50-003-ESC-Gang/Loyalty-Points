@@ -25,5 +25,7 @@
   txn = Transaction.create(loyalty_program_datum_id: i, amount: 100, created_at: '2000-01-01 02:00:00', status: 'pending',
                            account_id: i)
 
-  loyalty_program_data = LoyaltyProgramDatum.create(account_id: i, loyalty_program_id: i)
+  # loyalty_program_data = LoyaltyProgramDatum.create(account_id: 1, loyalty_program_id: 1)
 end
+
+puts 'Seeding done!'
