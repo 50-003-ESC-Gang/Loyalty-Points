@@ -17,4 +17,9 @@ FactoryBot.define do
     enrollment_link {"www.google.com"}
     terms_and_conditions_link{ "www.facebook.com" }
   end
+
+  factory :loyalty_program_datum do
+    loyalty_program
+    account
+  end
 end
