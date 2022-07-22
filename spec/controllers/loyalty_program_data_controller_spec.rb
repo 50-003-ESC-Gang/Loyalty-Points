@@ -1,11 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe LoyaltyProgramDataController, type: :controller do
-  let(:user) do
-    FactoryBot.create(:user)
-  end
+  
+  let(:user) {FactoryBot.create(:user)}
+  let(:lp) {FactoryBot.create(:loyalty_program)}
 
-  describe 'creation' do
+
+  describe '#update' do
     it 'can be created' do
       expect(user).to be_valid
       expect(User.count).to eq(1)
@@ -14,4 +15,5 @@ RSpec.describe LoyaltyProgramDataController, type: :controller do
   end
 
   # TODO : still not too sure how to write test to test account creation
+  
 end
