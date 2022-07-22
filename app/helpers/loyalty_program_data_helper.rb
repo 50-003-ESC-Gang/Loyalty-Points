@@ -1,2 +1,0 @@
-module LoyaltyProgramDataHelper
-end
