@@ -43,7 +43,7 @@ class LoyaltyProgramDataController < ApplicationController
   def update
     respond_to do |format|
       # if @loyalty_program_datum.update(loyalty_program_datum_params)
-        # debugger
+        # 
 
 
         # I want to add points to a particular loyalty program data with loyalty program id = params[:id], but dont know how to do
