@@ -72,7 +72,7 @@ Libraries used for testing
 
 ### Deploy
 
-`git push heroku master`
+`git push heroku deploy:master`
 
 <https://chinguyen21.medium.com/how-to-deploy-a-built-rails-app-with-sqlite3-to-heroku-c5db4febe069>
 
