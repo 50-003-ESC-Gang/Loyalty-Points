@@ -24,12 +24,8 @@
 	<%# </div>  %>
 
 	<div id="loyalty_program_data">
-<<<<<<< HEAD
-		<% @loyalty_program_data.each do |loyalty_program_datum| %> 
+		<% @loyalty_programs.each do |loyalty_program_datum, loyalty_program| %> 
 			<%#= render loyalty_program_datum %>
-=======
-		<% @loyalty_programs.each do |loyalty_program_datum, loyalty_program| %> <%= render loyalty_program_datum %>
->>>>>>> ebc5f5b63344ecc334b37d2cc655afc14a46cab6
 		
 			<div class="container">
 				<div class="row">
