@@ -4,7 +4,20 @@ class LoyaltyProgramDataController < ApplicationController
   # GET /loyalty_program_data or /loyalty_program_data.json
   def index
     # @loyalty_program_data = LoyaltyProgramDatum.all
-    @loyalty_program_data = LoyaltyProgramDatum.where(account_id: current_user)  
+    @loyalty_program_data = LoyaltyProgramDatum.where(account_id: current_user)
+    @loyalty_program = []
+
+    for loyalty_program_datum in @loyalty_program_data do 
+      puts loyalty_program_datum.loyalty_program_id
+      puts "This is loyalty program id"
+      @temp = LoyaltyProgram.where(loyalty_program_id: loyalty_program_datum.loyalty_program_id)
+      #There is not suppose to be loyalty_program_data with loaylty program id = 10 [BUGGG]
+      @loyalty_program.append(@temp)
+  
+    end
+
+    @loyalty_programs = @loyalty_program_data.zip(@loyalty_program)
+    puts @loyalty_programs
   end
 
 

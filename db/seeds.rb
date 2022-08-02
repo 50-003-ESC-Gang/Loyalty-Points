@@ -16,12 +16,14 @@
     enrollment_link: 'www.google.com',
     terms_and_conditions_link: 'www.facebook.com'
   )
+end
 
+# Create loyalty program data for every user once all loyalty program have been created
+10.times do |i|
   user = User.create(email: "#{i}@gmail.com", password: '123456', name: "User #{i}", lastname: "Lastname #{i}")
 
   txn = Transaction.create(loyalty_program_datum_id: i, amount: 100, created_at: '2000-01-01 02:00:00', status: 'pending',
                            account_id: i)
-
 end
 
 puts 'Seeding done!'
