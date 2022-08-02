@@ -41,15 +41,18 @@ sleep 5
 # transP = driver.find_element(class: 'trans')
 # transP.click
 
-driver.get('http://127.0.0.1:3000/loyalty_program_data/9/edit')
+driver.get('http://127.0.0.1:3000/loyalty_program_data/19/edit')
 sleep 3
 
 inExchange = driver.find_element(name: 'loyalty_program_datum[in_points]')
-inExchange.send_keys "11"
+inExchange.send_keys "12"
 sleep 3
 
 subExchange = driver.find_element(name: "commit")
 subExchange.click
+sleep 3
+
+driver.get('http://127.0.0.1:3000/loyalty_program_data')
 sleep 3
 
 
@@ -63,4 +66,3 @@ sleep 8
 # button = driver.find_element(name: 'commit')
 # driver.quit
 
-puts  "Facebook webpage loaded"

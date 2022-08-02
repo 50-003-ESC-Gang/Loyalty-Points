@@ -43,7 +43,7 @@ class LoyaltyProgramDataController < ApplicationController
   def update
     respond_to do |format|
       # if @loyalty_program_datum.update(loyalty_program_datum_params)
-        # debugger
+        # 
 
 
         # I want to add points to a particular loyalty program data with loyalty program id = params[:id], but dont know how to do
@@ -56,12 +56,11 @@ class LoyaltyProgramDataController < ApplicationController
         @loyalty_program_datum.points += loyalty_program_datum_params[:in_points].to_d
         @loyalty_program_datum.save
 
- 
-        @transaction = Transaction.create(amount: loyalty_program_datum_params[:points].to_d, loyalty_program_datum_id: params[:id], status: 0, account_id: current_user.id)
+        @transaction = Transaction.create(amount: loyalty_program_datum_params[:in_points].to_d, loyalty_program_datum_id: params[:id], status: 0, account_id: current_user.id)
         if (@transaction)
           AccrualProcessor.convert_to_accrual(@transaction)
         end 
-        format.html { redirect_to loyalty_program_datum_url(@loyalty_program_datum), notice: "Loyalty program datum was successfully updated." }
+        format.html { redirect_to loyalty_program_datum_url(@loyalty_program_datum), notice: "Point Transfer is now being processed." }
         format.json { render :show, status: :ok, location: @loyalty_program_datum }
       # else
       #   format.html { render :edit, status: :unprocessable_entity }

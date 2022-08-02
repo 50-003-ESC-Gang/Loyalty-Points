@@ -1,55 +1,44 @@
-<h1>All Transactions</h1>
-
-
+<h1 class="display-1 pb-2 text-center">Transaction History</h1>
 
 <div id="transactions">
-	<% @transactions.each do |transaction| %> <%= render transaction %>
-		<div class="container">
-			<div class="row">
-				<div class="col-4">
-					<div class="card">
-						<div class="card-body">
-							<h5 class="card-title">Transaction</h5>
-							<p class="card-text">
-								LoyaltyProgramDataID:
-								<%= transaction.loyalty_program_datum_id%>
-							</p>
-							
-							
-							<p class="card-text">
-								Amount Transferred:
-								<%= transaction.amount%>
-							</p>
-							
-							<p class="card-text">
-								Transaction Date: 
-								<%= transaction.created_at%>
-							</p>
-
-							<p class="card-text">
-								Status: 
-								<%= transaction.status%>
-							</p>
-							
-
-							<%# The field below is only for debugging purpose %>
-							<p class="card-text">
-								ID: 
-								<%= transaction.account_id%>
-							</p>
-						
-							
-						</div>
-					</div>
-				</div>
-			</div>
-
-			
-		</div>
-	<%# <p><%= link_to "Show this transaction", transaction %></p> 
-	<% end %>
+	<div class="container">
+    <table class="table table-hover table-striped">
+      <thead class="table-head table-dark ">
+        <tr>
+          <th class="card-text">
+            LoyaltyProgramDataID:
+          </th>
+          <th class="card-text">
+            Amount Transferred:
+          </th>
+          <th class="card-text">
+            Transaction Date: 
+          </th>
+          <th class="card-text">
+            Status: 
+          </th>
+        </tr>
+      </thead>
+      <tbody class="table-body">
+        <% @transactions.each do |transaction| %>
+          <tr>
+            <td>
+              <%= transaction.loyalty_program_datum_id %>
+            </td>
+            <td>
+              <%= transaction.amount %>
+            </td>
+            <td>
+              <%= transaction.created_at %>
+            </td>
+            <td>
+              <%= transaction.status %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
 </div>
 
-<div></div>
-
-<%= link_to "New transaction", new_transaction_path %>
+<%#= link_to "New transaction", new_transaction_path %>

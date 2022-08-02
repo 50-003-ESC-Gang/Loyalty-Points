@@ -24,7 +24,12 @@
 	<%# </div>  %>
 
 	<div id="loyalty_program_data">
-		<% @loyalty_program_data.each do |loyalty_program_datum| %> <%= render loyalty_program_datum %>
+<<<<<<< HEAD
+		<% @loyalty_program_data.each do |loyalty_program_datum| %> 
+			<%#= render loyalty_program_datum %>
+=======
+		<% @loyalty_programs.each do |loyalty_program_datum, loyalty_program| %> <%= render loyalty_program_datum %>
+>>>>>>> ebc5f5b63344ecc334b37d2cc655afc14a46cab6
 		
 			<div class="container">
 				<div class="row">
@@ -44,6 +49,16 @@
 								
 								<p class="card-text">
 									Latest Update: 
+									<%= loyalty_program_datum.updated_at%>
+								</p>	
+
+								<p class="card-text">
+									Program Name: 
+									<%= loyalty_program[0].program_name%>
+								</p>	
+
+								<p class="card-text">
+									Currency Name: 
 									<%= loyalty_program_datum.updated_at%>
 								</p>	
 	<%# 
