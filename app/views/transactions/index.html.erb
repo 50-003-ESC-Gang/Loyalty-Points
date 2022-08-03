@@ -5,16 +5,16 @@
     <table class="table table-hover table-striped">
       <thead class="table-head table-dark ">
         <tr>
-          <th class="card-text">
+          <th class="">
             LoyaltyProgramDataID:
           </th>
-          <th class="card-text">
+          <th class="">
             Amount Transferred:
           </th>
-          <th class="card-text">
+          <th class="">
             Transaction Date: 
           </th>
-          <th class="card-text">
+          <th class="">
             Status: 
           </th>
         </tr>
@@ -22,16 +22,16 @@
       <tbody class="table-body">
         <% @transactions.each do |transaction| %>
           <tr>
-            <td>
+            <td class="text-light">
               <%= transaction.loyalty_program_datum_id %>
             </td>
-            <td>
+            <td class="text-light">
               <%= transaction.amount %>
             </td>
-            <td>
+            <td class="text-light">
               <%= transaction.created_at %>
             </td>
-            <td>
+            <td class="text-light">
               <%= transaction.status %>
             </td>
           </tr>
