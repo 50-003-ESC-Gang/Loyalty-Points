@@ -6,11 +6,16 @@
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
 
+program_names = ["Gojet Points", "Ascendas Points", "Starbucks Points", "Disney Points", "Lucky Start Points", "KFC Points", "Macdonald Points", "SUTD Score", "A&W Points", "Changi City Points", "Proper12dsmca Points" ]
+loyalty_programs_ids = ["GOPOINTS", "ASCENDAPOINTS", "STARBUCCAPOINTS", "DISNEYPOINTS", "LUCKYSTARTPOINTS", "KFCPOINTS", "MACDONALDPOINTS", "SUTDSPOINTS", "AWPOINTS", "CHANGICITYPOINTS", "PROPER12DSMCA"]
+currency_names = ["GoPoints", "Ascendas Points", "Starbucks Points", "Disney Points", "Lucky Start Points", "KFC Points", "Macdonald Points", "SUTD Score", "A&W Points", "Changi City Points", "Proper12dsmca Points"]
+
+
 10.times do |i|
   loyalty_program = LoyaltyProgram.create(
-    loyalty_program_id: "#{i}",
-    program_name: "Loyalty Program #{i}",
-    currency_name: "Currency $#{i}",
+    loyalty_program_id: "#{loyalty_programs_ids[i]}",
+    program_name: "#{program_names[i]}",
+    currency_name: "#{currency_names[i]}",
     processing_time: '2000-01-01 02:00:00',
     description: 'Test Description',
     enrollment_link: 'www.google.com',
