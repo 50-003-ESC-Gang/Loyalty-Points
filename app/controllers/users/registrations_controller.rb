@@ -40,7 +40,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def empty_input?
     # returns false if there is email, password, password confirmation in the user input
-    if params[:user][:email].empty? || params[:user][:password].empty? || params[:user][:password_confirmation].empty?
+    if params[:user][:email].empty? || params[:user][:password].empty? || params[:user][:password_confirmation].empty? || params[:user][:name].empty?
       return true
     end
 
