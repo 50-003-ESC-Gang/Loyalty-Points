@@ -23,6 +23,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
         redirect_to '/users/sign_up',
                     notice: 'Password and password confirmation do not match' and return
       end
+      unless check_password_length?
+        redirect_to '/users/sign_up',
+                    notice: 'Password must be at least 6 characters long' and return
+      end
     end
   end
 
@@ -48,7 +52,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
     params[:user][:password] == params[:user][:password_confirmation]
   end
 
-  def check_password_length?; end
+  def check_password_length?
+    # check if password is at least 6 characters long
+    params[:user][:password].length >= 6
+  end
 
   # GET /resource/edit
   # def edit
