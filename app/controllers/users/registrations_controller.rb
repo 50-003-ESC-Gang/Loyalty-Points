@@ -4,7 +4,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
   before_action :configure_sign_up_params, only: [:create]
   before_action :configure_account_update_params, only: [:update]
 
-
   # GET /resource/sign_up
   # def new
   #   super
@@ -14,8 +13,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def create
     super do
       if duplicate_email?
-        flash[:notice] = 'You seem to already have an account, do you want to login instead?'
-        redirect_to root_path and return
+        # flash[:notice] = 'You seem to already have an account, do you want to login instead?'
+        redirect_to '/users/sign_up',
+                    notice: 'You seem to already have an account, do you want to login instead?' and return
       end
     end
   end
@@ -73,6 +73,4 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # def after_inactive_sign_up_path_for(resource)
   #   super(resource)
   # end
-
-
 end
