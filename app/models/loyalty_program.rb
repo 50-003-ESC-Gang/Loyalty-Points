@@ -19,7 +19,7 @@ class LoyaltyProgram < ApplicationRecord
   private
   # create loyalty program data for all users
   def create_loyalty_program_data
-    # This doubles the seeding that has been done in user.rb
+
     # User.all.each do |user|
     #   puts "Nani kore"
     #   puts id

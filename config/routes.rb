@@ -7,6 +7,8 @@ Rails.application.routes.draw do
     resources :transactions
   end
 
+  # post '/loyalty_program_data/:loyalty_program_data_id', to: 'loyalty_program_data#confirm'
+  match '/loyalty_program_data/:loyalty_program_data_id' => '/loyalty_program_data#confirm', :as => "confirm_url", via: :post 
 
   resources :transactions
 

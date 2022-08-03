@@ -33,6 +33,13 @@ class LoyaltyProgramDataController < ApplicationController
     @loyalty_program_datum = LoyaltyProgramDatum.new
   end
 
+
+  def confirm
+    puts "Directed to confirm"
+    puts :in_points
+
+  end
+
   # GET /loyalty_program_data/1/edit
   def edit
   end
@@ -55,21 +62,13 @@ class LoyaltyProgramDataController < ApplicationController
   # PATCH/PUT /loyalty_program_data/1 or /loyalty_program_data/1.json
   def update
     respond_to do |format|
-      # if @loyalty_program_datum.update(loyalty_program_datum_params)
-        # 
+        current_loyalty_program_data = LoyaltyProgramDatum.where(id: params[:id])[0]
+        current_loyalty_program = LoyaltyProgram.where(loyalty_program_id: current_loyalty_program_data.loyalty_program_id)[0]
 
-
-        # I want to add points to a particular loyalty program data with loyalty program id = params[:id], but dont know how to do
-        # @loyalty_program_datum.where(loyalty_program_id: params[:id]).points += loyalty_program_datum_params[:points].to_d
-        # puts @loyalty_program_datum.points
-        # puts @loyalty_program_datum.account_id
-        # puts @loyalty_program_datum.loyalty_program_id
-        # puts @loyalty_program_datum.id
-        # puts "Above is the object info"
-        @loyalty_program_datum.points += loyalty_program_datum_params[:in_points].to_d
+        @loyalty_program_datum.points += loyalty_program_datum_params[:in_points].to_d * current_loyalty_program.conversion_rate
         @loyalty_program_datum.save
 
-        @transaction = Transaction.create(amount: loyalty_program_datum_params[:in_points].to_d, loyalty_program_datum_id: params[:id], status: 0, account_id: current_user.id)
+        @transaction = Transaction.create(amount: loyalty_program_datum_params[:in_points].to_d, loyalty_program_datum_id: current_loyalty_program.loyalty_program_id, status: 0, account_id: current_user.id)
         if (@transaction)
           AccrualProcessor.convert_to_accrual(@transaction)
         end 

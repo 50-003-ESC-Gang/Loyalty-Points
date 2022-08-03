@@ -19,7 +19,8 @@ currency_names = ["GoPoints", "Ascendas Points", "Starbucks Points", "Disney Poi
     processing_time: '2000-01-01 02:00:00',
     description: 'Test Description',
     enrollment_link: 'www.google.com',
-    terms_and_conditions_link: 'www.facebook.com'
+    terms_and_conditions_link: 'www.facebook.com',
+    conversion_rate: rand(0.4..1),
   )
 end
 
