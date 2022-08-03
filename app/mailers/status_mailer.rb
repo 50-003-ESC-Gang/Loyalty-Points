@@ -1,9 +1,14 @@
 class StatusMailer < ApplicationMailer
-    default from: 'notifications@example.com'
+    default from: 'notifications@ascenda-loyalty.com'
 
     def welcome_email
         @user = params[:user]
-        @url  = 'http://example.com/login'
-        mail(to: @user.email, subject: 'Welcome to My Awesome Site')
+        mail(to: @user.email, subject: "Welcome #{@user.name} to Ascenda Loyalty's Point Exchange Program!")
+    end
+
+    def status_email
+        @user = params[:user]
+        @transaction = Transaction.find(params[:transaction_id])
+        mail(to: @user.email, subject: "Status Update on your Transaction - #{@transaction.id}")
     end
 end
