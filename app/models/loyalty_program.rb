@@ -23,7 +23,7 @@ class LoyaltyProgram < ApplicationRecord
     # This doubles the seeding that has been done in user.rb
     User.all.each do |user|
       puts "Creating loyalty program data for user #{user.id}"
-      LoyaltyProgramDatum.create(account_id: user.account.id, loyalty_program_id: id)
+      LoyaltyProgramDatum.create(account_id: user.account.id, loyalty_program_id: loyalty_program_id)
     end
   end
 end

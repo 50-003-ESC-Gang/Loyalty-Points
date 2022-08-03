@@ -34,7 +34,7 @@ RSpec.describe LoyaltyProgramDatum, type: :model do
       # check if loyalty program data is created for all users
       users.each do |curr_user|
         # check if loyalty program data is created for each user
-        expect(LoyaltyProgramDatum.where(account_id: curr_user.account.id, loyalty_program_id: lp.id).count).to eq(1)
+        expect(LoyaltyProgramDatum.where(account_id: curr_user.account.id, loyalty_program_id: lp.loyalty_program_id).count).to eq(1)
       end
     end
   end
@@ -42,7 +42,7 @@ RSpec.describe LoyaltyProgramDatum, type: :model do
   context 'when 1 user is created with 1 loyalty program' do
     it 'should create 1 loyalty program data for the user' do
       # check if loyalty program data is created for 1 user
-      expect(LoyaltyProgramDatum.where(account_id: user.account.id, loyalty_program_id: lp.id).count).to eq(1)
+      expect(LoyaltyProgramDatum.where(account_id: user.account.id, loyalty_program_id: lp.loyalty_program_id).count).to eq(1)
     end
   end
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_08_02_124619) do
+ActiveRecord::Schema[7.0].define(version: 2022_08_03_072159) do
   create_table "account", force: :cascade do |t|
     t.integer "user_id"
     t.index ["user_id"], name: "index_account_on_user_id"
@@ -28,12 +28,12 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_02_124619) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "account_id"
-    t.integer "loyalty_program_id"
+    t.string "loyalty_program_id"
     t.index ["account_id"], name: "index_loyalty_program_data_on_account_id"
   end
 
   create_table "loyalty_programs", force: :cascade do |t|
-    t.integer "loyalty_program_id"
+    t.string "loyalty_program_id"
     t.string "program_name"
     t.string "currency_name"
     t.time "processing_time"

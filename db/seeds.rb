@@ -40,7 +40,7 @@ currency_names = ['GoPoints', 'Ascendas Points', 'Starbucks Points', 'Disney Poi
 
 10.times do |i|
   loyalty_program = LoyaltyProgram.create(
-    loyalty_program_id: i,
+    loyalty_program_id: (loyalty_programs_ids[i]).to_s,
     program_name: (program_names[i]).to_s,
     currency_name: (currency_names[i]).to_s,
     processing_time: '2000-01-01 02:00:00',
