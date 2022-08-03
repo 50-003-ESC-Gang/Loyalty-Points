@@ -24,7 +24,7 @@ class AccrualProcessor < Rails::Application
       new_file.close
       # creating new accrual csv triggers setting up the send&retrieve task
       # time needs to be set properly here
-      SendAccrualJob.perform_later(filepath) 
+      SendAccrualJob.perform_later.set(wait_until: Date.tomorrow.noon).(filepath) 
       DownloadHandbackJob.set(wait_until: Date.tomorrow.midnight).perform_later(handback_name, @@FOLDER_HANDBACK)
     end
     accrual_file = File.open(filepath, 'a')
@@ -41,7 +41,7 @@ class AccrualProcessor < Rails::Application
 
     accrual_file.close
     # always set download immediately, for demonstration only
-    DownloadHandbackJob.perform_later(handback_name, @@FOLDER_HANDBACK)
+    # DownloadHandbackJob.perform_later(handback_name, @@FOLDER_HANDBACK)
   end
 
   def self.process_handback(csv_file_path)
@@ -80,8 +80,13 @@ class AccrualProcessor < Rails::Application
       #     account_id: account_id # if row['Account Id'] is not present, use default value of 1
       #   ).save
 
-      # updaate transaction status in db
-      Transaction.where(id: row['Reference number']).update(status: get_status(row['Outcome code']))
+      begin
+        # updaate transaction status in db
+        Transaction.where(id: row['Reference number']).update(status: get_status(row['Outcome code']))
+      rescue #exception type?
+        puts "transaction not found"
+        next
+      end
 
       # update loyalty program data points
       Account.where(id: account_id).first.loyalty_program_data.where(loyalty_program_id: loyalty_program).first.update(points: row['Amount'])
