@@ -9,8 +9,11 @@
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
+  <% if current_user %>
+    <%= render 'layouts/navbar' %>
+  <% end %>
 
-  <body>
+  <body class="bg-dark">
     <% if notice %>
       <p id="flash_alert" class="alert alert-info"><%= notice %></p>
     <% end %>

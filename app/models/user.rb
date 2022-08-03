@@ -12,12 +12,6 @@ class User < ApplicationRecord
     @account = build_account.save # when `has_one`
   end
 
-  def get_points
-    # get points from loyalty program data
-    # loyalty_program_data.points
-    User.find(@user_id).account.loyalty_program_data.where(loyalty_program_id: 1).first.points
-  end
-
   def create_loyalty_program_data
     # create all loyalty program data for current user
 
@@ -26,7 +20,7 @@ class User < ApplicationRecord
 
     # for each loyalty program, create loyalty program data
     loyalty_programs.each do |loyalty_program|
-      LoyaltyProgramDatum.create(account_id: account.id, loyalty_program_id: loyalty_program.id)
+      LoyaltyProgramDatum.create(account_id: account.id, loyalty_program_id: loyalty_program.loyalty_program_id)
     end
   end
 end

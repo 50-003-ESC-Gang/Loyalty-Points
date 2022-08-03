@@ -48,12 +48,14 @@ RSpec.describe LoyaltyProgramDataController, type: :controller do
     context 'when happy case' do
       it 'should update loyalty program data points' do
         post :update,
-             params: { id: lp.id, loyalty_program_datum: { loyalty_program_id: lp.id, in_points: 1000, points: 0 } }
+             params: { id: lp.id,
+                       loyalty_program_datum: { loyalty_program_id: lp.loyalty_program_id, in_points: 1000,
+                                                points: 0 } }
         # expect(response).to have_http_status(200)
 
-        expect(LoyaltyProgramDatum.where(loyalty_program_id: lp.id,
+        expect(LoyaltyProgramDatum.where(loyalty_program_id: lp.loyalty_program_id,
                                          account_id: user.account.id).first.points).to eq(1000)
-        expect(flash[:notice]).to eq('Point Transfer is now being processed.')
+        expect(flash[:notice]).to eq('Loyalty program datum was successfully updated.')
       end
     end
   end
