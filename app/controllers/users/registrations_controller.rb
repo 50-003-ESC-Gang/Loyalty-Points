@@ -17,6 +17,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
         redirect_to '/users/sign_up',
                     notice: 'You seem to already have an account, do you want to login instead?' and return
       end
+      redirect_to '/users/sign_up', notice: 'Please fill out all fields' and return if empty_input?
+
+      unless check_password_equals?
+        redirect_to '/users/sign_up',
+                    notice: 'Password and password confirmation do not match' and return
+      end
     end
   end
 
@@ -27,6 +33,22 @@ class Users::RegistrationsController < Devise::RegistrationsController
       hash[:error] == :taken
     end
   end
+
+  def empty_input?
+    # returns false if there is email, password, password confirmation in the user input
+    if params[:user][:email].empty? || params[:user][:password].empty? || params[:user][:password_confirmation].empty?
+      return true
+    end
+
+    false
+  end
+
+  def check_password_equals?
+    # check if password and password confirmation are the same
+    params[:user][:password] == params[:user][:password_confirmation]
+  end
+
+  def check_password_length?; end
 
   # GET /resource/edit
   # def edit
