@@ -76,6 +76,8 @@ Libraries used for testing
 
 <https://chinguyen21.medium.com/how-to-deploy-a-built-rails-app-with-sqlite3-to-heroku-c5db4febe069>
 
+Link: <https://esc-loyalty-program.herokuapp.com/users/sign_in>
+
 
 ### Issues with Setting up
 
