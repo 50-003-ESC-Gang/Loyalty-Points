@@ -70,8 +70,35 @@ Rails.application.configure do
 
   # Default Url Option
   # config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
-  config.action_mailer.default_url_options = { address: "localhost", port: 25, domain: "localhost.localdomain", user_name: nil, password: nil, authentication: nil, enable_starttls_auto: true }
   config.action_mailer.delivery_method = :smtp
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.default_url_options = { :host => 'localhost:3000', protocol: 'http' }
 
+  # SMTP settings for gmail
+  config.action_mailer.smtp_settings = {
+    :address              => "smtp.gmail.com",
+    :port                 => 587,
+    :user_name            => "ascenda.loyalty@gmail.com",
+    :password             => "Loyalty123",
+    :authentication       => "plain",
+    :enable_starttls_auto => true
+  }
+
+  config.action_mailer.perform_deliveries = true
+config.action_mailer.raise_delivery_errors = true
+
+config.action_mailer.delivery_method = :smtp
+# host = 'example.com' #replace with your own url
+# config.action_mailer.default_url_options = { host: host }
+config.action_mailer.default_url_options = { :host => 'localhost:3000', protocol: 'http' }
+# SMTP settings for gmail
+config.action_mailer.smtp_settings = {
+    :address              => "smtp.gmail.com",
+    :port                 => 587,
+    :user_name            => "ascenda.loyalty@gmail.com",
+    :password             => "vobcirgbofmiuisv",
+    :authentication       => "plain",
+    :enable_starttls_auto => true
+  }
 
 end

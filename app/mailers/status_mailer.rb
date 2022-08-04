@@ -1,5 +1,5 @@
 class StatusMailer < ApplicationMailer
-    default from: 'notifications@ascenda-loyalty.com'
+    default from: 'ascenda.loyalty@gmail.com'
 
     def welcome_email
         @user = params[:user]
