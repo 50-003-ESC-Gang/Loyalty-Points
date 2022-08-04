@@ -1,5 +1,5 @@
-<%= form_tag confirm_url do %>
-  <%= label_tag(:q, "Points") %>
-  <%= text_field_tag(:in_points) %>
-  <%= submit_tag("Confirm") %>
+<%= form_with(url: loyalty_program_datum_confirm_path(params[:id])) do |form| %>
+    <%= form.label :points, style: "display: block" %>
+    <%= form.text_field :in_points %>
+    <%= button_to "Transfer", @loyalty_program_data %>
 <% end %>

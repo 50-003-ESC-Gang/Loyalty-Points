@@ -5,10 +5,14 @@ Rails.application.routes.draw do
 
   resources :loyalty_program_data do
     resources :transactions
+    # post :confirm
+    
+
+    
   end
 
   # post '/loyalty_program_data/:loyalty_program_data_id', to: 'loyalty_program_data#confirm'
-  match '/loyalty_program_data/:loyalty_program_data_id' => '/loyalty_program_data#confirm', :as => "confirm_url", via: :post 
+  # match '/loyalty_program_data/:loyalty_program_data_id' => '/loyalty_program_data#confirm', :as => "confirm_url", via: :post 
 
   resources :transactions
 
