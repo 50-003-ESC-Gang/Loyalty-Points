@@ -10,13 +10,15 @@
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
+  <% if current_user %>
+    <%= render 'layouts/navbar' %>
+  <% end %>
 
-  <body>
+  <body class="bg-dark">
     <% if notice %>
-      <p class="alert alert-info"><%= notice %></p>
+      <p id="flash_alert" class="alert alert-info"><%= notice %></p>
     <% end %>
     <% if alert %>
-      <p class="alert alert-danger"><%= alert %></p>
       <% flash.each do |name, msg| %>
         <%= content_tag :div, msg, id: "flash_#{name}" %>
       <% end %>
