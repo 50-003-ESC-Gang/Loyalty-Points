@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_08_04_093922) do
+ActiveRecord::Schema[7.0].define(version: 2022_08_04_115738) do
   create_table "account", force: :cascade do |t|
     t.integer "user_id"
     t.index ["user_id"], name: "index_account_on_user_id"
@@ -54,7 +54,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_04_093922) do
     t.decimal "amount"
     t.integer "status", default: 0
     t.integer "account_id"
-    t.string "loyalty_program_datum_id"
+    t.integer "loyalty_program_datum_id"
+    t.string "loyalty_program_id"
   end
 
   create_table "users", force: :cascade do |t|

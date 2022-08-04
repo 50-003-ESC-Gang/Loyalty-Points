@@ -91,7 +91,7 @@ class LoyaltyProgramDataController < ApplicationController
 
   # PATCH/PUT /loyalty_program_data/1 or /loyalty_program_data/1.json
   def update
-    puts "I am inside update now "
+   
     respond_to do |format|
         current_loyalty_program_data = LoyaltyProgramDatum.where(id: params[:id])[0]
         current_loyalty_program = LoyaltyProgram.where(loyalty_program_id: current_loyalty_program_data.loyalty_program_id)[0]
@@ -104,11 +104,18 @@ class LoyaltyProgramDataController < ApplicationController
         puts loyalty_program_datum_params[:in_points].to_d * current_loyalty_program.conversion_rate
         puts current_user.id
         puts current_loyalty_program.loyalty_program_id
+        puts current_loyalty_program_data.points
 
         @loyalty_program_datum.points += loyalty_program_datum_params[:in_points].to_d * current_loyalty_program.conversion_rate
-        @loyalty_program_datum.save
+        @loyalty_program_datum.save!
 
-        @transaction = Transaction.create(amount: loyalty_program_datum_params[:in_points].to_d, loyalty_program_datum_id: current_loyalty_program.loyalty_program_id, status: 0, account_id: current_user.id)
+        @transaction = Transaction.create(
+          amount: val,
+          loyalty_program_id: current_loyalty_program.loyalty_program_id, 
+          status: 0, 
+          account_id: current_user.id,
+          loyalty_program_datum_id: 11,
+        )
         # if (@transaction)
         #   AccrualProcessor.convert_to_accrual(@transaction)
         # end 

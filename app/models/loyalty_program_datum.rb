@@ -2,7 +2,9 @@ class LoyaltyProgramDatum < ApplicationRecord
     has_many :transactions
     # serialize :transaction_history, Array
         # has_many :transactions, class_name: "transactions", foreign_key: "loyalty_program_data_id"
-    belongs_to :account, class_name: "Account", foreign_key: "account_id"
+
+    # Prevents Loyalty Program Datum from saving (The error says account must exists)
+    # belongs_to :account, class_name: "Account", foreign_key: "account_id"
     has_one :loyalty_program, class_name: "LoyaltyProgram", foreign_key: "loyalty_program_id"
 
   # def update_amount

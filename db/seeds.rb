@@ -30,8 +30,8 @@ currency_names = ['GoPoints', 'Ascendas Points', 'Starbucks Points', 'Disney Poi
   10.times do |i|
     user = User.create(email: "#{i}@gmail.com", password: '123456', name: "User #{i}", lastname: "Lastname #{i}")
 
-    txn = Transaction.create(loyalty_program_datum_id: (loyalty_programs_ids[i]).to_s, amount: 100, created_at: '2000-01-01 02:00:00', status: 'pending',
-                account_id: i)
+    txn = Transaction.create(loyalty_program_datum_id: i, amount: 100, created_at: '2000-01-01 02:00:00', status: 'pending',
+                account_id: i, loyalty_program_id: (loyalty_programs_ids[i]).to_s)
   end
 
 
