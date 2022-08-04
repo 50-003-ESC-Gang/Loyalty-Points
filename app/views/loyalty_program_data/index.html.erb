@@ -42,10 +42,25 @@
                 <%= loyalty_program_datum.updated_at%>
               </p>	
 
-              <p class="card-text">
-                Program Name: 
-                <%= loyalty_program.program_name%>
-              </p>	
+								<p class="card-text">
+									Currency Name: 
+									<%= loyalty_program[0].currency_name%>
+								</p>	
+	<%# 
+								The field below is only for debugging purpose %>
+								<p class="card-text">
+									Account id:
+									<%= loyalty_program_datum.account_id%>
+								</p>
+							
+								<p name="trans<%= loyalty_program_datum.id %>" class="trans">
+									<%= link_to "Transfer Points", edit_loyalty_program_datum_path(loyalty_program_datum.id) %>
+								</p>					
+							</div>
+						</div>
+					</div>
+				</div>
+		<br>
 
               <p class="card-text">
                 Currency Name: 

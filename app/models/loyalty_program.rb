@@ -1,5 +1,5 @@
 class LoyaltyProgram < ApplicationRecord
-    after_create :create_loyalty_program_data
+  after_create :create_loyalty_program_data
 
   def valid_membership(id)
     if membership_regex
@@ -7,7 +7,7 @@ class LoyaltyProgram < ApplicationRecord
         puts 'Match found!'
         true
       else
-        puts 'FAILEDDDD'
+        puts 'Match FAILED'
         false
       end
     else
@@ -17,10 +17,13 @@ class LoyaltyProgram < ApplicationRecord
   end
 
   private
+
   # create loyalty program data for all users
   def create_loyalty_program_data
+    # This doubles the seeding that has been done in user.rb
     User.all.each do |user|
-      LoyaltyProgramDatum.create(account_id: user.account.id, loyalty_program_id: id)
+      puts "Creating loyalty program data for user #{user.id}"
+      LoyaltyProgramDatum.create(account_id: user.account.id, loyalty_program_id: loyalty_program_id)
     end
   end
 end
