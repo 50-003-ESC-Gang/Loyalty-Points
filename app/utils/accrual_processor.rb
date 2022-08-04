@@ -1,37 +1,35 @@
 class AccrualProcessor < Rails::Application
   # @@current_index = 1
-  @@current_indices = Hash.new
+  @@current_indices = {}
   @@FOLDER_ACCRUAL = './tmp/accruals/'
   @@FOLDER_HANDBACK = './tmp/handbacks/'
 
   def self.convert_to_accrual(transaction)
-    
-    date_str1,date_str2,company_code,filepath,handback_name = get_names(transaction)
+    date_str1, date_str2, company_code, filepath, handback_name = get_names(transaction)
 
     if !File.exist?(filepath) or File.zero?(filepath)
-      create_new_accrual(date_str1,date_str2,company_code,filepath,handback_name)
+      create_new_accrual(date_str1, date_str2, company_code, filepath, handback_name)
       # creating new accrual csv triggers setting up the send&retrieve task
       # time needs to be set properly here
-      set_jobs(date_str1,date_str2,company_code,filepath,handback_name)
+      set_jobs(date_str1, date_str2, company_code, filepath, handback_name)
     end
-    write_accrual(date_str1,date_str2,company_code,filepath,handback_name, transaction)
-
+    write_accrual(date_str1, date_str2, company_code, filepath, handback_name, transaction)
   end
 
   def get_names(transaction)
     time = Time.new
-    date_str1 = "#{time.year}#{"%02d" % time.month}#{"%02d" % time.day}" # YYYYMMDD format, used for file name
-    date_str2 = "#{time.year}-#{"%02d" % time.month}-#{"%02d" % time.day}" # YYYY-MM-DD format, used for csv field
-    company_code = transaction.loyalty_program_datum.loyalty_program_id  #loyalty_program_id is used as foreign key of lp inside lpd, and is supposed to be string representing the company
+    date_str1 = "#{time.year}#{'%02d' % time.month}#{'%02d' % time.day}" # YYYYMMDD format, used for file name
+    date_str2 = "#{time.year}-#{'%02d' % time.month}-#{'%02d' % time.day}" # YYYY-MM-DD format, used for csv field
+    company_code = transaction.loyalty_program_datum.loyalty_program_id # loyalty_program_id is used as foreign key of lp inside lpd, and is supposed to be string representing the company
     filepath = "#{@@FOLDER_ACCRUAL}#{company_code}_#{date_str1}.txt"
     handback_name = "#{company_code}_#{date_str1}.HANDBACK.txt"
 
     # this handback is for demonstration only
     # handback_name = 'id0_20200801.HANDBACK.txt'
-    return [date_str1,date_str2,company_code,filepath,handback_name]
-  end    
+    [date_str1, date_str2, company_code, filepath, handback_name]
+  end
 
-  def create_new_accrual(date_str1,date_str2,company_code,filepath,handback_name)
+  def create_new_accrual(_date_str1, _date_str2, company_code, filepath, _handback_name)
     new_file = File.new(filepath, 'w')
     new_file.syswrite("index,Member ID,Member first name,Member last name,Transfer date,Amount,Reference number,Partner code\n")
     # @@current_index = 1
@@ -39,12 +37,12 @@ class AccrualProcessor < Rails::Application
     new_file.close
   end
 
-  def set_jobs(date_str1,date_str2,company_code,filepath,handback_name)
-    SendAccrualJob.perform_later.set(wait_until: Date.tomorrow.noon).(filepath) 
+  def set_jobs(_date_str1, _date_str2, _company_code, filepath, handback_name)
+    SendAccrualJob.perform_later.set(wait_until: Date.tomorrow.noon).call(filepath)
     DownloadHandbackJob.set(wait_until: Date.tomorrow.midnight).perform_later(handback_name, @@FOLDER_HANDBACK)
   end
 
-  def write_accrual(date_str1,date_str2,company_code,filepath,handback_name,transaction)
+  def write_accrual(_date_str1, date_str2, company_code, filepath, _handback_name, transaction)
     accrual_file = File.open(filepath, 'a')
     # using transaction's id as ref number
     # transaction attribute->csv field mapping:
@@ -55,9 +53,12 @@ class AccrualProcessor < Rails::Application
     # amount->txn.amount
     # reference number->txn.id
     # partner code->txn.lpd.lp_id
-    accrual_file.syswrite("#{@@current_indices[company_code]},#{transaction.loyalty_program_datum.account.id},#{transaction.loyalty_program_datum.account.user.name},#{transaction.loyalty_program_datum.account.user.lastname},#{date_str2},#{transaction.amount},#{transaction.id},#{company_code}\n")
+    accrual_file.syswrite("#{@@current_indices[company_code]},#{transaction.loyalty_program_datum.account.id},
+      #{transaction.loyalty_program_datum.account.user.name},#{transaction.loyalty_program_datum.account.user.lastname},
+      #{date_str2},#{transaction.amount},#{transaction.id},#{company_code}\n")
+
     # increment the index
-    @@current_indices[company_code]+=1
+    @@current_indices[company_code] += 1
     accrual_file.close
   end
 
@@ -82,7 +83,7 @@ class AccrualProcessor < Rails::Application
     # end
     CSV.foreach(csv_file_path, headers: true) do |row|
       # continue to next row if outcome code is not success
-      unless is_valid_transcation?(row['outcome_code'])
+      unless valid_transcation?(row['outcome_code'])
         next # TODO : Add error handling
       end
 
@@ -100,8 +101,8 @@ class AccrualProcessor < Rails::Application
       begin
         # updaate transaction status in db
         Transaction.where(id: row['Reference number']).update(status: get_status(row['Outcome code']))
-      rescue #exception type?
-        puts "transaction not found"
+      rescue StandardError # exception type?
+        puts 'transaction not found'
         next
       end
 
@@ -132,12 +133,11 @@ class AccrualProcessor < Rails::Application
     end
   end
 
-  def is_valid_transcation?(outcome_code)
+  def valid_transcation?(outcome_code)
     get_status(outcome_code) == 'success'
   end
 
-  def self.inspect_current_indices
-    return @@current_indices.dup
+  def self.get_current_indices
+    @@current_indices.dup
   end
-
 end
