@@ -43,12 +43,12 @@ gem 'devise'
 # gem "rspec"
 
 group :development, :test do
-  gem 'rspec'
-  gem 'rspec-rails', '~> 5.0.0'
-  gem 'rspec-mocks'
+  gem 'byebug', '~> 11.1', '>= 11.1.3'
   gem 'factory_bot_rails'
   gem 'faker'
-  gem 'byebug', '~> 11.1', '>= 11.1.3'
+  gem 'rspec'
+  gem 'rspec-mocks'
+  gem 'rspec-rails', '~> 5.0.0'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
@@ -70,7 +70,7 @@ group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   # gem "debug", platforms: %i[ mri mingw x64_mingw ]
   gem 'debug'
-  gem 'ffi'
+  # gem 'ffi'
 end
 
 group :development do
