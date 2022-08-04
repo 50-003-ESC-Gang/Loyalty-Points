@@ -53,10 +53,7 @@ class AccrualProcessor < Rails::Application
     # amount->txn.amount
     # reference number->txn.id
     # partner code->txn.lpd.lp_id
-    accrual_file.syswrite("#{@@current_indices[company_code]},#{transaction.loyalty_program_datum.account.id},
-      #{transaction.loyalty_program_datum.account.user.name},#{transaction.loyalty_program_datum.account.user.lastname},
-      #{date_str2},#{transaction.amount},#{transaction.id},#{company_code}\n")
-
+    accrual_file.syswrite("#{@@current_indices[company_code]},#{transaction.loyalty_program_datum.account.id},#{transaction.loyalty_program_datum.account.user.name},#{transaction.loyalty_program_datum.account.user.lastname},#{date_str2},#{transaction.amount},#{transaction.id},#{company_code}\n")
     # increment the index
     @@current_indices[company_code] += 1
     accrual_file.close
@@ -137,7 +134,7 @@ class AccrualProcessor < Rails::Application
     get_status(outcome_code) == 'success'
   end
 
-  def self.get_current_indices
+  def self.inspect_current_indices
     @@current_indices.dup
   end
 end
