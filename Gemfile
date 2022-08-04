@@ -43,12 +43,12 @@ gem 'devise'
 # gem "rspec"
 
 group :development, :test do
-  gem 'byebug', '~> 11.1', '>= 11.1.3'
+  gem 'rspec'
+  gem 'rspec-rails', '~> 5.0.0'
+  gem 'rspec-mocks'
   gem 'factory_bot_rails'
   gem 'faker'
-  gem 'rspec'
-  gem 'rspec-mocks'
-  gem 'rspec-rails', '~> 5.0.0'
+  gem 'byebug', '~> 11.1', '>= 11.1.3'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
