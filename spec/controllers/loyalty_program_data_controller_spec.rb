@@ -30,7 +30,6 @@ RSpec.describe LoyaltyProgramDataController, type: :controller do
     end
     context 'when appropriate params are passed' do
       it 'should create a loyalty program data for user account' do
-        debugger
         initial_count = LoyaltyProgramDatum.count
         loyalty_program_data_params = {
           loyalty_program_id: lp.loyalty_program_id,
