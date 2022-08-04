@@ -25,7 +25,6 @@ RSpec.describe LoyaltyProgramDatum, type: :model do
     end
   end
 
-  # TODO: Refer to https://github.com/50-003-ESC-Gang/Loyalty-Points/issues/86
   context 'when loyalty program is created' do
     it 'should create a loyalty program data for all user' do
       # initial_count = LoyaltyProgramDatum.count

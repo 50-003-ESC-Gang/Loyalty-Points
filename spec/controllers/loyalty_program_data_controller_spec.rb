@@ -60,5 +60,4 @@ RSpec.describe LoyaltyProgramDataController, type: :controller do
     end
   end
 
-  # TODO : still not too sure how to write test to test account creation
 end
