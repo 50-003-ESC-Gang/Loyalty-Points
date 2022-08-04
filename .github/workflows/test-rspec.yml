@@ -23,12 +23,11 @@ jobs:
         run: |
           gem install bundler
           bundle install --jobs 4 --retry 3
-          gem install rake
 
       - name: Setup Database
         working-directory: ${{env.api-dir}}
-        run: rake db:create
-          rake db:migrate RAILS_ENV=test
+        run: bin/rails db:create
+          bin/rails db:migrate RAILS_ENV=test
 
       - name: Build and test with rspec
         working-directory: ${{env.api-dir}}
