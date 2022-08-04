@@ -134,7 +134,7 @@ class AccrualProcessor < Rails::Application
     get_status(outcome_code) == 'success'
   end
 
-  def self.inspect_current_indices
+  def self.get_current_indices
     @@current_indices.dup
   end
 end
