@@ -26,8 +26,8 @@ jobs:
 
       - name: Setup Database
         working-directory: ${{env.api-dir}}
-        run: bin/rails db:create
-          bin/rails db:migrate RAILS_ENV=test
+        run: rake db:create
+          rake db:migrate RAILS_ENV=test
 
       - name: Build and test with rspec
         working-directory: ${{env.api-dir}}
