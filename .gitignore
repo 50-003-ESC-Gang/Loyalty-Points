@@ -13,7 +13,8 @@
 
 # Ignore all logfiles and tempfiles.
 /log/*
-/tmp/*
+# /tmp/*
+/tmp/cache
 !/log/.keep
 !/tmp/.keep
 # don't ignore accruals and handbacks folders
@@ -44,3 +45,4 @@
 !/app/assets/builds/.keep
 .vscode/settings.json
 .byebug_history
+coverage

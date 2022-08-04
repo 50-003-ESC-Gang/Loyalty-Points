@@ -1,23 +1,25 @@
 
 <%= stylesheet_link_tag "landing" %>
-<div class="container-fluid text-center">    
-  <div class="row content">
-    <div class="col-sm-2 sidenav">
-      <p name="trans"><%= link_to "Transaction Page", "/transactions" %></p>
-      <p name="exchange"><%= link_to "Exchange Points", "/loyalty_program_data" %></p>
-      <p><a href="#">Link</a></p>
+<div class="container-fluid text-center text-light">    
+    <div class="pt-2"> 
+      <h1 class="display-4">Welcome <%= current_user.name %> to Ascenda's Loyalty Account Point Exchange Program</h1>
+      <img src="https://careers.recruiteecdn.com/image/upload/production/images/AQcM/m-UAX0dt_4Qa.png" class="py-3 mb-5 my-3 w-75"/>
     </div>
-    <div class="col-sm-8 text-left"> 
-      <h1>Welcome <%= current_user.name %></h1>
-      <p>Current ABC Bank Rewards: <%#= User.find(current_user.id).account.loyalty_program_data.where(loyalty_program_id: 1).first.points %></p>
-      <p><%= @accounts %></p>
-      <hr>
+  <div class="d-flex flex-row justify-content-around">
+    <div class="bg-light p-3">
+      <%= link_to "Loyalty Programs", loyalty_programs_path, class: "btn btn-primary p-5" %>
+    </div>
+    <div class="bg-light p-3">
+      <%= link_to "Transactions", transactions_path, class: "btn btn-primary p-5", name: "trans" %>
+    </div>
+    <div class="bg-light p-3">
+      <%= link_to "Exchange Points", loyalty_program_data_path, class: "btn btn-primary p-5", name: "exchange" %>
     </div>
   </div>
 </div>
 
-<footer class="container-fluid text-center">
-  <p>Bank of ABC</p>
+<footer class="container-fluid text-center fixed-bottom bg-dark">
+  <p>Ascenda Loyalty Account Program</p>
 </footer>
 
 </body>
