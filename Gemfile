@@ -43,7 +43,9 @@ gem 'devise'
 # gem "rspec"
 
 group :development, :test do
+  gem 'rspec'
   gem 'rspec-rails', '~> 5.0.0'
+  gem 'rspec-mocks'
   gem 'factory_bot_rails'
   gem 'faker'
   gem 'byebug', '~> 11.1', '>= 11.1.3'
@@ -56,6 +58,7 @@ gem 'tzinfo-data'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', require: false
 
+
 # Use Sass to process CSS
 # gem "sassc-rails"
 
@@ -66,6 +69,7 @@ group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   # gem "debug", platforms: %i[ mri mingw x64_mingw ]
   gem 'debug'
+  gem 'ffi'
 end
 
 group :development do

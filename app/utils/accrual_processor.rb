@@ -6,7 +6,7 @@ class AccrualProcessor < Rails::Application
 
   def self.convert_to_accrual(transaction)
     
-    date_str1,date_str2,company_code,filepath,handback_name = get_names
+    date_str1,date_str2,company_code,filepath,handback_name = get_names(transaction)
 
     if !File.exist?(filepath) or File.zero?(filepath)
       create_new_accrual(date_str1,date_str2,company_code,filepath,handback_name)
@@ -14,11 +14,11 @@ class AccrualProcessor < Rails::Application
       # time needs to be set properly here
       set_jobs(date_str1,date_str2,company_code,filepath,handback_name)
     end
-    write_accrual(date_str1,date_str2,company_code,filepath,handback_name)
+    write_accrual(date_str1,date_str2,company_code,filepath,handback_name, transaction)
 
   end
 
-  def get_names()
+  def get_names(transaction)
     time = Time.new
     date_str1 = "#{time.year}#{"%02d" % time.month}#{"%02d" % time.day}" # YYYYMMDD format, used for file name
     date_str2 = "#{time.year}-#{"%02d" % time.month}-#{"%02d" % time.day}" # YYYY-MM-DD format, used for csv field
@@ -44,7 +44,7 @@ class AccrualProcessor < Rails::Application
     DownloadHandbackJob.set(wait_until: Date.tomorrow.midnight).perform_later(handback_name, @@FOLDER_HANDBACK)
   end
 
-  def write_accrual(date_str1,date_str2,company_code,filepath,handback_name)
+  def write_accrual(date_str1,date_str2,company_code,filepath,handback_name,transaction)
     accrual_file = File.open(filepath, 'a')
     # using transaction's id as ref number
     # transaction attribute->csv field mapping:
@@ -56,7 +56,8 @@ class AccrualProcessor < Rails::Application
     # reference number->txn.id
     # partner code->txn.lpd.lp_id
     accrual_file.syswrite("#{@@current_indices[company_code]},#{transaction.loyalty_program_datum.account.id},#{transaction.loyalty_program_datum.account.user.name},#{transaction.loyalty_program_datum.account.user.lastname},#{date_str2},#{transaction.amount},#{transaction.id},#{company_code}\n")
-
+    # increment the index
+    @@current_indices[company_code]+=1
     accrual_file.close
   end
 
@@ -134,4 +135,9 @@ class AccrualProcessor < Rails::Application
   def is_valid_transcation?(outcome_code)
     get_status(outcome_code) == 'success'
   end
+
+  def self.inspect_current_indices
+    return @@current_indices.dup
+  end
+
 end
