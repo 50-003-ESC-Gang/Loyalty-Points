@@ -1,3 +1,6 @@
+<%= stylesheet_link_tag "login" %>
+
+
 <%= form_with(model: loyalty_program_datum) do |form| %>
   <% if loyalty_program_datum.errors.any? %>
     <div style="color: red">
@@ -10,18 +13,15 @@
       </ul>
     </div>
   <% end %>
-  <%# <div>
-    <%= form.label :loyalty_program_id, style: "display: block" %>
-    <%# <%= form.text_field :loyalty_program_id %>
-  <%# </div> %> 
-  <div>
-    <%= form.label :points, style: "display: block" %>
-    <%= form.text_field :in_points %>
-  </div>
 
+  <div class="form">
+    <%= form.label :points, style: "display: block", class: "label" %>
+    <%= form.text_field :in_points, class: "input", placeholder: "ex. 100"%>
+    <%= form.submit "Transfer", class: "button"%>
+  </div>
   <br>
 
-  <div>
-    <%= form.submit "Transfer"%>
-  </div>
+
+    
+
 <% end %>

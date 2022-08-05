@@ -1,10 +1,3 @@
-<%# 
-<%= render @loyalty_program_datum %>
+<%# <h1>Transfer Points from Bank Account</h1>
 
-<div>
-  <%# <%= link_to "Edit this loyalty program datum", edit_loyalty_program_datum_path(@loyalty_program_datum) %>
-  <p name="back">
-    <%= link_to "Go back to Loyalty Programs", loyalty_program_data_path %>
-  </p>
- <%# <%= button_to "Destroy this loyalty program datum", @loyalty_program_datum, method: :delete %>
-</div>
+<%= render "confirm", loyalty_program_datum: @loyalty_program_datum %>
