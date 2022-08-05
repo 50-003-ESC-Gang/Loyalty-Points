@@ -38,7 +38,7 @@ class AccrualProcessor < Rails::Application
   end
 
   def set_jobs(_date_str1, _date_str2, _company_code, filepath, handback_name)
-    SendAccrualJob.perform_later.set(wait_until: Date.tomorrow.noon).call(filepath)
+    SendAccrualJob.set(wait_until: Date.tomorrow.noon).perform_later(filepath)
     DownloadHandbackJob.set(wait_until: Date.tomorrow.midnight).perform_later(handback_name, @@FOLDER_HANDBACK)
   end
 
