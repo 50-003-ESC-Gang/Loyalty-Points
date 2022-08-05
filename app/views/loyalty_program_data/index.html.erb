@@ -1,82 +1,40 @@
 <div class="container-fluid">
 
-	<h1 >Available Loyalty Program Data</h1>
-
-	<%# <div id="loyalty_program_data">
-	<% @loyalty_program_data.each do |loyalty_program_datum| %>
-		<%# <%= render loyalty_program_datum %> 
-	
-		
-	<%# <%= form_with(model: @loyalty_program_data) do |f| %>
-		<%# <div>
-		<%= form.label :amount, style: "display: block" %>
-		<%# <%= form.text_field :amount %>
-		<%# </div> %>
-
-		<%# <%= f.select :id, @loyalty_program_data.map { |l| [l.loyalty_program_id, l.loyalty_program_id] } %>
-		<%# <%= f.submit %>
-	<%# <% end %>   
-
-		<%# <p>
-		<%# <%= link_to "Show this loyalty program datum", loyalty_program_datum %> 
-		<%# </p> %>
-	<%# <% end %>
-	<%# </div>  %>
+	<h1 class="display-3 text-light">Available Loyalty Program Data</h1>
 
 	<div id="loyalty_program_data">
-		<% @loyalty_programs.each do |loyalty_program_datum, loyalty_program| %> <%= render loyalty_program_datum %>
-		
-			<div class="container">
-				<div class="row">
-					<div class="col-4 p-0">
-						<div class="card">
-							<div class="card-body">
-								<h5 class="card-title">Loyalty Program Data</h5>
-								<p class="card-text">
-									LoyaltyProgramID:
-									<%= loyalty_program_datum.loyalty_program_id%>
-								</p>
+		<div class="row">
+			<% @loyalty_programs.each do |loyalty_program_datum, loyalty_program| %> 
+				<div class="col-4 p-3">
+					<div class="card">
+						<div class="card-body">
+							<h5 class="card-title"><%= loyalty_program[0].program_name%></h5>
+							<p class="card-text">
+								LoyaltyProgramID:
+								<%= loyalty_program_datum.loyalty_program_id%>
+							</p>
 
-								<p class="card-text">
-									Current Points:
-									<%= loyalty_program_datum.points%>
-								</p>
-								
-								<p class="card-text">
-									Latest Update: 
-									<%= loyalty_program_datum.updated_at%>
-								</p>	
-
-								<p class="card-text">
-									Program Name: 
-									<%= loyalty_program[0].program_name%>
-								</p>	
-
-								<p class="card-text">
-									Currency Name: 
-									<%= loyalty_program[0].currency_name%>
-								</p>	
-	<%# 
-								The field below is only for debugging purpose %>
-								<p class="card-text">
-									Account id:
-									<%= loyalty_program_datum.account_id%>
-								</p>
+							<p class="card-text">
+								Current Points:
+								<%= loyalty_program_datum.points%>
+							</p>
 							
-								<p name="trans<%= loyalty_program_datum.id %>" class="trans">
-									<%= link_to "Transfer Points", edit_loyalty_program_datum_path(loyalty_program_datum.id) %>
-								</p>					
-							</div>
+							<p class="card-text">
+								Latest Update: 
+								<%= loyalty_program_datum.updated_at%>
+							</p>	
+
+							<p class="card-text">
+								Currency Name: 
+								<%= loyalty_program[0].currency_name%>
+							</p>	
+						
+							<p name="trans<%= loyalty_program_datum.id %>" class="trans">
+								<%= link_to "Transfer Points", edit_loyalty_program_datum_path(loyalty_program_datum.id), class: "btn btn-primary" %>
+							</p>					
 						</div>
 					</div>
 				</div>
-		<br>
-
-				
-			</div>
-
-		<% end %>
+			<% end %>
+		</div>
 	</div>
-
-	<%# <%= link_to "New loyalty program datum", new_loyalty_program_datum_path %>
-</div>

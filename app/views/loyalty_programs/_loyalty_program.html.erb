@@ -1,5 +1,5 @@
-<div id="<%= dom_id loyalty_program %>" class="col-4 p-0">
-  <div class="card bg-dark text-light m-1">
+<div id="<%= dom_id loyalty_program %>" class="col-4 p-3">
+  <div class="card bg-dark text-light m-1 border border-light">
     <div class="card-body">
       <h5 class="card-title"><%= loyalty_program.program_name %></h5>
 
@@ -29,8 +29,8 @@
       </p>
 
       <p>
-        <a href="https://<%=loyalty_program.enrollment_link%>" target="_blank" class="btn btn-sm btn-info">Enrollment Link</a>
-        <a href="https://<%=loyalty_program.terms_and_conditions_link%>" target="_blank" class="btn btn-sm btn-info">Terms and Conditions</a>
+        <a href="https://<%=loyalty_program.enrollment_link%>" target="_blank" class="btn btn-sm btn-primary">Enrollment Link</a>
+        <a href="https://<%=loyalty_program.terms_and_conditions_link%>" target="_blank" class="btn btn-sm btn-primary">Terms and Conditions</a>
       </p>
 
       <a href="<%= loyalty_program_path(loyalty_program) %>" class="btn btn-light">Link Account</a>
