@@ -38,7 +38,7 @@ class LoyaltyProgramDataController < ApplicationController
       if params[:in_points] != ""
         if params[:in_points].to_d.is_a? Numeric
           val = current_loyalty_program.conversion_rate * params[:in_points].to_d
-          msg = "The amount transfered after conversion -> %f. \n Point Transfer is now being processed" % [val]
+          msg = format("The amount transfered after conversion -> %f. \n Point Transfer is now being processed", val)
           @loyalty_program_datum.points += val
           @loyalty_program_datum.save
 
@@ -104,7 +104,7 @@ class LoyaltyProgramDataController < ApplicationController
         end
         msg = "The amount transfered after conversion -> %f. \n Point Transfer is now being processed" % [val]
 
-        @loyalty_program_datum.points += loyalty_program_datum_params[:in_points].to_d * current_loyalty_program.conversion_rate
+        @loyalty_program_datum.points += val
         @loyalty_program_datum.save!
 
         @transaction = Transaction.create(
