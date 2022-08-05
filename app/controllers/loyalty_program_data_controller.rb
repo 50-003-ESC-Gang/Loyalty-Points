@@ -95,7 +95,13 @@ class LoyaltyProgramDataController < ApplicationController
         current_loyalty_program = LoyaltyProgram.where(loyalty_program_id: current_loyalty_program_data.loyalty_program_id)[0]
 
 
-        val = current_loyalty_program.conversion_rate * loyalty_program_datum_params[:in_points].to_d
+        val = if current_loyalty_program.conversion_rate.nil?
+          loyalty_program_datum_params[:in_points].to_d
+
+        else
+          current_loyalty_program.conversion_rate * loyalty_program_datum_params[:in_points].to_d
+
+        end
         msg = "The amount transfered after conversion -> %f. \n Point Transfer is now being processed" % [val]
 
         @loyalty_program_datum.points += loyalty_program_datum_params[:in_points].to_d * current_loyalty_program.conversion_rate
