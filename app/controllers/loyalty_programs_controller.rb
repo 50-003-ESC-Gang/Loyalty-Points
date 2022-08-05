@@ -65,7 +65,15 @@ class LoyaltyProgramsController < ApplicationController
     end
   end
 
-  def update_conversion_rate; end
+  def update_conversion_rate
+    @loyalty_program = LoyaltyProgram.find(params[:loyalty_program_id])
+    if params[:conversion_rate].present?
+      @loyalty_program.conversion_rate = params[:conversion_rate]
+      @loyalty_program.save
+      redirect_to loyalty_program_url(@loyalty_program),
+                  notice: 'Loyalty Program Conversion Rate Changed.'
+    end
+  end
 
   # DELETE /loyalty_programs/1 or /loyalty_programs/1.json
   def destroy
@@ -116,9 +124,9 @@ class LoyaltyProgramsController < ApplicationController
     params.require(:loyalty_program).permit(:loyalty_program_id, :program_name, :currency_name, :processing_time,
                                             :description, :enrollment_link, :terms_and_conditions_link, :membership_regex)
   end
+
   def loyalty_program_admin_params
     params.require(:loyalty_program).permit(:loyalty_program_id, :program_name, :currency_name, :processing_time,
-                                            :description, :enrollment_link, :terms_and_conditions_link, :membership_regex. :conversion_rate)
-
+                                            :description, :enrollment_link, :terms_and_conditions_link, :membership_regex, :conversion_rate)
   end
 end
