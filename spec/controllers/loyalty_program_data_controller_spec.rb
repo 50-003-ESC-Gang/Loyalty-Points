@@ -29,17 +29,13 @@ RSpec.describe LoyaltyProgramDataController, type: :controller do
       end
     end
     context 'when appropriate params are passed' do
-      xit 'should create a loyalty program data for user account' do
+      it 'should create a loyalty program data for user account' do
         initial_count = LoyaltyProgramDatum.count
         loyalty_program_data_params = {
-          loyalty_program_id: lp.id,
+          loyalty_program_id: lp.loyalty_program_id,
           points: 100
         }
-
-        post :create, params: { loyalty_program_datum: {
-          loyalty_program_id: lp.id,
-          points: 100
-        } }
+        expect(LoyaltyProgramDatum.count).to eq(initial_count + 1)
       end
     end
   end
@@ -51,7 +47,6 @@ RSpec.describe LoyaltyProgramDataController, type: :controller do
              params: { id: lp.id,
                        loyalty_program_datum: { loyalty_program_id: lp.loyalty_program_id, in_points: 1000,
                                                 points: 0 } }
-        # expect(response).to have_http_status(200)
 
         expect(LoyaltyProgramDatum.where(loyalty_program_id: lp.loyalty_program_id,
                                          account_id: user.account.id).first.points).to eq(1000)
