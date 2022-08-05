@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_08_04_115738) do
+ActiveRecord::Schema[7.0].define(version: 2022_08_05_003134) do
   create_table "account", force: :cascade do |t|
     t.integer "user_id"
     t.index ["user_id"], name: "index_account_on_user_id"
@@ -44,7 +44,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_04_115738) do
     t.datetime "updated_at", null: false
     t.integer "loyalty_program_data_id"
     t.string "membership_regex"
-    t.decimal "conversion_rate"
+    t.decimal "conversion_rate", default: "1.0", null: false
     t.index ["loyalty_program_data_id"], name: "index_loyalty_programs_on_loyalty_program_data_id"
   end
 
@@ -68,6 +68,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_04_115738) do
     t.datetime "updated_at", null: false
     t.string "name"
     t.string "lastname"
+    t.boolean "admin", default: false, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
