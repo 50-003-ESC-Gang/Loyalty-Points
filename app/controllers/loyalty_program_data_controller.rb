@@ -115,7 +115,7 @@ class LoyaltyProgramDataController < ApplicationController
           loyalty_program_datum_id: 11,
         )
 
-        StatusMailer.with(user: current_user, transaction_id: @transaction.id).status_email.deliver_now
+        StatusMailer.with(user: current_user, transaction_id: @transaction.id).status_email.deliver_later
         # if (@transaction)
         #   AccrualProcessor.convert_to_accrual(@transaction)
         # end 
