@@ -55,4 +55,8 @@ currency_names = ['GoPoints', 'Ascendas Points', 'Starbucks Points', 'Disney Poi
                            account_id: i)
 end
 
+admin_user = User.create(email: 'admin@gmail.com', password: '123456', name: 'Admin', lastname: 'Admin')
+admin_user.update_attribute(:admin, true)
+
+
 puts 'Seeding done!'
