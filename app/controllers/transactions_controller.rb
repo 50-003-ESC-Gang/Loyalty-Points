@@ -29,6 +29,7 @@ class TransactionsController < ApplicationController
         format.json { render :show, status: :created, location: @transaction }
         #generate accrual file
         # Thread.new(AccrualProcessor.convert_to_accrual(@transaction))
+        StatusMailer.with(user: current_user, transaction_id: @transaction.id).status_email.deliver_now
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @transaction.errors, status: :unprocessable_entity }

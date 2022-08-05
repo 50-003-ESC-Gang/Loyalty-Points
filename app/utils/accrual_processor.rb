@@ -74,7 +74,7 @@ class AccrualProcessor < Rails::Application
       acc.loyalty_program_data.where(loyalty_program_id: loyalty_program).first.update(points: row['Amount'])
 
       #Email user
-      Mailer.with(user: acc.user, transaction_id: transaction.id).status_email.deliver_now
+      StatusMailer.with(user: acc.user, transaction_id: transaction.id).status_email.deliver_now
       #https://guides.rubyonrails.org/action_mailer_basics.html
 
     end
