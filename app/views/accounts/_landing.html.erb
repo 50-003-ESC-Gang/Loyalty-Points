@@ -1,9 +1,9 @@
 
 <%= stylesheet_link_tag "landing" %>
-<div class="container-fluid text-center">    
+<div class="container-fluid text-center text-light">    
   <div class="pt-2"> 
     <h1 class="display-6 fw-bold">Welcome <%= current_user.name %> to Ascenda's Loyalty Account Point Exchange Program</h1>
-    <img src="https://images.ctfassets.net/gzhf2ey3l7ai/1HjjNJLI2I8BF7vjiFVLCs/2951a34a45ab360da0ba68c0356b3cb5/ascenda_logo.png" class="p-1 m-1 w-50"/>
+    <img src="https://careers.recruiteecdn.com/image/upload/production/images/AQcM/m-UAX0dt_4Qa.png" class="p-5 m-5 w-50"/>
   </div>
   <div class="d-flex flex-row justify-content-evenly">
       <div class="m-0 mx-2 px-1">
@@ -14,7 +14,7 @@
           <p class="h4 fw-bold text-start">Loyalty Programs</p>
           <p class="text-start">Check out our partnering loyalty programs and link your accounts here.</p>
         </div>
-          <%= link_to "Loyalty Programs →", loyalty_programs_path, class: "fw-bold btn border border-dark mb-2 float-right" %>
+          <%= link_to "Loyalty Programs →", loyalty_programs_path, class: "fw-bold btn border border- mb-2 float-right text-light" %>
       </div>
       <div class="m-0 mx-2 px-1">
         <div class="d-flex flex-row justify-content-left mt-2 ms-2">
@@ -23,7 +23,7 @@
         <div class="m-0 p-0">
           <p class="h4 fw-bold text-start">Exchange Points</p>
           <p class="text-start">Exchange loyalty points from one program to another here.</p>
-          <%= link_to "Exchange Points →", loyalty_program_data_path, class: "fw-bold btn border border-dark mb-2 float-right", name: "exchange" %>
+          <%= link_to "Exchange Points →", loyalty_program_data_path, class: "fw-bold btn border border- mb-2 float-right text-light", name: "exchange" %>
         </div>
       </div>
       <div class="m-0 mx-2 px-1">
@@ -33,8 +33,8 @@
         <div class="m-0 p-0">
           <p class="h4 fw-bold text-start">Check Transactions</p>
           <p class="text-start">Check out the history of your previous loyalty program point transactions here.</p>
-          <%#= link_to "Loyalty Programs →", loyalty_programs_path, class: "fw-bold btn border border-dark mb-2 float-right" %>
-          <%= link_to "Transactions →", transactions_path, class: "fw-bold btn border border-dark mb-2 float-right", name: "trans" %>
+          <%#= link_to "Loyalty Programs →", loyalty_programs_path, class: "fw-bold btn border border- mb-2 float-right text-light" %>
+          <%= link_to "Transactions →", transactions_path, class: "fw-bold btn border border- mb-2 float-right text-light", name: "trans" %>
         </div>
       </div>
   </div>
