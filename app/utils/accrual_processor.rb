@@ -96,8 +96,6 @@ class AccrualProcessor < Rails::Application
       #   ).save
 
       begin
-        transaction = Transaction.where(id: row['Reference number'])
-        transaction.update(status: get_status(row['Outcome code']))
         # updaate transaction status in db
         Transaction.where(id: row['Reference number']).update(status: get_status(row['Outcome code']))
       rescue StandardError # exception type?
@@ -106,13 +104,7 @@ class AccrualProcessor < Rails::Application
       end
 
       # update loyalty program data points
-      acc = Account.where(id: account_id).first
-      acc.loyalty_program_data.where(loyalty_program_id: loyalty_program).first.update(points: row['Amount'])
-
-      #Email user
-      StatusMailer.with(user: acc.user, transaction_id: transaction.id).status_email.deliver_now
-      #https://guides.rubyonrails.org/action_mailer_basics.html
-
+      Account.where(id: account_id).first.loyalty_program_data.where(loyalty_program_id: loyalty_program).first.update(points: row['Amount'])
     end
   end
 

@@ -26,7 +26,6 @@ class AccountsController < ApplicationController
       if @account.save
         format.html { redirect_to account_url(@account), notice: 'Account was successfully created.' }
         format.json { render :show, status: :created, location: @account }
-        StatusMailer.with(user: @account.user).welcome_email.deliver_now
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @account.errors, status: :unprocessable_entity }
