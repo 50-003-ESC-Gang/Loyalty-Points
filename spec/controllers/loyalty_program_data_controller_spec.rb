@@ -20,12 +20,10 @@ RSpec.describe LoyaltyProgramDataController, type: :controller do
     context 'when inappropriate params are passed' do
       it 'should not create a loyalty program data for user account' do
         loyalty_program_data_params = {
-          loyalty_program_id: lp.id,
-          account_id: user.account.id,
           points: 100
         }
         post :create, params: { loyalty_program_datum: loyalty_program_data_params }
-        expect(response.status).to eq(422)
+        expect(LoyaltyProgramDatum.count).to eq(1)
       end
     end
     context 'when appropriate params are passed' do
@@ -55,7 +53,8 @@ RSpec.describe LoyaltyProgramDataController, type: :controller do
 
         expect(LoyaltyProgramDatum.where(loyalty_program_id: lp.loyalty_program_id,
                                          account_id: user.account.id).first.points).to eq(1000)
-        expect(flash[:notice]).to eq('Loyalty program datum was successfully updated.')
+        # expect flash notice to be present
+        expect(flash[:notice]).to be_present
       end
     end
   end

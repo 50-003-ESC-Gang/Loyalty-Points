@@ -27,45 +27,44 @@ class LoyaltyProgramDataController < ApplicationController
     # @loyalty_program_datum = LoyaltyProgramDatum.new
   end
 
-
   def confirm
     puts params[:in_points]
-  
+
     current_loyalty_program_data = LoyaltyProgramDatum.where(id: params[:loyalty_program_datum_id])[0]
     current_loyalty_program = LoyaltyProgram.where(loyalty_program_id: current_loyalty_program_data.loyalty_program_id)[0]
 
     puts current_loyalty_program.conversion_rate\
 
     respond_to do |format|
-      if params[:in_points] != ""
+      if params[:in_points] != ''
         if params[:in_points].to_d.is_a? Numeric
           val = current_loyalty_program.conversion_rate * params[:in_points].to_d
-          msg = "The amount transfered after conversion -> %f. \n Point Transfer is now being processed" % [val]
+          msg = format("The amount transfered after conversion -> %f. \n Point Transfer is now being processed", val)
           @loyalty_program_datum.points += val
           @loyalty_program_datum.save
 
-          @transaction = Transaction.create(amount: loyalty_program_datum_params[:in_points].to_d, loyalty_program_datum_id: current_loyalty_program.loyalty_program_id, status: 0, account_id: current_user.id)
+          @transaction = Transaction.create(amount: loyalty_program_datum_params[:in_points].to_d,
+                                            loyalty_program_datum_id: current_loyalty_program.loyalty_program_id, status: 0, account_id: current_user.id)
           # if (@transaction)
           #   AccrualProcessor.convert_to_accrual(@transaction)
-          # end 
-        format.html { redirect_to loyalty_program_datum_url(@loyalty_program_datum), notice: msg }
-        format.json { render :show, status: :ok, location: @loyalty_program_datum }
-          format.html { redirect_to edit_loyalty_program_datum_url(params[:loyalty_program_datum_id]), notice: msg  }
+          # end
+          format.html { redirect_to loyalty_program_datum_url(@loyalty_program_datum), notice: msg }
+          format.json { render :show, status: :ok, location: @loyalty_program_datum }
+          format.html { redirect_to edit_loyalty_program_datum_url(params[:loyalty_program_datum_id]), notice: msg }
         else
-          format.html { redirect_to edit_loyalty_program_datum_url(params[:loyalty_program_datum_id]), notice: "Input must be numerical" }
+          format.html do
+            redirect_to edit_loyalty_program_datum_url(params[:loyalty_program_datum_id]),
+                        notice: 'Input must be numerical'
+          end
         end
       else
-        format.html { redirect_to edit_loyalty_program_datum_url(params[:loyalty_program_datum_id]), notice: "Input cannot be empty" }
+        format.html do
+          redirect_to edit_loyalty_program_datum_url(params[:loyalty_program_datum_id]), notice: 'Input cannot be empty'
+        end
       end
     end
 
-    
-
     @converted = params[:in_points] * current_loyalty_program.conversion_rate
-
-
-   
-
   end
 
   # GET /loyalty_program_data/1/edit
@@ -91,36 +90,35 @@ class LoyaltyProgramDataController < ApplicationController
 
   # PATCH/PUT /loyalty_program_data/1 or /loyalty_program_data/1.json
   def update
-   
     respond_to do |format|
-        current_loyalty_program_data = LoyaltyProgramDatum.where(id: params[:id])[0]
-        current_loyalty_program = LoyaltyProgram.where(loyalty_program_id: current_loyalty_program_data.loyalty_program_id)[0]
+      current_loyalty_program_data = LoyaltyProgramDatum.where(id: params[:id])[0]
+      current_loyalty_program = LoyaltyProgram.where(loyalty_program_id: current_loyalty_program_data.loyalty_program_id)[0]
 
+      val = if current_loyalty_program.conversion_rate.nil?
+              loyalty_program_datum_params[:in_points].to_d
 
-        val = current_loyalty_program.conversion_rate * loyalty_program_datum_params[:in_points].to_d
-        msg = "The amount transfered after conversion -> %f. \n Point Transfer is now being processed" % [val]
-        puts current_loyalty_program.conversion_rate
-        puts loyalty_program_datum_params[:in_points].to_d
-        puts loyalty_program_datum_params[:in_points].to_d * current_loyalty_program.conversion_rate
-        puts current_user.id
-        puts current_loyalty_program.loyalty_program_id
-        puts current_loyalty_program_data.points
+            else
+              current_loyalty_program.conversion_rate * loyalty_program_datum_params[:in_points].to_d
 
-        @loyalty_program_datum.points += loyalty_program_datum_params[:in_points].to_d * current_loyalty_program.conversion_rate
-        @loyalty_program_datum.save!
+            end
+      msg = format("The amount transfered after conversion -> %f. \n Point Transfer is now being processed", val)
+      puts current_loyalty_program.conversion_rate
 
-        @transaction = Transaction.create(
-          amount: val,
-          loyalty_program_id: current_loyalty_program.loyalty_program_id, 
-          status: 0, 
-          account_id: current_user.id,
-          loyalty_program_datum_id: 11,
-        )
-        # if (@transaction)
-        #   AccrualProcessor.convert_to_accrual(@transaction)
-        # end 
-        format.html { redirect_to loyalty_program_datum_url(@loyalty_program_datum), notice: msg }
-        format.json { render :show, status: :ok, location: @loyalty_program_datum }
+      @loyalty_program_datum.points += val
+      @loyalty_program_datum.save!
+
+      @transaction = Transaction.create(
+        amount: val,
+        loyalty_program_id: current_loyalty_program.loyalty_program_id,
+        status: 0,
+        account_id: current_user.id,
+        loyalty_program_datum_id: 11
+      )
+      # if (@transaction)
+      #   AccrualProcessor.convert_to_accrual(@transaction)
+      # end
+      format.html { redirect_to loyalty_program_datum_url(@loyalty_program_datum), notice: msg }
+      format.json { render :show, status: :ok, location: @loyalty_program_datum }
       # else
       #   format.html { render :edit, status: :unprocessable_entity }
       #   format.json { render json: @loyalty_program_datum.errors, status: :unprocessable_entity }
