@@ -17,6 +17,11 @@
 /tmp/cache
 !/log/.keep
 !/tmp/.keep
+# don't ignore accruals and handbacks folders
+!/tmp/accruals
+/tmp/accruals/*
+!/tmp/handbacks
+/tmp/handbacks/*
 
 # Ignore pidfiles, but keep the directory.
 /tmp/pids/*
@@ -41,3 +46,4 @@
 .vscode/settings.json
 .byebug_history
 coverage
+.vscode/

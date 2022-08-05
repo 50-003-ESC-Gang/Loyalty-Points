@@ -17,15 +17,15 @@ class CsvProcessingController < ApplicationController
     # Downloads Handback CSV File from SFTP server
   end
 
-  def upload_accrual_csv # TODO 
+  def upload_accrual_csv # TODO
     # Uploads accrual csv file to SFTP server
 
     # generate accrual csv files
     generate_accrual_csv
 
-    # upload accrual csv files to SFTP server # TODO 
+    # upload accrual csv files to SFTP server # TODO
 
-    # delete accrual csv files from local machine # TODO 
+    # delete accrual csv files from local machine # TODO
   end
 
   def process_handback(csv_file_path)
@@ -48,7 +48,7 @@ class CsvProcessingController < ApplicationController
     # end
     CSV.foreach(csv_file_path, headers: true) do |row|
       # continue to next row if outcome code is not success
-      unless is_valid_transcation?(row['outcome_code'])
+      unless valid_transcation?(row['outcome_code'])
         next # TODO : Add error handling
       end
 
@@ -114,7 +114,7 @@ class CsvProcessingController < ApplicationController
     end
   end
 
-  def is_valid_transcation?(outcome_code)
+  def valid_transcation?(outcome_code)
     get_status(outcome_code) == 'success'
   end
 end
