@@ -1,26 +1,44 @@
 
 <%= stylesheet_link_tag "landing" %>
-<div class="container-fluid text-center">    
-    <div class="pt-2"> 
-      <h1>Welcome <%= current_user.name %> to Ascenda's Loyalty Account Point Exchange Program</h1>
-      <img src="https://images.ctfassets.net/gzhf2ey3l7ai/1HjjNJLI2I8BF7vjiFVLCs/2951a34a45ab360da0ba68c0356b3cb5/ascenda_logo.png" class="p-1 m-1 w-50"/>
-    </div>
+<div class="container-fluid text-center text-light">    
+  <div class="pt-2"> 
+    <h1 class="display-4">Welcome <%= current_user.name %> to Ascenda's Loyalty Account Point Exchange Program</h1>
+    <img src="https://careers.recruiteecdn.com/image/upload/production/images/AQcM/m-UAX0dt_4Qa.png" class="py-3 mb-5 my-3 w-75"/>
+  </div>
   <div class="d-flex flex-row justify-content-around">
-    <div class="bg-dark p-3">
-      <%= link_to "Loyalty Programs", loyalty_programs_path, class: "btn btn-primary p-5" %>
-    </div>
-    <div class="bg-dark p-3">
-      <%= link_to "Transactions", transactions_path, class: "btn btn-primary p-5", name: "trans" %>
-    </div>
-    <div class="bg-dark p-3">
-      <%= link_to "Exchange Points", loyalty_program_data_path, class: "btn btn-primary p-5", name: "exchange" %>
-    </div>
+      <div class="m-0 mx-3 px-3">
+        <div class="d-flex flex-row justify-content-left mt-2 ms-2">
+          <i class="ri-bank-line h4"></i>
+        </div>
+        <div class="m-0 p-0">
+          <p class="h4 fw-bold text-start">Loyalty Programs</p>
+          <p class="text-start">Check out our partnering loyalty programs and link your accounts here.</p>
+        </div>
+          <%= link_to "Loyalty Programs →", loyalty_programs_path, class: "fw-bold btn border mb-2 float-right ms-5 text-light" %>
+      </div>
+      <div class="m-0 mx-3 px-3">
+        <div class="d-flex flex-row justify-content-left mt-2 ms-2">
+          <i class="ri-exchange-funds-line h4 float-start"></i>
+        </div>
+        <div class="m-0 p-0">
+          <p class="h4 fw-bold text-start">Exchange Points</p>
+          <p class="text-start">Exchange loyalty points from one program to another here.</p>
+          <%= link_to "Exchange Points →", loyalty_program_data_path, class: "fw-bold btn border mb-2 float-right ms-5 text-light", name: "exchange" %>
+        </div>
+      </div>
+      <div class="m-0 mx-3 px-3">
+        <div class="d-flex flex-row justify-content-left mt-2 mx-2">
+        <i class="ri-hand-coin-line h4"></i>
+        </div>
+        <div class="m-0 p-0">
+          <p class="h4 fw-bold text-start">Check Transactions</p>
+          <p class="text-start">Check out the history of your previous loyalty program transactions here.</p>
+          <%#= link_to "Loyalty Programs →", loyalty_programs_path, class: "fw-bold btn border mb-2 float-right ms-5 text-light" %>
+        </div>
+        <%= link_to "Transactions →", transactions_path, class: "fw-bold btn border mb-2 float-right ms-5 text-light", name: "trans" %>
+      </div>
   </div>
 </div>
-
-<footer class="container-fluid text-center fixed-bottom bg-dark">
-  <p>Ascenda Loyalty Account Program</p>
-</footer>
 
 </body>
 </html>

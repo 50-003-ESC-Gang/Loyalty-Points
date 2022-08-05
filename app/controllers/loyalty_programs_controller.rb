@@ -1,5 +1,9 @@
 class LoyaltyProgramsController < ApplicationController
-  before_action :set_loyalty_program, only: %i[ show edit update destroy ]
+  include Authenticable
+
+  before_action :set_loyalty_program, only: %i[show edit update destroy]
+
+  before_action :authenticate_admin!, only: [:update_conversion_rate] # `only` part if applicable
 
   # GET /loyalty_programs or /loyalty_programs.json
   def index
@@ -19,8 +23,7 @@ class LoyaltyProgramsController < ApplicationController
   # end
 
   # GET /loyalty_programs/1 or /loyalty_programs/1.json
-  def show
-  end
+  def show; end
 
   # GET /loyalty_programs/new
   def new
@@ -28,8 +31,7 @@ class LoyaltyProgramsController < ApplicationController
   end
 
   # GET /loyalty_programs/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /loyalty_programs or /loyalty_programs.json
   def create
@@ -37,7 +39,9 @@ class LoyaltyProgramsController < ApplicationController
 
     respond_to do |format|
       if @loyalty_program.save
-        format.html { redirect_to loyalty_program_url(@loyalty_program), notice: "Loyalty program was successfully created." }
+        format.html do
+          redirect_to loyalty_program_url(@loyalty_program), notice: 'Loyalty program was successfully created.'
+        end
         format.json { render :show, status: :created, location: @loyalty_program }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -50,7 +54,9 @@ class LoyaltyProgramsController < ApplicationController
   def update
     respond_to do |format|
       if @loyalty_program.update(loyalty_program_params)
-        format.html { redirect_to loyalty_program_url(@loyalty_program), notice: "Loyalty program was successfully updated." }
+        format.html do
+          redirect_to loyalty_program_url(@loyalty_program), notice: 'Loyalty program was successfully updated.'
+        end
         format.json { render :show, status: :ok, location: @loyalty_program }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -59,12 +65,22 @@ class LoyaltyProgramsController < ApplicationController
     end
   end
 
+  def update_conversion_rate
+    @loyalty_program = LoyaltyProgram.find(params[:loyalty_program_id])
+    if params[:conversion_rate].present?
+      @loyalty_program.conversion_rate = params[:conversion_rate]
+      @loyalty_program.save
+      redirect_to loyalty_program_url(@loyalty_program),
+                  notice: 'Loyalty Program Conversion Rate Changed.'
+    end
+  end
+
   # DELETE /loyalty_programs/1 or /loyalty_programs/1.json
   def destroy
     @loyalty_program.destroy
 
     respond_to do |format|
-      format.html { redirect_to loyalty_programs_url, notice: "Loyalty program was successfully destroyed." }
+      format.html { redirect_to loyalty_programs_url, notice: 'Loyalty program was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -77,27 +93,40 @@ class LoyaltyProgramsController < ApplicationController
 
     respond_to do |format|
       if validity
-        format.html { redirect_to loyalty_program_url(@loyalty_program), notice: "Loyalty Program Membership was successfully linked." }
+        format.html do
+          redirect_to loyalty_program_url(@loyalty_program),
+                      notice: 'Loyalty Program Membership was successfully linked.'
+        end
         # format.json { head :no_content }
       else
         # format.html { redirect_to loyalty_program_url(@loyalty_program), notice: "Loyalty Program Membership was not found!" }
         # format.json { head :no_content }
-        format.html { redirect_to loyalty_program_url(@loyalty_program), notice: "Loyalty Program Membership could not be linked!" , status: :unprocessable_entity }
+        format.html do
+          redirect_to loyalty_program_url(@loyalty_program), notice: 'Loyalty Program Membership could not be linked!',
+                                                             status: :unprocessable_entity
+        end
         # @loyalty_program.new :error
-        @loyalty_program.errors[:validity] << ["Loyalty Program Membership could not be linked!"] 
+        @loyalty_program.errors[:validity] << ['Loyalty Program Membership could not be linked!']
         format.json { render json: @loyalty_program.errors, status: :unprocessable_entity }
       end
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_loyalty_program
-      @loyalty_program = LoyaltyProgram.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def loyalty_program_params
-      params.require(:loyalty_program).permit(:loyalty_program_id, :program_name, :currency_name, :processing_time, :description, :enrollment_link, :terms_and_conditions_link, :membership_regex)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_loyalty_program
+    @loyalty_program = LoyaltyProgram.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def loyalty_program_params
+    params.require(:loyalty_program).permit(:loyalty_program_id, :program_name, :currency_name, :processing_time,
+                                            :description, :enrollment_link, :terms_and_conditions_link, :membership_regex)
+  end
+
+  def loyalty_program_admin_params
+    params.require(:loyalty_program).permit(:loyalty_program_id, :program_name, :currency_name, :processing_time,
+                                            :description, :enrollment_link, :terms_and_conditions_link, :membership_regex, :conversion_rate)
+  end
 end

@@ -61,3 +61,13 @@
   <%= button_to "Back to loyalty programs", loyalty_programs_path, class: "btn btn-primary p-1 m-1" %>
 
 </div>
+<% if current_user.admin %>
+<div class="bg-dark text-light m-1"> 
+  <h5 class="card-title">Update Conversion rate</h5>
+
+  <%= form_with(url: loyalty_program_update_conversion_rate_path(@loyalty_program)) do |form| %>
+    <%= form.text_field :conversion_rate %>
+    <%= button_to "Change", @loyalty_program, method: :update_conversion_rate %>
+  <% end %>
+</div>
+<% end %>

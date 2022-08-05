@@ -4,7 +4,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
   before_action :configure_sign_up_params, only: [:create]
   before_action :configure_account_update_params, only: [:update]
 
-
   # GET /resource/sign_up
   # def new
   #   super
@@ -14,8 +13,19 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def create
     super do
       if duplicate_email?
-        flash[:notice] = 'You seem to already have an account, do you want to login instead?'
-        redirect_to root_path and return
+        # flash[:notice] = 'You seem to already have an account, do you want to login instead?'
+        redirect_to '/users/sign_up',
+                    notice: 'You seem to already have an account, do you want to login instead?' and return
+      end
+      redirect_to '/users/sign_up', notice: 'Please fill out all fields' and return if empty_input?
+
+      unless check_password_equals?
+        redirect_to '/users/sign_up',
+                    notice: 'Password and password confirmation do not match' and return
+      end
+      unless check_password_length?
+        redirect_to '/users/sign_up',
+                    notice: 'Password must be at least 6 characters long' and return
       end
     end
   end
@@ -26,6 +36,25 @@ class Users::RegistrationsController < Devise::RegistrationsController
     resource.errors.details[:email].any? do |hash|
       hash[:error] == :taken
     end
+  end
+
+  def empty_input?
+    # returns false if there is email, password, password confirmation in the user input
+    if params[:user][:email].empty? || params[:user][:password].empty? || params[:user][:password_confirmation].empty? || params[:user][:name].empty?
+      return true
+    end
+
+    false
+  end
+
+  def check_password_equals?
+    # check if password and password confirmation are the same
+    params[:user][:password] == params[:user][:password_confirmation]
+  end
+
+  def check_password_length?
+    # check if password is at least 6 characters long
+    params[:user][:password].length >= 6
   end
 
   # GET /resource/edit
@@ -73,6 +102,4 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # def after_inactive_sign_up_path_for(resource)
   #   super(resource)
   # end
-
-
 end
