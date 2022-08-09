@@ -4,16 +4,16 @@
             <a class="nav-link text-light fw-bold" href="/">Home</a>
         </div>
         <div class="">
-            <a class="nav-link text-light fw-bold" href="<%= loyalty_programs_path %>">Loyalty Programs</a>
+            <a class="nav-link text-light fw-bold" href="<%= loyalty_programs_path %>" name="loyalty_programs">Loyalty Programs</a>
         </div>
         <div class="">
-            <a class="nav-link text-light fw-bold" href="<%= loyalty_program_data_path%>">Exchange Points</a>
+            <a class="nav-link text-light fw-bold" href="<%= loyalty_program_data_path%>" name="exchange">Exchange Points</a>
         </div>
         <div class="">
-            <a class="nav-link text-light fw-bold" href="<%= transactions_path%>">Transactions</a>
+            <a class="nav-link text-light fw-bold" href="<%= transactions_path%>" name="transactions">Transactions</a>
         </div>
     </div>
     <div class="p-0 m-0 pe-2 nav-link">
-        <%= link_to "Sign Out", destroy_user_session_path, method: :delete, class: "nav-link text-warning" %>
+        <%= link_to "Sign Out", destroy_user_session_path, method: :delete, class: "nav-link text-warning", name: "sign_out" %>
     </div>
 </div>

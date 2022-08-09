@@ -20,7 +20,7 @@ class AccrualProcessor < Rails::Application
     time = Time.new
     date_str1 = "#{time.year}#{'%02d' % time.month}#{'%02d' % time.day}" # YYYYMMDD format, used for file name
     date_str2 = "#{time.year}-#{'%02d' % time.month}-#{'%02d' % time.day}" # YYYY-MM-DD format, used for csv field
-    company_code = transaction.loyalty_program_datum.loyalty_program_id # loyalty_program_id is used as foreign key of lp inside lpd, and is supposed to be string representing the company
+    company_code = transaction.loyalty_program_id # loyalty_program_id is used as foreign key of lp inside lpd, and is supposed to be string representing the company
     filepath = "#{@@FOLDER_ACCRUAL}#{company_code}_#{date_str1}.txt"
     handback_name = "#{company_code}_#{date_str1}.HANDBACK.txt"
 
@@ -38,7 +38,7 @@ class AccrualProcessor < Rails::Application
   end
 
   def set_jobs(_date_str1, _date_str2, _company_code, filepath, handback_name)
-    SendAccrualJob.perform_later.set(wait_until: Date.tomorrow.noon).call(filepath)
+    SendAccrualJob.set(wait_until: Date.tomorrow.noon).perform_later(filepath)
     DownloadHandbackJob.set(wait_until: Date.tomorrow.midnight).perform_later(handback_name, @@FOLDER_HANDBACK)
   end
 
@@ -53,7 +53,8 @@ class AccrualProcessor < Rails::Application
     # amount->txn.amount
     # reference number->txn.id
     # partner code->txn.lpd.lp_id
-    accrual_file.syswrite("#{@@current_indices[company_code]},#{transaction.loyalty_program_datum.account.id},#{transaction.loyalty_program_datum.account.user.name},#{transaction.loyalty_program_datum.account.user.lastname},#{date_str2},#{transaction.amount},#{transaction.id},#{company_code}\n")
+
+    accrual_file.syswrite("#{@@current_indices[company_code]},#{transaction.loyalty_program_datum.account_id},#{transaction.loyalty_program_datum.account_id},#{transaction.loyalty_program_datum.account_id},#{date_str2},#{transaction.amount},#{transaction.id},#{company_code}\n")
     # increment the index
     @@current_indices[company_code] += 1
     accrual_file.close
