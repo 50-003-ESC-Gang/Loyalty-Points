@@ -52,8 +52,7 @@ class AccrualProcessor < Rails::Application
     # amount->txn.amount
     # reference number->txn.id
     # partner code->txn.lpd.lp_id
-    account = Account.where(id: transaction.account_id).first
-    user = account.user
+    user = User.where(id: transaction.account_id).first  #seems that this account id is actually user id
     user_first_name = user.name
     user_last_name = user.lastname
     member_id = user.id
@@ -117,7 +116,8 @@ class AccrualProcessor < Rails::Application
 
 
       # Email user
-      acc = Account.where(id: txn.account_id).first
+      user = User.where(id: transaction.account_id) #account_id is actually id for user
+      acc = user.account
       StatusMailer.with(user: acc.user, transaction_id: transaction.id).status_email.deliver_now
       # https://guides.rubyonrails.org/action_mailer_basics.html
     end
