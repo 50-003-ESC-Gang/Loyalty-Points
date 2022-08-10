@@ -1,6 +1,6 @@
 class AccrualProcessor < Rails::Application
   # @@current_index = 1
-  @@current_indices = {}
+  @@CURRENT_INDICES = {}
   @@FOLDER_ACCRUAL = './tmp/accruals/'
   @@FOLDER_HANDBACK = './tmp/handbacks/'
 
@@ -33,7 +33,7 @@ class AccrualProcessor < Rails::Application
     new_file = File.new(filepath, 'w')
     new_file.syswrite("index,Member ID,Member first name,Member last name,Transfer date,Amount,Reference number,Partner code\n")
     # @@current_index = 1
-    @@current_indices[company_code] = 1
+    @@CURRENT_INDICES[company_code] = 1
     new_file.close
   end
 
@@ -45,7 +45,7 @@ class AccrualProcessor < Rails::Application
   end
 
   def write_accrual(_date_str1, date_str2, company_code, filepath, _handback_name, transaction)
-    accrual_file = File.open(filepath, 'a')
+    accrual_file = File.open(filepath, 'a+')
     # using transaction's id as ref number
     # transaction attribute->csv field mapping:
     # member id->txn.lpd.account.id
@@ -56,14 +56,17 @@ class AccrualProcessor < Rails::Application
     # reference number->txn.id
     # partner code->txn.lpd.lp_id
     account_id = transaction.loyalty_program_datum.account_id
-    user = User.where(id: account_id)[0]
+    user = User.where(id: account_id).first
     user_first_name = user.name
     user_last_name = user.lastname
     member_id = user.id
-
-    accrual_file.syswrite("#{@@current_indices[company_code]},#{member_id},#{user_first_name},#{user_last_name},#{date_str2},#{transaction.amount},#{transaction.id},#{company_code}\n")
+    #  handling unexpected loss of index
+    if @@CURRENT_INDICES[company_code].nil?
+      @@CURRENT_INDICES[company_code] = accrual_file.readlines.length 
+    end
+    accrual_file.syswrite("#{@@CURRENT_INDICES[company_code]},#{member_id},#{user_first_name},#{user_last_name},#{date_str2},#{transaction.amount},#{transaction.id},#{company_code}\n")
     # increment the index
-    @@current_indices[company_code] += 1
+    @@CURRENT_INDICES[company_code] += 1
     accrual_file.close
   end
 
@@ -73,6 +76,7 @@ class AccrualProcessor < Rails::Application
 
     # get just the file name from file path
     csv_file_name = File.basename(csv_file_path)
+
 
     # split file name by undescore
     loyalty_program_id, handback_date = csv_file_name.split('_')
@@ -114,6 +118,7 @@ class AccrualProcessor < Rails::Application
         next
       end
 
+
       # Email user
       acc = Account.where(id: txn.account_id).first
       StatusMailer.with(user: acc.user, transaction_id: transaction.id).status_email.deliver_now
@@ -147,7 +152,7 @@ class AccrualProcessor < Rails::Application
     get_status(outcome_code) == 'success'
   end
 
-  def self.get_current_indices
-    @@current_indices.dup
+  def self.get_CURRENT_INDICES
+    @@CURRENT_INDICES.dup
   end
 end
