@@ -53,8 +53,13 @@ class AccrualProcessor < Rails::Application
     # amount->txn.amount
     # reference number->txn.id
     # partner code->txn.lpd.lp_id
+    account_id = transaction.loyalty_program_datum.account_id
+    user = User.where(id: account_id)[0]
+    user_first_name = user.name
+    user_last_name = user.lastname
 
-    accrual_file.syswrite("#{@@current_indices[company_code]},#{transaction.loyalty_program_datum.account_id},#{transaction.loyalty_program_datum.account_id},#{transaction.loyalty_program_datum.account_id},#{date_str2},#{transaction.amount},#{transaction.id},#{company_code}\n")
+
+    accrual_file.syswrite("#{@@current_indices[company_code]},#{user_first_name},#{user_last_name},#{date_str2},#{transaction.amount},#{transaction.id},#{company_code}\n")
     # increment the index
     @@current_indices[company_code] += 1
     accrual_file.close

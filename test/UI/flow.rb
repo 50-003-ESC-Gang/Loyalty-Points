@@ -8,12 +8,14 @@ options = Selenium::WebDriver::Options.chrome
 
 driver = Selenium::WebDriver.for :chrome, service: service, capabilities: options
 
+
+#local port server
 driver.get('http://127.0.0.1:3000')
 
 emailInput = driver.find_element(name: 'user[email]')
 passInput = driver.find_element(name: 'user[password]')
 
-sleep 2
+sleep 3
 
 emailInput.send_keys "3@gmail.com"
 emailInput.submit
@@ -43,11 +45,11 @@ sleep 5
 
 transP = driver.find_element(name: "transP")
 transP.click
-sleep 3
+sleep 5
 
 inExchange = driver.find_element(name: 'loyalty_program_datum[in_points]')
-inExchange.send_keys "12"
-sleep 3
+inExchange.send_keys "30"
+sleep 5
 
 
 subExchange = driver.find_element(name: "commit")
@@ -56,15 +58,15 @@ sleep 3
 
 trans = driver.find_element(name: 'transactions')
 trans.click
-sleep 5
+sleep 7
 
 ex = driver.find_element(name: 'exchange')
 ex.click
-sleep 5
+sleep 7
 
 signOut = driver.find_element(name: "sign_out")
 signOut.click
-sleep 1
+sleep 3
 
 
 #Show admin can change conversion rate
@@ -89,19 +91,10 @@ linkAcc.click
 sleep 5
 
 convInput = driver.find_element(name: "conversion_rate")
-
 convInput.send_keys 0.7
-sleep 3
-
-convInput.submit
 sleep 5
 
+convInput.submit
+sleep 7
 
-
-
-
-
-
-# button = driver.find_element(name: 'commit')
-# driver.quit
 

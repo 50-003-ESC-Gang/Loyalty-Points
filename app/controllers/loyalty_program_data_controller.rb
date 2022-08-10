@@ -114,9 +114,9 @@ class LoyaltyProgramDataController < ApplicationController
           account_id: current_user.id,
           loyalty_program_datum_id: 11,
         )
-        # if (@transaction)
-        #   AccrualProcessor.convert_to_accrual(@transaction)
-        # end 
+        if (@transaction)
+          AccrualProcessor.convert_to_accrual(@transaction)
+        end 
         format.html { redirect_to loyalty_program_datum_url(@loyalty_program_datum), notice: msg }
         format.json { render :show, status: :ok, location: @loyalty_program_datum }
       # else
