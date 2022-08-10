@@ -39,9 +39,9 @@ class AccrualProcessor < Rails::Application
 
   def set_jobs(_date_str1, _date_str2, _company_code, filepath, handback_name)
     # SendAccrualJob.set(wait_until: Date.tomorrow.noon).perform_later(filepath)
-    SendAccrualJob.perform_later(filepath) #for demonstration
+    SendAccrualJob.perform_later(filepath) # for demonstration
     # DownloadHandbackJob.set(wait_until: Date.tomorrow.midnight).perform_later(handback_name, @@FOLDER_HANDBACK)
-    DownloadHandbackJob.perform_later(handback_name, @@FOLDER_HANDBACK) #for demonstration
+    DownloadHandbackJob.perform_later(handback_name, @@FOLDER_HANDBACK) # for demonstration
   end
 
   def write_accrual(_date_str1, date_str2, company_code, filepath, _handback_name, transaction)
@@ -89,8 +89,6 @@ class AccrualProcessor < Rails::Application
     CSV.foreach(csv_file_path, headers: true) do |row|
       # continue to next row if outcome code is not success
 
-      account_id = row['Account Id'] || 1
-
       #   # create a new transcation in db
       #   txn = Transaction.new(
       #     date: row['Transfer Date'],
@@ -102,20 +100,24 @@ class AccrualProcessor < Rails::Application
 
       begin
         # updaate transaction status in db
-        Transaction.where(id: row['Reference number']).update(status: get_status(row['Outcome code']))
+
+        txn = Transaction.where(id: row['Reference number']).first
+        txn.update(status: get_status(row['Outcome code']))
+
+        if get_status(row['Outcome code']) == 'success'
+          # update LoyaltyProgramDatum points
+          debugger
+          LoyaltyProgramDatum.where(id: txn.loyalty_program_datum_id).first.update(points: row['Points'])
+        end
       rescue StandardError # exception type?
         puts 'transaction not found'
         next
       end
 
-      # update loyalty program data points
-      acc = Account.where(id: account_id).first
-      acc.loyalty_program_data.where(loyalty_program_id: loyalty_program).first.update(points: row['Amount'])
-
-      #Email user
+      # Email user
+      acc = Account.where(id: txn.account_id).first
       StatusMailer.with(user: acc.user, transaction_id: transaction.id).status_email.deliver_now
-      #https://guides.rubyonrails.org/action_mailer_basics.html
-
+      # https://guides.rubyonrails.org/action_mailer_basics.html
     end
   end
 
