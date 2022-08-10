@@ -38,8 +38,10 @@ class AccrualProcessor < Rails::Application
   end
 
   def set_jobs(_date_str1, _date_str2, _company_code, filepath, handback_name)
-    SendAccrualJob.set(wait_until: Date.tomorrow.noon).perform_later(filepath)
-    DownloadHandbackJob.set(wait_until: Date.tomorrow.midnight).perform_later(handback_name, @@FOLDER_HANDBACK)
+    # SendAccrualJob.set(wait_until: Date.tomorrow.noon).perform_later(filepath)
+    SendAccrualJob.perform_later(filepath) #for demonstration
+    # DownloadHandbackJob.set(wait_until: Date.tomorrow.midnight).perform_later(handback_name, @@FOLDER_HANDBACK)
+    DownloadHandbackJob.perform_later(handback_name, @@FOLDER_HANDBACK) #for demonstration
   end
 
   def write_accrual(_date_str1, date_str2, company_code, filepath, _handback_name, transaction)
@@ -57,9 +59,9 @@ class AccrualProcessor < Rails::Application
     user = User.where(id: account_id)[0]
     user_first_name = user.name
     user_last_name = user.lastname
+    member_id = user.id
 
-
-    accrual_file.syswrite("#{@@current_indices[company_code]},#{user_first_name},#{user_last_name},#{date_str2},#{transaction.amount},#{transaction.id},#{company_code}\n")
+    accrual_file.syswrite("#{@@current_indices[company_code]},#{member_id},#{user_first_name},#{user_last_name},#{date_str2},#{transaction.amount},#{transaction.id},#{company_code}\n")
     # increment the index
     @@current_indices[company_code] += 1
     accrual_file.close
@@ -86,9 +88,6 @@ class AccrualProcessor < Rails::Application
     # end
     CSV.foreach(csv_file_path, headers: true) do |row|
       # continue to next row if outcome code is not success
-      unless valid_transcation?(row['outcome_code'])
-        next # TODO : Add error handling
-      end
 
       account_id = row['Account Id'] || 1
 
@@ -102,8 +101,6 @@ class AccrualProcessor < Rails::Application
       #   ).save
 
       begin
-        transaction = Transaction.where(id: row['Reference number'])
-        transaction.update(status: get_status(row['Outcome code']))
         # updaate transaction status in db
         Transaction.where(id: row['Reference number']).update(status: get_status(row['Outcome code']))
       rescue StandardError # exception type?
