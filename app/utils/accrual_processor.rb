@@ -24,15 +24,12 @@ class AccrualProcessor < Rails::Application
     filepath = "#{@@FOLDER_ACCRUAL}#{company_code}_#{date_str1}.txt"
     handback_name = "#{company_code}_#{date_str1}.HANDBACK.txt"
 
-    # this handback is for demonstration only
-    # handback_name = 'id0_20200801.HANDBACK.txt'
     [date_str1, date_str2, company_code, filepath, handback_name]
   end
 
   def create_new_accrual(_date_str1, _date_str2, company_code, filepath, _handback_name)
     new_file = File.new(filepath, 'w')
     new_file.syswrite("index,Member ID,Member first name,Member last name,Transfer date,Amount,Reference number,Partner code\n")
-    # @@current_index = 1
     @@CURRENT_INDICES[company_code] = 1
     new_file.close
   end
@@ -55,12 +52,12 @@ class AccrualProcessor < Rails::Application
     # amount->txn.amount
     # reference number->txn.id
     # partner code->txn.lpd.lp_id
-    account_id = transaction.loyalty_program_datum.account_id
-    user = User.where(id: account_id).first
+    account = Account.where(id: transaction.account_id).first
+    user = account.user
     user_first_name = user.name
     user_last_name = user.lastname
     member_id = user.id
-    #  handling unexpected loss of index
+    #  handling unexpected loss of index, possibly due to saving changed code
     if @@CURRENT_INDICES[company_code].nil?
       @@CURRENT_INDICES[company_code] = accrual_file.readlines.length 
     end
