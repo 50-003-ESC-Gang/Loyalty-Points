@@ -5,6 +5,10 @@ RSpec.describe 'AccrualProcessor.get_names' do
     FactoryBot.create(:loyalty_program)
   end
 
+  let(:lpd) do
+    FactoryBot.create(:loyalty_program_datum, account_id: user.account.id, loyalty_program_id: lp.loyalty_program_id)
+  end
+
   let(:user) do
     FactoryBot.create(:user)
   end
@@ -22,6 +26,7 @@ RSpec.describe 'AccrualProcessor.get_names' do
     allow(@transaction).to receive('loyalty_program_datum') { @lpd }
     allow(@transaction).to receive('amount') { rand 100 }
     allow(@transaction).to receive('id') { rand 10_000 }
+    allow(@transaction).to receive('loyalty_program_id') { lp.loyalty_program_id }
   end
 
   context 'whenever called' do
@@ -123,6 +128,8 @@ RSpec.describe 'AccrualProcessor.write_accrual' do
     allow(@transaction).to receive('loyalty_program_datum') { @lpd }
     allow(@transaction).to receive('amount') { rand 100 }
     allow(@transaction).to receive('id') { rand 10_000 }
+    allow(@transaction).to receive('loyalty_program_id') { lp.loyalty_program_id }
+
 
     @date_str1, @date_str2, @company_code, @filepath, @handback_name = AccrualProcessor.get_names(@transaction)
     File.delete(@filepath) if File.exist?(@filepath)
