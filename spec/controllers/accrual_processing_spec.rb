@@ -22,6 +22,8 @@ RSpec.describe 'AccrualProcessor.get_names' do
     allow(@transaction).to receive('loyalty_program_datum') { @lpd }
     allow(@transaction).to receive('amount') { rand 100 }
     allow(@transaction).to receive('id') { rand 10_000 }
+    allow(@transaction).to receive('loyalty_program_id') { lp.loyalty_program_id }
+
   end
 
   context 'whenever called' do
@@ -123,6 +125,9 @@ RSpec.describe 'AccrualProcessor.write_accrual' do
     allow(@transaction).to receive('loyalty_program_datum') { @lpd }
     allow(@transaction).to receive('amount') { rand 100 }
     allow(@transaction).to receive('id') { rand 10_000 }
+    allow(@transaction).to receive('loyalty_program_id') { lp.loyalty_program_id }
+    allow(@transaction).to receive('account_id') {user.id}
+
 
     @date_str1, @date_str2, @company_code, @filepath, @handback_name = AccrualProcessor.get_names(@transaction)
     File.delete(@filepath) if File.exist?(@filepath)
