@@ -52,14 +52,12 @@ class AccrualProcessor < Rails::Application
     # amount->txn.amount
     # reference number->txn.id
     # partner code->txn.lpd.lp_id
-    user = User.where(id: transaction.account_id).first  #seems that this account id is actually user id
+    user = User.where(id: transaction.account_id).first # seems that this account id is actually user id
     user_first_name = user.name
     user_last_name = user.lastname
     member_id = user.id
     #  handling unexpected loss of index, possibly due to saving changed code
-    if @@CURRENT_INDICES[company_code].nil?
-      @@CURRENT_INDICES[company_code] = accrual_file.readlines.length 
-    end
+    @@CURRENT_INDICES[company_code] = accrual_file.readlines.length if @@CURRENT_INDICES[company_code].nil?
     accrual_file.syswrite("#{@@CURRENT_INDICES[company_code]},#{member_id},#{user_first_name},#{user_last_name},#{date_str2},#{transaction.amount},#{transaction.id},#{company_code}\n")
     # increment the index
     @@CURRENT_INDICES[company_code] += 1
@@ -73,31 +71,14 @@ class AccrualProcessor < Rails::Application
     # get just the file name from file path
     csv_file_name = File.basename(csv_file_path)
 
-
     # split file name by undescore
     loyalty_program_id, handback_date = csv_file_name.split('_')
     handback_date = handback_date.split('.')[0]
-    puts loyalty_program_id
     loyalty_program = LoyaltyProgram.where(loyalty_program_id: loyalty_program_id).first.id
-    # loyalty_program_data_id = LoyaltyProgramDatum.where(loyalty_program_id: loyalty_program).id
 
-    # check csv if 'Account Id' column is present
     columns = CSV.read(csv_file_path, headers: true).headers
-    # check if 'Account Id' column is present
 
-    # end
     CSV.foreach(csv_file_path, headers: true) do |row|
-      # continue to next row if outcome code is not success
-
-      #   # create a new transcation in db
-      #   txn = Transaction.new(
-      #     date: row['Transfer Date'],
-      #     loyalty_program_data_id: loyalty_program_data_id,
-      #     amount: row['Amount'],
-      #     status: 'success',
-      #     account_id: account_id # if row['Account Id'] is not present, use default value of 1
-      #   ).save
-
       begin
         # updaate transaction status in db
 
@@ -106,7 +87,6 @@ class AccrualProcessor < Rails::Application
 
         if get_status(row['Outcome code']) == 'success'
           # update LoyaltyProgramDatum points
-          debugger
           LoyaltyProgramDatum.where(id: txn.loyalty_program_datum_id).first.update(points: row['Points'])
         end
       rescue StandardError # exception type?
@@ -114,9 +94,8 @@ class AccrualProcessor < Rails::Application
         next
       end
 
-
       # Email user
-      user = User.where(id: transaction.account_id) #account_id is actually id for user
+      user = User.where(id: transaction.account_id) # account_id is actually id for user
       acc = user.account
       StatusMailer.with(user: acc.user, transaction_id: transaction.id).status_email.deliver_now
       # https://guides.rubyonrails.org/action_mailer_basics.html
