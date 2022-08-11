@@ -183,11 +183,32 @@ RSpec.describe 'AccrualProcessor.process_handback' do
 
   let(:good_csv) { './spec/fixtures/STARBUCCAPOINTS_20220810.HANDBACK.txt' }
 
+  # let(:fuzz_csv) do
+  #   FactoryBot.create(:fuzz_csv)
+  # end
+
   it 'should process proper handback csv and update transaction status' do
     lp_id = lp.id
     txn_id = transaction.id
     AccrualProcessor.process_handback(good_csv)
-    
+
     expect(LoyaltyProgramDatum.first.points).to eq(20_000)
+  end
+
+  # Fuzzing Tests
+  context 'when given a fuzz csv' do
+    it 'should not process proper handback csv and update transaction status' do
+      file_path = './spec/fixtures/dASDASDASDA.txt'
+      lpd = LoyaltyProgramDatum.create(account_id: user.account.id, loyalty_program_id: lp.loyalty_program_id,
+                                       points: 0)
+      AccrualProcessor.process_handback(file_path)
+      expect(LoyaltyProgramDatum.find(lpd.id).points).to eq(0)
+    end
+
+    #   it `should not update transaction status` do
+    #     CsvGeneratorHelper.call(fuzz_csv)
+    #     expect(LoyaltyProgramDatum.find(lpd.id).points).to eq(0)
+    #   end
+    # end
   end
 end
