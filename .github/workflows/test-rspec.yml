@@ -25,8 +25,11 @@ jobs:
 
       - name: Setup Database
         working-directory: ${{env.api-dir}}
-        run: bin/rails db:create
-          bin/rails db:migrate RAILS_ENV=test
+        env: # Or as an environment variable
+          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+        run: |
+        bin/rails db:create
+        bin/rails db:migrate RAILS_ENV=test
 
       - name: Build and test with rspec
         working-directory: ${{env.api-dir}}
