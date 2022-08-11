@@ -129,7 +129,7 @@ RSpec.describe 'AccrualProcessor.write_accrual' do
     allow(@transaction).to receive('amount') { rand 100 }
     allow(@transaction).to receive('id') { rand 10_000 }
     allow(@transaction).to receive('loyalty_program_id') { lp.loyalty_program_id }
-    allow(@transaction).to receive('account_id') {user.id}
+    allow(@transaction).to receive('account_id') { user.id }
 
     @date_str1, @date_str2, @company_code, @filepath, @handback_name = AccrualProcessor.get_names(@transaction)
     File.delete(@filepath) if File.exist?(@filepath)
@@ -176,18 +176,11 @@ RSpec.describe 'AccrualProcessor.process_handback' do
     FactoryBot.create(:account)
   end
 
-  # let(:transaction) do
-  #   Transaction.create(account_id: user.account.id, loyalty_program_datum_id: lpd.id, amount: 100)
-  # end
-
   let(:transaction) do
     FactoryBot.create(:transaction, account_id: user.account.id, loyalty_program_datum_id: lpd.id, amount: 100,
                                     loyalty_program_id: lp.loyalty_program_id)
   end
 
-  # before(:each) do
-  #   allow_any_instance_of(MyClass).to receive(....)
-  # end
   let(:good_csv) { './spec/fixtures/STARBUCCAPOINTS_20220810.HANDBACK.txt' }
 
   it 'should process proper handback csv and update transaction status' do
