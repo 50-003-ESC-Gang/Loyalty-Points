@@ -72,6 +72,7 @@ class AccrualProcessor < Rails::Application
     csv_file_name = File.basename(csv_file_path)
 
     # split file name by undescore
+    # debugger
     loyalty_program_id, handback_date = csv_file_name.split('_')
     handback_date = handback_date.split('.')[0]
     loyalty_program = LoyaltyProgram.where(loyalty_program_id: loyalty_program_id).first.id
@@ -95,9 +96,10 @@ class AccrualProcessor < Rails::Application
       end
 
       # Email user
-      user = User.where(id: transaction.account_id) # account_id is actually id for user
+      # debugger
+      user = User.where(id: txn.account_id).first # account_id is actually id for user
       acc = user.account
-      StatusMailer.with(user: acc.user, transaction_id: transaction.id).status_email.deliver_now
+      StatusMailer.with(user: acc.user, transaction_id: txn.id).status_email.deliver_now
       # https://guides.rubyonrails.org/action_mailer_basics.html
     end
   end
