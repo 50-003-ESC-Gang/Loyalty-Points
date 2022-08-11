@@ -99,7 +99,7 @@ RSpec.describe 'AccrualProcessor.create_new_accrual' do
     end
 
     it 'should reset index of the csv file' do
-      indices = AccrualProcessor.get_current_indices
+      indices = AccrualProcessor.get_CURRENT_INDICES
       expect(indices[@company_code]).to be 1
     end
   end
