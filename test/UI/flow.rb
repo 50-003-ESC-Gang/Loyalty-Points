@@ -98,3 +98,23 @@ convInput.submit
 sleep 7
 
 
+# #Valid input
+# linkMember = driver.find_element(name: "membership_id")
+# linkMember.send_keys 12345678
+
+# buttonLM = driver.find_element(name: "submit_memID")
+# buttonLM.click
+
+
+# #Invalid input
+# linkMember = driver.find_element(name: "membership_id")
+# linkMember.send_keys "1amno1"
+# linkMember.submit
+
+# buttonLM = driver.find_element(name: "submit_memID")
+# buttonLM.click
+
+
+
+
+

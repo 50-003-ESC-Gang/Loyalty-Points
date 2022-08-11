@@ -116,9 +116,9 @@ class LoyaltyProgramDataController < ApplicationController
         )
 
         StatusMailer.with(user: current_user, transaction_id: @transaction.id).status_email.deliver_later
-        if (@transaction)
-          AccrualProcessor.convert_to_accrual(@transaction)
-        end 
+        # if (@transaction)
+        #   AccrualProcessor.convert_to_accrual(@transaction)
+        # end 
         format.html { redirect_to loyalty_program_datum_url(@loyalty_program_datum), notice: msg }
         format.json { render :show, status: :ok, location: @loyalty_program_datum }
       # else
