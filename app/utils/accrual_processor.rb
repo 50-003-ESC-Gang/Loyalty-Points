@@ -65,8 +65,7 @@ class AccrualProcessor < Rails::Application
   end
 
   def self.process_handback(csv_file_path)
-    # process csv file
-    # save to database
+    # process csv file and save to database
 
     # get just the file name from file path
     csv_file_name = File.basename(csv_file_path)
@@ -81,13 +80,12 @@ class AccrualProcessor < Rails::Application
     CSV.foreach(csv_file_path, headers: true) do |row|
       begin
         # updaate transaction status in db
-
         txn = Transaction.where(id: row['Reference number']).first
         txn.update(status: get_status(row['Outcome code']))
 
         if get_status(row['Outcome code']) == 'success'
           # update LoyaltyProgramDatum points
-          LoyaltyProgramDatum.where(id: txn.loyalty_program_datum_id).first.update(points: row['Points'])
+          LoyaltyProgramDatum.where(id: txn.loyalty_program_datum_id).first.update(points: row['Amount'])
         end
       rescue StandardError # exception type?
         puts 'transaction not found'
@@ -95,9 +93,9 @@ class AccrualProcessor < Rails::Application
       end
 
       # Email user
-      user = User.where(id: transaction.account_id) # account_id is actually id for user
+      user = User.where(id: txn.account_id).first # account_id is actually id for user
       acc = user.account
-      StatusMailer.with(user: acc.user, transaction_id: transaction.id).status_email.deliver_now
+      StatusMailer.with(user: acc.user, transaction_id: txn.id).status_email.deliver_now
       # https://guides.rubyonrails.org/action_mailer_basics.html
     end
   end

@@ -1,0 +1,2 @@
+Transfer date,Amount,Reference number,Outcome code
+2022-08-10,20000,1,0000
