@@ -37,6 +37,7 @@ jobs:
         working-directory: ${{env.api-dir}}
         env: # Or as an environment variable
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+          database: Loyalty_Points_test
         run: |
           bin/rails db:create
           bin/rails db:migrate RAILS_ENV=test
