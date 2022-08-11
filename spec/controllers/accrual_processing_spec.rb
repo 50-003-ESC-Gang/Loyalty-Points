@@ -164,9 +164,9 @@ RSpec.describe 'AccrualProcessor.process_handback' do
     FactoryBot.create(:loyalty_program, loyalty_program_id: 'STARBUCCAPOINTS')
   end
 
-  let(:lpd) do
-    FactoryBot.create(:loyalty_program_datum, account_id: user.account.id, loyalty_program_id: lp.loyalty_program_id)
-  end
+  # let(:lpd) do
+  #   FactoryBot.create(:loyalty_program_datum, account_id: user.account.id, loyalty_program_id: lp.loyalty_program_id)
+  # end
 
   let(:user) do
     FactoryBot.create(:user)
@@ -177,7 +177,7 @@ RSpec.describe 'AccrualProcessor.process_handback' do
   end
 
   let(:transaction) do
-    FactoryBot.create(:transaction, account_id: user.account.id, loyalty_program_datum_id: lpd.id, amount: 100,
+    FactoryBot.create(:transaction, account_id: user.account.id, loyalty_program_datum_id: 1, amount: 100,
                                     loyalty_program_id: lp.loyalty_program_id)
   end
 
@@ -187,6 +187,7 @@ RSpec.describe 'AccrualProcessor.process_handback' do
     lp_id = lp.id
     txn_id = transaction.id
     AccrualProcessor.process_handback(good_csv)
-    expect(transaction.status).to be 1
+    
+    expect(LoyaltyProgramDatum.first.points).to eq(20_000)
   end
 end
