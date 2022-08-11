@@ -82,13 +82,12 @@ class AccrualProcessor < Rails::Application
     CSV.foreach(csv_file_path, headers: true) do |row|
       begin
         # updaate transaction status in db
-
         txn = Transaction.where(id: row['Reference number']).first
         txn.update(status: get_status(row['Outcome code']))
 
         if get_status(row['Outcome code']) == 'success'
           # update LoyaltyProgramDatum points
-          LoyaltyProgramDatum.where(id: txn.loyalty_program_datum_id).first.update(points: row['Points'])
+          LoyaltyProgramDatum.where(id: txn.loyalty_program_datum_id).first.update(points: row['Amount'])
         end
       rescue StandardError # exception type?
         puts 'transaction not found'
@@ -96,7 +95,6 @@ class AccrualProcessor < Rails::Application
       end
 
       # Email user
-      # debugger
       user = User.where(id: txn.account_id).first # account_id is actually id for user
       acc = user.account
       StatusMailer.with(user: acc.user, transaction_id: txn.id).status_email.deliver_now
