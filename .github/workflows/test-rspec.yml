@@ -18,8 +18,6 @@ jobs:
             # needed because the postgres container does not provide a healthcheck
             options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
-
-
     env:
       RAILS_ENV: test
 
@@ -40,8 +38,8 @@ jobs:
         env: # Or as an environment variable
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
         run: |
-        bin/rails db:create
-        bin/rails db:migrate RAILS_ENV=test
+          bin/rails db:create
+          bin/rails db:migrate RAILS_ENV=test
 
       - name: Build and test with rspec
         working-directory: ${{env.api-dir}}
