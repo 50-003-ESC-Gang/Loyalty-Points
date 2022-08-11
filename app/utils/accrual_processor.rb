@@ -71,11 +71,15 @@ class AccrualProcessor < Rails::Application
     csv_file_name = File.basename(csv_file_path)
 
     # split file name by undescore
-    loyalty_program_id, handback_date = csv_file_name.split('_')
-    handback_date = handback_date.split('.')[0]
-    loyalty_program = LoyaltyProgram.where(loyalty_program_id: loyalty_program_id).first.id
+    begin
+      loyalty_program_id, handback_date = csv_file_name.split('_')
+      handback_date = handback_date.split('.')[0]
+      loyalty_program = LoyaltyProgram.where(loyalty_program_id: loyalty_program_id).first.id
 
-    columns = CSV.read(csv_file_path, headers: true).headers
+      columns = CSV.read(csv_file_path, headers: true).headers
+    rescue Exception => e
+      puts "Error reading CSV: #{e.message}"
+    end
 
     CSV.foreach(csv_file_path, headers: true) do |row|
       begin
