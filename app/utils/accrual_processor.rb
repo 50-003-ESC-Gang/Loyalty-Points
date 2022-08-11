@@ -65,14 +65,12 @@ class AccrualProcessor < Rails::Application
   end
 
   def self.process_handback(csv_file_path)
-    # process csv file
-    # save to database
+    # process csv file and save to database
 
     # get just the file name from file path
     csv_file_name = File.basename(csv_file_path)
 
     # split file name by undescore
-    # debugger
     loyalty_program_id, handback_date = csv_file_name.split('_')
     handback_date = handback_date.split('.')[0]
     loyalty_program = LoyaltyProgram.where(loyalty_program_id: loyalty_program_id).first.id
