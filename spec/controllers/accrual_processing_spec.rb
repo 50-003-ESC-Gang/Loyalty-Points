@@ -182,10 +182,11 @@ RSpec.describe 'AccrualProcessor.process_handback' do
   end
 
   let(:good_csv) { './spec/fixtures/STARBUCCAPOINTS_20220810.HANDBACK.txt' }
+  let(:fuzz_filepath) { './spec/fixtures/STARBUCCAPOINTS_20120810.HANDBACK.txt.fuzz' }
 
-  # let(:fuzz_csv) do
-  #   FactoryBot.create(:fuzz_csv)
-  # end
+  let(:fuzz_csv) do
+    FactoryBot.create(:handback_file)
+  end
 
   it 'should process proper handback csv and update transaction status' do
     lp_id = lp.id
@@ -197,18 +198,37 @@ RSpec.describe 'AccrualProcessor.process_handback' do
 
   # Fuzzing Tests
   context 'when given a fuzz csv' do
-    it 'should not process proper handback csv and update transaction status' do
+    before(:each) do
+    lpd = LoyaltyProgramDatum.create(account_id: user.account.id, loyalty_program_id: lp.loyalty_program_id,
+                                      points: 0)
+
+    end
+
+    it 'should not process random fuzz csv' do
+      # generate a csv at fixture at fuzz_filepath
+      # check if fuzz_filepath has any files
+      File.delete(fuzz_filepath) if File.exist?(fuzz_filepath)
+      # create a new file at fuzz_filepath
+      File.open(fuzz_filepath, 'w') do |file|
+        file.write("
+        Transfer date,Amount,Reference number,Outcome code \n
+        #{fuzz_csv.transfer_date},#{fuzz_csv.amount},#{fuzz_csv.reference_number},#{fuzz_csv.outcome_code}
+        ")
+      end
+      # process the file
+      AccrualProcessor.process_handback(fuzz_filepath)
+      expect(LoyaltyProgramDatum.first.points).to eq(0)
+
+      # delete the file
+      File.delete(fuzz_filepath) if File.exist?(fuzz_filepath)
+    end
+
+    it 'should not files with different name' do
       file_path = './spec/fixtures/dASDASDASDA.txt'
       lpd = LoyaltyProgramDatum.create(account_id: user.account.id, loyalty_program_id: lp.loyalty_program_id,
                                        points: 0)
       AccrualProcessor.process_handback(file_path)
       expect(LoyaltyProgramDatum.find(lpd.id).points).to eq(0)
     end
-
-    #   it `should not update transaction status` do
-    #     CsvGeneratorHelper.call(fuzz_csv)
-    #     expect(LoyaltyProgramDatum.find(lpd.id).points).to eq(0)
-    #   end
-    # end
   end
 end

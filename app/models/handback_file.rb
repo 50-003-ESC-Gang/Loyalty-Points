@@ -1,0 +1,2 @@
+class HandbackFile < ApplicationRecord
+end

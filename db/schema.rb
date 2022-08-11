@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_08_05_003134) do
+ActiveRecord::Schema[7.0].define(version: 2022_08_11_150815) do
   create_table "account", force: :cascade do |t|
     t.integer "user_id"
     t.index ["user_id"], name: "index_account_on_user_id"
@@ -21,6 +21,13 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_05_003134) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_accounts_on_user_id"
+  end
+
+  create_table "handback_files", force: :cascade do |t|
+    t.string "transfer_date"
+    t.string "amount"
+    t.string "reference_number"
+    t.string "outcome_code"
   end
 
   create_table "loyalty_program_data", force: :cascade do |t|
