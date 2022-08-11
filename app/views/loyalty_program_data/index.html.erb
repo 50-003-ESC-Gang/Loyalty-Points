@@ -18,19 +18,26 @@
 								Current Points:
 								<%= loyalty_program_datum.points%>
 							</p>
+
+							<p class="card-text">
+								Currency Name: 
+								<%= loyalty_program[0].currency_name%>
+							</p>	
+
+							<p class="card-text">
+								Conversion Rate: 
+								<%= loyalty_program[0].conversion_rate%>
+							</p>	
 							
 							<p class="card-text">
 								Latest Update: 
 								<%= loyalty_program_datum.updated_at%>
 							</p>	
 
-							<p class="card-text">
-								Currency Name: 
-								<%= loyalty_program[0].currency_name%>
-							</p>	
+							
 						
 							<p name="trans<%= loyalty_program_datum.id %>" class="trans">
-								<%= link_to "Transfer Points", edit_loyalty_program_datum_path(loyalty_program_datum.id), class: "btn btn-primary" %>
+								<%= link_to "Transfer Points", edit_loyalty_program_datum_path(loyalty_program_datum.id), class: "btn btn-primary" , name: "transP"%>
 							</p>					
 						</div>
 					</div>

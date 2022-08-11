@@ -1,6 +1,6 @@
 class AccrualProcessor < Rails::Application
   # @@current_index = 1
-  @@current_indices = {}
+  @@CURRENT_INDICES = {}
   @@FOLDER_ACCRUAL = './tmp/accruals/'
   @@FOLDER_HANDBACK = './tmp/handbacks/'
 
@@ -20,30 +20,29 @@ class AccrualProcessor < Rails::Application
     time = Time.new
     date_str1 = "#{time.year}#{'%02d' % time.month}#{'%02d' % time.day}" # YYYYMMDD format, used for file name
     date_str2 = "#{time.year}-#{'%02d' % time.month}-#{'%02d' % time.day}" # YYYY-MM-DD format, used for csv field
-    company_code = transaction.loyalty_program_datum.loyalty_program_id # loyalty_program_id is used as foreign key of lp inside lpd, and is supposed to be string representing the company
+    company_code = transaction.loyalty_program_id # loyalty_program_id is used as foreign key of lp inside lpd, and is supposed to be string representing the company
     filepath = "#{@@FOLDER_ACCRUAL}#{company_code}_#{date_str1}.txt"
     handback_name = "#{company_code}_#{date_str1}.HANDBACK.txt"
 
-    # this handback is for demonstration only
-    # handback_name = 'id0_20200801.HANDBACK.txt'
     [date_str1, date_str2, company_code, filepath, handback_name]
   end
 
   def create_new_accrual(_date_str1, _date_str2, company_code, filepath, _handback_name)
     new_file = File.new(filepath, 'w')
     new_file.syswrite("index,Member ID,Member first name,Member last name,Transfer date,Amount,Reference number,Partner code\n")
-    # @@current_index = 1
-    @@current_indices[company_code] = 1
+    @@CURRENT_INDICES[company_code] = 1
     new_file.close
   end
 
   def set_jobs(_date_str1, _date_str2, _company_code, filepath, handback_name)
-    SendAccrualJob.set(wait_until: Date.tomorrow.noon).perform_later(filepath)
-    DownloadHandbackJob.set(wait_until: Date.tomorrow.midnight).perform_later(handback_name, @@FOLDER_HANDBACK)
+    # SendAccrualJob.set(wait_until: Date.tomorrow.noon).perform_later(filepath)
+    SendAccrualJob.perform_later(filepath) # for demonstration
+    # DownloadHandbackJob.set(wait_until: Date.tomorrow.midnight).perform_later(handback_name, @@FOLDER_HANDBACK)
+    DownloadHandbackJob.perform_later(handback_name, @@FOLDER_HANDBACK) # for demonstration
   end
 
   def write_accrual(_date_str1, date_str2, company_code, filepath, _handback_name, transaction)
-    accrual_file = File.open(filepath, 'a')
+    accrual_file = File.open(filepath, 'a+')
     # using transaction's id as ref number
     # transaction attribute->csv field mapping:
     # member id->txn.lpd.account.id
@@ -53,66 +52,55 @@ class AccrualProcessor < Rails::Application
     # amount->txn.amount
     # reference number->txn.id
     # partner code->txn.lpd.lp_id
-    accrual_file.syswrite("#{@@current_indices[company_code]},#{transaction.loyalty_program_datum.account.id},#{transaction.loyalty_program_datum.account.user.name},#{transaction.loyalty_program_datum.account.user.lastname},#{date_str2},#{transaction.amount},#{transaction.id},#{company_code}\n")
+    user = User.where(id: transaction.account_id).first # seems that this account id is actually user id
+    user_first_name = user.name
+    user_last_name = user.lastname
+    member_id = user.id
+    #  handling unexpected loss of index, possibly due to saving changed code
+    @@CURRENT_INDICES[company_code] = accrual_file.readlines.length if @@CURRENT_INDICES[company_code].nil?
+    accrual_file.syswrite("#{@@CURRENT_INDICES[company_code]},#{member_id},#{user_first_name},#{user_last_name},#{date_str2},#{transaction.amount},#{transaction.id},#{company_code}\n")
     # increment the index
-    @@current_indices[company_code] += 1
+    @@CURRENT_INDICES[company_code] += 1
     accrual_file.close
   end
 
   def self.process_handback(csv_file_path)
-    # process csv file
-    # save to database
+    # process csv file and save to database
 
     # get just the file name from file path
     csv_file_name = File.basename(csv_file_path)
 
     # split file name by undescore
-    loyalty_program_id, handback_date = csv_file_name.split('_')
-    handback_date = handback_date.split('.')[0]
-    puts loyalty_program_id
-    loyalty_program = LoyaltyProgram.where(loyalty_program_id: loyalty_program_id).first.id
-    # loyalty_program_data_id = LoyaltyProgramDatum.where(loyalty_program_id: loyalty_program).id
+    begin
+      loyalty_program_id, handback_date = csv_file_name.split('_')
+      handback_date = handback_date.split('.')[0]
+      loyalty_program = LoyaltyProgram.where(loyalty_program_id: loyalty_program_id).first.id
 
-    # check csv if 'Account Id' column is present
-    columns = CSV.read(csv_file_path, headers: true).headers
-    # check if 'Account Id' column is present
+      columns = CSV.read(csv_file_path, headers: true).headers
+    rescue Exception => e
+      puts "Error reading CSV: #{e.message}"
+    end
 
-    # end
     CSV.foreach(csv_file_path, headers: true) do |row|
-      # continue to next row if outcome code is not success
-      unless valid_transcation?(row['outcome_code'])
-        next # TODO : Add error handling
-      end
-
-      account_id = row['Account Id'] || 1
-
-      #   # create a new transcation in db
-      #   txn = Transaction.new(
-      #     date: row['Transfer Date'],
-      #     loyalty_program_data_id: loyalty_program_data_id,
-      #     amount: row['Amount'],
-      #     status: 'success',
-      #     account_id: account_id # if row['Account Id'] is not present, use default value of 1
-      #   ).save
-
       begin
-        transaction = Transaction.where(id: row['Reference number'])
-        transaction.update(status: get_status(row['Outcome code']))
         # updaate transaction status in db
-        Transaction.where(id: row['Reference number']).update(status: get_status(row['Outcome code']))
+        txn = Transaction.where(id: row['Reference number']).first
+        txn.update(status: get_status(row['Outcome code']))
+
+        if get_status(row['Outcome code']) == 'success'
+          # update LoyaltyProgramDatum points
+          LoyaltyProgramDatum.where(id: txn.loyalty_program_datum_id).first.update(points: row['Amount'])
+        end
       rescue StandardError # exception type?
         puts 'transaction not found'
         next
       end
 
-      # update loyalty program data points
-      acc = Account.where(id: account_id).first
-      acc.loyalty_program_data.where(loyalty_program_id: loyalty_program).first.update(points: row['Amount'])
-
-      #Email user
-      StatusMailer.with(user: acc.user, transaction_id: transaction.id).status_email.deliver_now
-      #https://guides.rubyonrails.org/action_mailer_basics.html
-
+      # Email user
+      user = User.where(id: txn.account_id).first # account_id is actually id for user
+      acc = user.account
+      StatusMailer.with(user: acc.user, transaction_id: txn.id).status_email.deliver_now
+      # https://guides.rubyonrails.org/action_mailer_basics.html
     end
   end
 
@@ -142,7 +130,7 @@ class AccrualProcessor < Rails::Application
     get_status(outcome_code) == 'success'
   end
 
-  def self.get_current_indices
-    @@current_indices.dup
+  def self.get_CURRENT_INDICES
+    @@CURRENT_INDICES.dup
   end
 end

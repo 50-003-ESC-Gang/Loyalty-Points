@@ -1,2 +1,1 @@
 index,Member ID,Member first name,Member last name,Transfer date,Amount,Reference number,Partner code
-1,1,Margene Ritchie,qux,2022-7-27,0.0,20227271,1

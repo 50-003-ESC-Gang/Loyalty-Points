@@ -19,6 +19,11 @@
       </p>
 
       <p>
+        <strong>Conversion Rate:</strong>
+        <%= @loyalty_program.conversion_rate %>
+      </p>
+
+      <p>
         <strong>Processing time:</strong>
         <%= @loyalty_program.processing_time %>
       </p>
@@ -48,7 +53,7 @@
   <%= form_with(url: loyalty_program_link_path(@loyalty_program)) do |form| %>
     <div class="row w-25 ps-3">
     <%= form.text_field :membership_id, class: "input-group-text" %>
-    <%= button_to "Submit Membership ID", @loyalty_program, method: :link, class: "btn btn-warning"%>
+    <%= button_to "Submit Membership ID", @loyalty_program, method: :link, class: "btn btn-warning", name: "submit_memID"%>
     </div>
   <% end %>
 </div>
