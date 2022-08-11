@@ -19,6 +19,11 @@
       </p>
 
       <p>
+        <strong>Conversion_rate:</strong>
+        <%= loyalty_program.conversion_rate %>
+      </p>
+
+      <p>
         <strong>Processing time:</strong>
         <%= loyalty_program.processing_time %>
       </p>
@@ -33,7 +38,7 @@
         <a href="https://<%=loyalty_program.terms_and_conditions_link%>" target="_blank" class="btn btn-sm btn-primary">Terms and Conditions</a>
       </p>
 
-      <a href="<%= loyalty_program_path(loyalty_program) %>" class="btn btn-light">Link Account</a>
+      <a href="<%= loyalty_program_path(loyalty_program) %>" class="btn btn-light" name="link_account">Link Account</a>
     </div>
   </div>
 </div>

@@ -23,6 +23,7 @@ currency_names = ['GoPoints', 'Ascendas Points', 'Starbucks Points', 'Disney Poi
     description: 'Test Description',
     enrollment_link: 'www.google.com',
     terms_and_conditions_link: 'www.facebook.com',
+    membership_regex: "^[0-9]*$",
     conversion_rate: rand(0.4..1)
     )
   end

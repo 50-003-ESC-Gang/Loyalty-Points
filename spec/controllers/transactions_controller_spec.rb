@@ -21,7 +21,7 @@ RSpec.describe TransactionsController, type: :controller do
         }
         post :create, params: { transaction: transaction_params }
         expect(response).to have_http_status(302)
-        
+
         expect(flash[:notice]).to eq('Transaction was successfully created.')
         expect(Transaction.count).to eq(1)
       end
@@ -54,9 +54,7 @@ RSpec.describe TransactionsController, type: :controller do
 
         post :update, params: { id: 1, transaction: transaction_params }
         expect(Transaction.find(1).amount).to eq(200)
-
       end
     end
-
   end
 end
