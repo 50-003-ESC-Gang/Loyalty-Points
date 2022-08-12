@@ -67,6 +67,9 @@ class AccrualProcessor < Rails::Application
   def self.process_handback(csv_file_path)
     # process csv file and save to database
 
+    # check if csv_file_path exists
+    return if !File.exist?(csv_file_path) || File.zero?(csv_file_path)
+
     # get just the file name from file path
     csv_file_name = File.basename(csv_file_path)
 
