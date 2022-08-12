@@ -199,15 +199,13 @@ RSpec.describe 'AccrualProcessor.process_handback' do
   # Fuzzing Tests
   context 'when given a fuzz csv' do
     before(:each) do
-    lpd = LoyaltyProgramDatum.create(account_id: user.account.id, loyalty_program_id: lp.loyalty_program_id,
+      lpd = LoyaltyProgramDatum.create(account_id: user.account.id, loyalty_program_id: lp.loyalty_program_id,
                                       points: 0)
-
+      File.delete(fuzz_filepath) if File.exist?(fuzz_filepath)
     end
 
     it 'should not process random fuzz csv' do
       # generate a csv at fixture at fuzz_filepath
-      # check if fuzz_filepath has any files
-      File.delete(fuzz_filepath) if File.exist?(fuzz_filepath)
       # create a new file at fuzz_filepath
       File.open(fuzz_filepath, 'w') do |file|
         file.write("
@@ -218,13 +216,29 @@ RSpec.describe 'AccrualProcessor.process_handback' do
       # process the file
       AccrualProcessor.process_handback(fuzz_filepath)
       expect(LoyaltyProgramDatum.first.points).to eq(0)
+    end
 
-      # delete the file
+    it 'should not process csv without headers' do
       File.delete(fuzz_filepath) if File.exist?(fuzz_filepath)
+      File.open(fuzz_filepath, 'w') do |file|
+        file.write("
+        #{fuzz_csv.transfer_date},#{fuzz_csv.amount},#{fuzz_csv.reference_number},#{fuzz_csv.outcome_code}
+        ")
+      end
+      AccrualProcessor.process_handback(fuzz_filepath)
+      expect(LoyaltyProgramDatum.first.points).to eq(0)
     end
 
     it 'should not files with different name' do
       file_path = './spec/fixtures/dASDASDASDA.txt'
+      lpd = LoyaltyProgramDatum.create(account_id: user.account.id, loyalty_program_id: lp.loyalty_program_id,
+                                       points: 0)
+      AccrualProcessor.process_handback(file_path)
+      expect(LoyaltyProgramDatum.find(lpd.id).points).to eq(0)
+    end
+    it 'should not process files that do not have extension' do
+      o = [('a'..'z'), ('A'..'Z')].map(&:to_a).flatten
+      file_path = (0...50).map { o[rand(o.length)] }.join
       lpd = LoyaltyProgramDatum.create(account_id: user.account.id, loyalty_program_id: lp.loyalty_program_id,
                                        points: 0)
       AccrualProcessor.process_handback(file_path)
