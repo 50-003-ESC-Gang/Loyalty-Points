@@ -41,6 +41,10 @@ jobs:
       - name: Run RSpec
         run: COVERAGE=true bundle exec rspec  --require rails_helper
         env:
+          PG_DATABASE: postgres
+          PG_HOST: localhost
+          PG_PORT: 5432
+          PG_USER: postgres
+          PG_PASSWORD: postgres
           RAILS_ENV: test
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
+          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
