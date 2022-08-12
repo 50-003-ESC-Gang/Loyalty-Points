@@ -68,12 +68,10 @@ class AccrualProcessor < Rails::Application
     # process csv file and save to database
 
     # check if csv_file_path exists
-    if !File.exist?(csv_file_path) || File.zero?(csv_file_path)
-      return
-    end
-      # get just the file name from file path
-    csv_file_name = File.basename(csv_file_path)
+    return if !File.exist?(csv_file_path) || File.zero?(csv_file_path)
 
+    # get just the file name from file path
+    csv_file_name = File.basename(csv_file_path)
 
     # split file name by undescore
     begin

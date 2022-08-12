@@ -182,7 +182,7 @@ RSpec.describe 'AccrualProcessor.process_handback' do
   end
 
   let(:good_csv) { './spec/fixtures/STARBUCCAPOINTS_20220810.HANDBACK.txt' }
-  let(:fuzz_filepath) { './spec/fixtures/STARBUCCAPOINTS_20120810.HANDBACK.txt.fuzz' }
+  let(:fuzz_filepath) { './spec/fixtures/STARBUCCAPOINTS_20120810.HANDBACK.txt' }
 
   let(:fuzz_csv) do
     FactoryBot.create(:handback_file)
