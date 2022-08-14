@@ -1,35 +1,50 @@
-name: CI RSpec Tests
-on:
-  push:
-  pull_request:
-    branches: ["master"]
-
+name: CI
+on: [pull_request]
 jobs:
   build:
-    name: CI
     runs-on: ubuntu-latest
-    env:
-      RAILS_ENV: test
-
+    services:
+      postgres:
+        image: postgres:11
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-ruby@v1
         with:
           ruby-version: 3.1.2
 
-      - name: Run bundle install
-        working-directory: ${{env.api-dir}}
+      - name: Install dependent libraries
+        run: sudo apt-get install libpq-dev
+
+      - name: Bundle install
         run: |
           gem install bundler
           bundle install --jobs 4 --retry 3
 
       - name: Setup Database
-        working-directory: ${{env.api-dir}}
-        run: bin/rails db:create
-          bin/rails db:migrate RAILS_ENV=test
-
-      - name: Build and test with rspec
-        working-directory: ${{env.api-dir}}
+        run: |
+          bundle exec rake db:create
+          bundle exec rake db:schema:load
         env:
+          PG_DATABASE: postgres
+          PG_HOST: localhost
+          PG_PORT: 5432
+          PG_USER: postgres
+          PG_PASSWORD: postgres
           RAILS_ENV: test
-        run: bundle exec rspec spec
+
+      - name: Run RSpec
+        run: COVERAGE=true bundle exec rspec  --require rails_helper
+        env:
+          PG_DATABASE: postgres
+          PG_HOST: localhost
+          PG_PORT: 5432
+          PG_USER: postgres
+          PG_PASSWORD: postgres
+          RAILS_ENV: test
+          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}

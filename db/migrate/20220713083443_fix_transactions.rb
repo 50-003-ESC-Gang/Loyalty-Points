@@ -1,5 +1,5 @@
 class FixTransactions < ActiveRecord::Migration[7.0]
   def change
-    change_column :transactions, :receiver, :user
+    change_column :transactions, :receiver, :integer
   end
 end

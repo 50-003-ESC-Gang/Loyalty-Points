@@ -177,7 +177,7 @@ RSpec.describe 'AccrualProcessor.process_handback' do
   end
 
   let(:transaction) do
-    FactoryBot.create(:transaction, account_id: user.account.id, loyalty_program_datum_id: 1, amount: 100,
+    FactoryBot.create(:transaction, account_id: user.account.id, loyalty_program_datum_id: LoyaltyProgramDatum.first.id, amount: 100,
                                     loyalty_program_id: lp.loyalty_program_id)
   end
 

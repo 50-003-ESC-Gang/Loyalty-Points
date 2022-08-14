@@ -43,7 +43,7 @@ RSpec.describe TransactionsController, type: :controller do
     context 'when valid params are passed' do
       it 'transaction can be updated' do
         # create a transaction
-        Transaction.create(account_id: user.account.id, loyalty_program_datum_id: lpd.id, amount: 100)
+        txn = Transaction.create(account_id: user.account.id, loyalty_program_datum_id: lpd.id, amount: 100)
 
         # update the transaction with valid params
         transaction_params = {
@@ -52,7 +52,7 @@ RSpec.describe TransactionsController, type: :controller do
           amount: 200
         }
 
-        post :update, params: { id: 1, transaction: transaction_params }
+        post :update, params: { id: txn.id, transaction: transaction_params }
         expect(Transaction.find(1).amount).to eq(200)
       end
     end

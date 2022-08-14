@@ -70,6 +70,15 @@ Libraries used for testing
 * faker
 * factory_bot <https://github.com/thoughtbot/factory_bot/blob/master/GETTING_STARTED.md#associations>
 
+### Deploy
+
+`git push heroku deploy:master`
+
+<https://chinguyen21.medium.com/how-to-deploy-a-built-rails-app-with-sqlite3-to-heroku-c5db4febe069>
+
+Link: <https://esc-loyalty-program.herokuapp.com/users/sign_in>
+
+
 ### Issues with Setting up
 
 1. problem :
