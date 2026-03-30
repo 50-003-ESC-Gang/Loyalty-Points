@@ -41,8 +41,9 @@ RSpec.describe LoyaltyProgramDataController, type: :controller do
   describe '#update' do
     context 'when happy case' do
       it 'should update loyalty program data points' do
+        lpd_id = LoyaltyProgramDatum.first.id
         post :update,
-             params: { id: lp.id,
+             params: { id: lpd_id,
                        loyalty_program_datum: { loyalty_program_id: lp.loyalty_program_id, in_points: 1000,
                                                 points: 0 } }
 
@@ -53,5 +54,4 @@ RSpec.describe LoyaltyProgramDataController, type: :controller do
       end
     end
   end
-
 end

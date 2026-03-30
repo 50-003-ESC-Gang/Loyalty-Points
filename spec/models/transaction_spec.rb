@@ -11,7 +11,8 @@ RSpec.describe Transaction, type: :model do
 
   context 'when happy case for create transaction' do
     it 'should create a transaction' do
-      txn = Transaction.new(loyalty_program_datum_id: lp.id, amount: 100, created_at: '2000-01-01 02:00:00', status: 'pending',
+      lpd_id = LoyaltyProgramDatum.first.id
+      txn = Transaction.new(loyalty_program_datum_id: lpd_id, amount: 100, created_at: '2000-01-01 02:00:00', status: 'pending',
                             account_id: user.account.id)
 
       expect(txn).to be_valid
